@@ -5,6 +5,16 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  webpack: (config, { dev, isServer }) => {
+    // Prevent multiple service worker generation in development
+    if (dev && !isServer) {
+      config.watchOptions = {
+        ...config.watchOptions,
+        ignored: ['**/node_modules/**', '**/public/sw.js', '**/public/workbox-*.js'],
+      };
+    }
+    return config;
+  },
   /* config options here */
 };
 
@@ -12,7 +22,7 @@ export default withPWA({
   dest: "public",
   register: true,
   skipWaiting: true,
-  disable: false, // Enable PWA in all environments
+  disable: process.env.NODE_ENV === "development",
   runtimeCaching: [
     {
       urlPattern: /^https?.*/,
