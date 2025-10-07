@@ -98,15 +98,34 @@
     <script>
         // Check if we're back online
         window.addEventListener('online', () => {
+            console.log('Back online, reloading...');
             window.location.reload();
         });
         
-        // Retry every 5 seconds
+        // Retry every 3 seconds
         setInterval(() => {
             if (navigator.onLine) {
+                console.log('Connection restored, reloading...');
                 window.location.reload();
             }
-        }, 5000);
+        }, 3000);
+        
+        // Try to load the main app immediately
+        setTimeout(() => {
+            if (navigator.onLine) {
+                window.location.href = '/';
+            }
+        }, 1000);
+        
+        // Show connection status
+        function updateConnectionStatus() {
+            const status = navigator.onLine ? 'Online' : 'Offline';
+            console.log('Connection status:', status);
+        }
+        
+        window.addEventListener('online', updateConnectionStatus);
+        window.addEventListener('offline', updateConnectionStatus);
+        updateConnectionStatus();
     </script>
 </body>
 </html>

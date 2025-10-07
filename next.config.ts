@@ -23,7 +23,6 @@ export default withPWA({
   register: true,
   skipWaiting: true,
   disable: false, // Enable PWA in all environments
- 
   runtimeCaching: [
     {
       urlPattern: /^\/$/,
