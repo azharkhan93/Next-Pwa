@@ -23,6 +23,7 @@ export default withPWA({
   register: true,
   skipWaiting: true,
   disable: false, // Enable PWA in all environments
+  exclude: [() => true], // Exclude all files from precaching to avoid 404 errors
   runtimeCaching: [
     {
       urlPattern: /^https?.*/,
