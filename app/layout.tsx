@@ -82,32 +82,42 @@ export default function RootLayout({
             __html: `
               let deferredPrompt;
               
+              // Handle install prompt
               window.addEventListener('beforeinstallprompt', (e) => {
                 console.log('beforeinstallprompt event fired');
                 e.preventDefault();
                 deferredPrompt = e;
                 
-                // Show install button or banner
+                // Show install button
                 const installBtn = document.getElementById('install-pwa-btn');
                 if (installBtn) {
                   installBtn.style.display = 'block';
-                  installBtn.addEventListener('click', async () => {
-                    if (deferredPrompt) {
-                      deferredPrompt.prompt();
-                      const { outcome } = await deferredPrompt.userChoice;
-                      console.log('User response to install prompt:', outcome);
-                      deferredPrompt = null;
-                      installBtn.style.display = 'none';
-                    }
-                  });
+                  installBtn.classList.remove('hidden');
                 }
+                
+                // Add click handler
+                installBtn?.addEventListener('click', async () => {
+                  if (deferredPrompt) {
+                    deferredPrompt.prompt();
+                    const { outcome } = await deferredPrompt.userChoice;
+                    console.log('User response to install prompt:', outcome);
+                    deferredPrompt = null;
+                    installBtn.style.display = 'none';
+                  }
+                });
               });
 
+              // Handle app installed
               window.addEventListener('appinstalled', () => {
                 console.log('PWA was installed');
                 deferredPrompt = null;
+                const installBtn = document.getElementById('install-pwa-btn');
+                if (installBtn) {
+                  installBtn.style.display = 'none';
+                }
               });
 
+              // Register service worker
               if ('serviceWorker' in navigator) {
                 window.addEventListener('load', function() {
                   navigator.serviceWorker.register('/sw.js')

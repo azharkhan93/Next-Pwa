@@ -34,13 +34,26 @@ export default function Home() {
 
         <div className="flex gap-4 items-center flex-col sm:flex-row">
           <InstallPWA />
-          <button
-            id="install-pwa-btn"
-            className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors hidden"
-            style={{ display: 'none' }}
-          >
-            📱 Install App
-          </button>
+        <button
+          id="install-pwa-btn"
+          className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors hidden"
+          style={{ display: 'none' }}
+        >
+          📱 Install App
+        </button>
+        
+        {/* PWA Install Instructions */}
+        <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+          <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-2">
+            📱 Install This App
+          </h3>
+          <div className="text-sm text-blue-800 dark:text-blue-200 space-y-2">
+            <p><strong>Desktop (Chrome/Edge):</strong> Look for the install icon in the address bar</p>
+            <p><strong>Mobile (Android):</strong> Tap the menu (⋮) and select "Add to Home screen"</p>
+            <p><strong>Mobile (iOS):</strong> Tap the share button and select "Add to Home Screen"</p>
+            <p><strong>PWA Requirements:</strong> HTTPS, Service Worker, Web App Manifest</p>
+          </div>
+        </div>
           <a
             className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
             href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
