@@ -63,10 +63,16 @@ export default function RootLayout({
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-orientations" content="portrait" />
         
+        {/* Critical mobile PWA meta tags */}
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        
         <link rel="apple-touch-icon" sizes="152x152" href="/icons/icon-152x152.svg" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/icons/icon-192x192.svg" />
-        <link rel="icon" type="image/svg+xml" sizes="192x192" href="/icons/icon-192x192.svg" />
-        <link rel="icon" type="image/svg+xml" sizes="512x512" href="/icons/icon-512x512.svg" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/icons/icon-180x180.png" />
+        <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192x192.png" />
+        <link rel="icon" type="image/png" sizes="512x512" href="/icons/icon-512x512.png" />
         <link rel="manifest" href="/manifest.json" />
         <link rel="mask-icon" href="/icons/icon-192x192.svg" color="#000000" />
         <link rel="shortcut icon" href="/favicon.ico" />
