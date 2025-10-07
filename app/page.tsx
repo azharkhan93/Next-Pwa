@@ -49,8 +49,8 @@ export default function Home() {
           </h3>
           <div className="text-sm text-blue-800 dark:text-blue-200 space-y-2">
             <p><strong>Desktop (Chrome/Edge):</strong> Look for the install icon in the address bar</p>
-            <p><strong>Mobile (Android):</strong> Tap the menu (⋮) and select "Add to Home screen"</p>
-            <p><strong>Mobile (iOS):</strong> Tap the share button and select "Add to Home Screen"</p>
+            <p><strong>Mobile (Android):</strong> Tap the menu (⋮) and select &quot;Add to Home screen&quot;</p>
+            <p><strong>Mobile (iOS):</strong> Tap the share button and select &quot;Add to Home Screen&quot;</p>
             <p><strong>PWA Requirements:</strong> HTTPS, Service Worker, Web App Manifest</p>
           </div>
         </div>
