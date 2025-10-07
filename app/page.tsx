@@ -22,7 +22,7 @@ export default function Home() {
         </div>
         <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
           <li className="mb-2 tracking-[-.01em]">
-            Install this app on your device using the browser&apos;s install prompt
+            {`Install this app on your device using the browser&apos;s install prompt`}
           </li>
           <li className="mb-2 tracking-[-.01em]">
             The app works offline thanks to service worker caching
@@ -48,9 +48,16 @@ export default function Home() {
             📱 Install This App
           </h3>
           <div className="text-sm text-blue-800 dark:text-blue-200 space-y-2">
-            <p><strong>Desktop (Chrome/Edge):</strong> Look for the install icon in the address bar</p>
-            <p><strong>Mobile (Android):</strong> Tap the menu (⋮) and select &quot;Add to Home screen&quot;</p>
-            <p><strong>Mobile (iOS):</strong> Tap the share button and select &quot;Add to Home Screen&quot;</p>
+            <p>
+              <strong>Desktop (Chrome/Edge):</strong> 
+              {`Look for the install icon in the address bar`}
+              </p>
+            <p><strong>Mobile (Android):</strong> 
+            {`Tap the menu (⋮) and select &quot;Add to Home screen&quot;`}
+            </p>
+            <p><strong>Mobile (iOS):</strong> 
+            {`Tap the share button and select &quot;Add to Home Screen&quot;`}
+            </p>
             <p><strong>PWA Requirements:</strong> HTTPS, Service Worker, Web App Manifest</p>
           </div>
         </div>
