@@ -23,7 +23,13 @@ export default withPWA({
   register: true,
   skipWaiting: true,
   disable: false, // Enable PWA in all environments
-  exclude: [() => true], // Exclude all files from precaching to avoid 404 errors
+  exclude: [
+    ({ request }) => request.url.includes('_next/app-build-manifest.json'),
+    ({ request }) => request.url.includes('_next/static/'),
+    ({ request }) => request.url.includes('_next/webpack-runtime'),
+    ({ request }) => request.url.includes('_next/ssg-manifest'),
+    // Add other patterns to exclude
+  ],
   runtimeCaching: [
     {
       urlPattern: /^https?.*/,
