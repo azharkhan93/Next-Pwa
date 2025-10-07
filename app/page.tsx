@@ -34,6 +34,13 @@ export default function Home() {
 
         <div className="flex gap-4 items-center flex-col sm:flex-row">
           <InstallPWA />
+          <button
+            id="install-pwa-btn"
+            className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors hidden"
+            style={{ display: 'none' }}
+          >
+            📱 Install App
+          </button>
           <a
             className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
             href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"

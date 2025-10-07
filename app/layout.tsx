@@ -80,6 +80,34 @@ export default function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html: `
+              let deferredPrompt;
+              
+              window.addEventListener('beforeinstallprompt', (e) => {
+                console.log('beforeinstallprompt event fired');
+                e.preventDefault();
+                deferredPrompt = e;
+                
+                // Show install button or banner
+                const installBtn = document.getElementById('install-pwa-btn');
+                if (installBtn) {
+                  installBtn.style.display = 'block';
+                  installBtn.addEventListener('click', async () => {
+                    if (deferredPrompt) {
+                      deferredPrompt.prompt();
+                      const { outcome } = await deferredPrompt.userChoice;
+                      console.log('User response to install prompt:', outcome);
+                      deferredPrompt = null;
+                      installBtn.style.display = 'none';
+                    }
+                  });
+                }
+              });
+
+              window.addEventListener('appinstalled', () => {
+                console.log('PWA was installed');
+                deferredPrompt = null;
+              });
+
               if ('serviceWorker' in navigator) {
                 window.addEventListener('load', function() {
                   navigator.serviceWorker.register('/sw.js')
