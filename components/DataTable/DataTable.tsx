@@ -13,6 +13,7 @@ export type DataTableProps = {
   enableSelection?: boolean;
   selectedRows?: number[];
   onSelectionChange?: (selectedRows: number[]) => void;
+  exportMenu?: React.ReactNode;
   className?: string;
 };
 
@@ -25,6 +26,7 @@ export const DataTable: React.FC<DataTableProps> = ({
   enableSelection = false,
   selectedRows: controlledSelectedRows,
   onSelectionChange,
+  exportMenu,
   className,
 }) => {
   const [internalSelectedRows, setInternalSelectedRows] = useState<number[]>(
@@ -54,11 +56,15 @@ export const DataTable: React.FC<DataTableProps> = ({
 
   return (
     <div className={`w-full rounded-lg ${className ?? ""}`}>
-      {title ? (
-        <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-800 text-sm font-medium">
-          {title}
+      {(title || exportMenu) && (
+        <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between">
+          {title ? (
+            <div className="text-sm font-medium">{title}</div>
+          ) : exportMenu ? (
+            <div className="w-full flex justify-start">{exportMenu}</div>
+          ) : null}
         </div>
-      ) : null}
+      )}
       <div className="max-w-[90%] lg:max-w-[90%] xl:max-w-[90%] 2xl:max-w-[100%] overflow-x-auto">
         <table className="w-full text-left text-sm">
           <thead className="bg-gray-50 dark:bg-gray-900/40">

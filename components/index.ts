@@ -13,5 +13,6 @@ export * from "./FilterBar";
 export * from "./Pagination";
 export * from "./Dropdown";
 export * from "./Checkbox";
+export * from "./ExportMenu";
 
 

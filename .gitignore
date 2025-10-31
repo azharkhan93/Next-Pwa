@@ -46,3 +46,6 @@ next-env.d.ts
 /public/sw.js.map
 /public/workbox-*.js.map
 /public/offline.html
+
+# Prisma
+/prisma/migrations

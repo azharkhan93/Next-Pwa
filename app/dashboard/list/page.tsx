@@ -6,6 +6,7 @@ import {
   FilterBar,
   Search,
   Pagination,
+  ExportMenu,
 } from "@/components";
 import React from "react";
 
@@ -73,6 +74,7 @@ export default function ListPage() {
   const [currentPage, setCurrentPage] = React.useState(1);
   const [confirmOpen, setConfirmOpen] = React.useState(false);
   const [selectedRow, setSelectedRow] = React.useState<number | null>(null);
+  const [selectedRows, setSelectedRows] = React.useState<number[]>([]);
 
   const itemsPerPage = 10;
   const totalPages = Math.ceil(data.length / itemsPerPage);
@@ -91,6 +93,22 @@ export default function ListPage() {
     setGenderFilter("");
     setStateFilter("");
     setCityFilter("");
+  };
+
+  const handleExport = (format: "pdf" | "word") => {
+    console.log(
+      `Exporting ${selectedRows.length} rows as ${format.toUpperCase()}`
+    );
+    console.log("Selected row indices:", selectedRows);
+    console.log(
+      "Selected data:",
+      selectedRows.map((idx) => data[idx])
+    );
+    alert(
+      `Export functionality for ${format.toUpperCase()} format will be implemented here. Selected ${
+        selectedRows.length
+      } row(s).`
+    );
   };
 
   const genderOptions = [
@@ -150,12 +168,21 @@ export default function ListPage() {
 
       {/* Data Table */}
       <DataTable
-        title="Records"
         columns={columns}
         data={data}
         onEditRow={handleEdit}
         onDeleteRow={handleDelete}
         enableSelection={true}
+        selectedRows={selectedRows}
+        onSelectionChange={setSelectedRows}
+        exportMenu={
+          <ExportMenu
+            selectedRows={selectedRows}
+            totalRows={data.length}
+            onExport={handleExport}
+            disabled={selectedRows.length === 0}
+          />
+        }
       />
 
       {/* Pagination */}

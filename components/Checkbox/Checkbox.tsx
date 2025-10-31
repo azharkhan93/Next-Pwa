@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useId } from "react";
 
 export type CheckboxProps = {
   id?: string;
@@ -23,7 +23,8 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   className,
   labelClassName,
 }) => {
-  const inputId = id || name || `checkbox-${Math.random().toString(36).substr(2, 9)}`;
+  const generatedId = useId();
+  const inputId = id || name || generatedId;
 
   return (
     <div className={`flex items-center ${className ?? ""}`}>
@@ -39,7 +40,9 @@ export const Checkbox: React.FC<CheckboxProps> = ({
       {label && (
         <label
           htmlFor={inputId}
-          className={`ml-2 text-sm text-gray-900 dark:text-gray-100 ${labelClassName ?? ""} ${disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
+          className={`ml-2 text-sm text-gray-900 dark:text-gray-100 ${
+            labelClassName ?? ""
+          } ${disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
         >
           {label}
         </label>

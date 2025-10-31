@@ -1,32 +1,63 @@
 "use client";
 
 import React from "react";
-
 import { useRouter } from "next/navigation";
 import { TextInput, FormError, Button } from "@/components";
 
+type FormData = {
+  name: string;
+  fullName: string;
+  email: string;
+  phone: string;
+  address: string;
+  location: string;
+  city: string;
+  stateVal: string;
+  gender: string;
+  productName: string;
+  quantity: number | "";
+};
+
+const initialFormData: FormData = {
+  name: "",
+  fullName: "",
+  email: "",
+  phone: "",
+  address: "",
+  location: "",
+  city: "",
+  stateVal: "",
+  gender: "",
+  productName: "",
+  quantity: "",
+};
+
 export default function AddDataPage() {
   const router = useRouter();
-  const [name, setName] = React.useState("");
-  const [fullName, setFullName] = React.useState("");
-  const [email, setEmail] = React.useState("");
-  const [phone, setPhone] = React.useState("");
-  const [address, setAddress] = React.useState("");
-  const [location, setLocation] = React.useState("");
-  const [city, setCity] = React.useState("");
-  const [stateVal, setStateVal] = React.useState("");
-  const [gender, setGender] = React.useState("");
-  const [productName, setProductName] = React.useState("");
-  const [quantity, setQuantity] = React.useState<number | "">("");
+  const [formData, setFormData] = React.useState<FormData>(initialFormData);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
+
+  const handleChange = (field: keyof FormData) => (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const value = e.target.value;
+    setFormData((prev) => ({
+      ...prev,
+      [field]:
+        field === "quantity"
+          ? value === ""
+            ? ""
+            : Number(value)
+          : value,
+    }));
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);
     setLoading(true);
     try {
-     
       await new Promise((r) => setTimeout(r, 800));
       router.push("/dashboard");
     } catch (err) {
@@ -48,16 +79,16 @@ export default function AddDataPage() {
             id="name"
             name="name"
             label="Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={formData.name}
+            onChange={handleChange("name")}
             required
           />
           <TextInput
             id="fullName"
             name="fullName"
             label="Full name"
-            value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
+            value={formData.fullName}
+            onChange={handleChange("fullName")}
             required
           />
         </div>
@@ -68,8 +99,8 @@ export default function AddDataPage() {
             type="email"
             label="Email"
             autoComplete="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={formData.email}
+            onChange={handleChange("email")}
             required
           />
           <TextInput
@@ -78,8 +109,8 @@ export default function AddDataPage() {
             type="tel"
             label="Phone"
             autoComplete="tel"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
+            value={formData.phone}
+            onChange={handleChange("phone")}
           />
         </div>
 
@@ -88,68 +119,62 @@ export default function AddDataPage() {
             id="address"
             name="address"
             label="Address"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
+            value={formData.address}
+            onChange={handleChange("address")}
           />
           <TextInput
             id="location"
             name="location"
             label="Location"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
+            value={formData.location}
+            onChange={handleChange("location")}
           />
         </div>
-
-        {/* City / State */}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <TextInput
             id="city"
             name="city"
             label="City"
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
+            value={formData.city}
+            onChange={handleChange("city")}
           />
           <TextInput
             id="state"
             name="state"
             label="State"
-            value={stateVal}
-            onChange={(e) => setStateVal(e.target.value)}
+            value={formData.stateVal}
+            onChange={handleChange("stateVal")}
           />
         </div>
 
-        {/* Gender */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <TextInput
             id="gender"
             name="gender"
             label="Gender"
             placeholder="e.g., Male / Female / Other"
-            value={gender}
-            onChange={(e) => setGender(e.target.value)}
+            value={formData.gender}
+            onChange={handleChange("gender")}
           />
           <div />
         </div>
 
-        {/* Product / Quantity */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <TextInput
             id="productName"
             name="productName"
             label="Product name"
-            value={productName}
-            onChange={(e) => setProductName(e.target.value)}
+            value={formData.productName}
+            onChange={handleChange("productName")}
           />
           <TextInput
             id="quantity"
             name="quantity"
             type="number"
             label="Quantity"
-            value={quantity === "" ? "" : String(quantity)}
-            onChange={(e) =>
-              setQuantity(e.target.value === "" ? "" : Number(e.target.value))
-            }
+            value={formData.quantity === "" ? "" : String(formData.quantity)}
+            onChange={handleChange("quantity")}
           />
         </div>
 
