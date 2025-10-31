@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
+  weight: ["400", "600", "700"],
+  variable: "--font-sans",
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
@@ -13,21 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Next.js PWA App",
-  description: "A Progressive Web App built with Next.js",
-  manifest: "/manifest.json",
-  appleWebApp: {
-    capable: true,
-    statusBarStyle: "default",
-    title: "Next.js PWA App",
-  },
-  formatDetection: {
-    telephone: false,
-  },
-  icons: {
-    icon: "/icons/icon-192x192.svg",
-    apple: "/icons/icon-192x192.svg",
-  },
+  title: "Next.js App",
+  description: "Next.js application",
 };
 
 export const viewport = {
@@ -46,96 +35,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <meta name="application-name" content="Next.js PWA App" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="apple-mobile-web-app-title" content="NextPWA" />
-        <meta name="description" content="A Progressive Web App built with Next.js" />
-        <meta name="format-detection" content="telephone=no" />
-        <meta name="mobile-web-app-capable" content="yes" />
-        <meta name="msapplication-config" content="/icons/browserconfig.xml" />
-        <meta name="msapplication-TileColor" content="#000000" />
-        <meta name="msapplication-tap-highlight" content="no" />
-        <meta name="theme-color" content="#000000" />
-        
-        {/* Additional mobile PWA meta tags */}
-        <meta name="apple-touch-fullscreen" content="yes" />
-        <meta name="mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-orientations" content="portrait" />
-        
-        {/* Critical mobile PWA meta tags */}
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="mobile-web-app-capable" content="yes" />
-        
-        <link rel="apple-touch-icon" sizes="152x152" href="/icons/icon-152x152.svg" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/icons/icon-180x180.png" />
-        <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192x192.png" />
-        <link rel="icon" type="image/png" sizes="512x512" href="/icons/icon-512x512.png" />
-        <link rel="manifest" href="/manifest.json" />
-        <link rel="mask-icon" href="/icons/icon-192x192.svg" color="#000000" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="description" content="Next.js application" />
         <link rel="shortcut icon" href="/favicon.ico" />
-        
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              let deferredPrompt;
-              
-              // Handle install prompt
-              window.addEventListener('beforeinstallprompt', (e) => {
-                console.log('beforeinstallprompt event fired');
-                e.preventDefault();
-                deferredPrompt = e;
-                
-                // Show install button
-                const installBtn = document.getElementById('install-pwa-btn');
-                if (installBtn) {
-                  installBtn.style.display = 'block';
-                  installBtn.classList.remove('hidden');
-                }
-                
-                // Add click handler
-                installBtn?.addEventListener('click', async () => {
-                  if (deferredPrompt) {
-                    deferredPrompt.prompt();
-                    const { outcome } = await deferredPrompt.userChoice;
-                    console.log('User response to install prompt:', outcome);
-                    deferredPrompt = null;
-                    installBtn.style.display = 'none';
-                  }
-                });
-              });
-
-              // Handle app installed
-              window.addEventListener('appinstalled', () => {
-                console.log('PWA was installed');
-                deferredPrompt = null;
-                const installBtn = document.getElementById('install-pwa-btn');
-                if (installBtn) {
-                  installBtn.style.display = 'none';
-                }
-              });
-
-              // Register service worker
-              if ('serviceWorker' in navigator) {
-                window.addEventListener('load', function() {
-                  navigator.serviceWorker.register('/sw.js')
-                    .then(function(registration) {
-                      console.log('SW registered: ', registration);
-                    })
-                    .catch(function(registrationError) {
-                      console.log('SW registration failed: ', registrationError);
-                    });
-                });
-              }
-            `,
-          }}
-        />
       </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${plusJakarta.className} ${geistMono.variable} antialiased font-semibold`}>
         {children}
       </body>
     </html>
