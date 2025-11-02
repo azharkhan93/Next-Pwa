@@ -14,5 +14,9 @@ export * from "./Pagination";
 export * from "./Dropdown";
 export * from "./Checkbox";
 export * from "./ExportMenu";
+export * from "./WeeklyReportChart";
+export * from "./FinanceSummaryChart";
+export * from "./TransactionsChart";
+export * from "./ActivityChart";
 
 
