@@ -59,7 +59,7 @@ export const WeeklyReportChart: React.FC<WeeklyReportChartProps> = ({
               ${totalSave.toFixed(2)}
             </p>
           </div>
-          <div className="w-24 h-12">
+          <div className="w-24 h-12 min-w-[96px] min-h-[48px]">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={totalSaveData}>
                 <Line
@@ -81,7 +81,7 @@ export const WeeklyReportChart: React.FC<WeeklyReportChartProps> = ({
               ${electroSave.toFixed(2)}
             </p>
           </div>
-          <div className="w-24 h-12">
+          <div className="w-24 h-12 min-w-[96px] min-h-[48px]">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={electroSaveData}>
                 <Line
@@ -103,7 +103,7 @@ export const WeeklyReportChart: React.FC<WeeklyReportChartProps> = ({
               ${gasSave.toFixed(2)}
             </p>
           </div>
-          <div className="w-24 h-12">
+          <div className="w-24 h-12 min-w-[96px] min-h-[48px]">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={gasSaveData}>
                 <Line

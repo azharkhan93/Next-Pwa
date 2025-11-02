@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { PieChart, Pie, Cell, ResponsiveContainer, Legend } from "recharts";
+import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 
 export type TransactionsChartProps = {
   errors?: number;
@@ -70,7 +70,7 @@ export const TransactionsChart: React.FC<TransactionsChartProps> = ({
             </div>
           </div>
         </div>
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center min-w-[150px] min-h-[150px]">
           <ResponsiveContainer width="100%" height={150}>
             <PieChart>
               <Pie

@@ -33,8 +33,9 @@ export const ActivityChart: React.FC<ActivityChartProps> = ({
       <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
         Activity
       </h3>
-      <ResponsiveContainer width="100%" height={250}>
-        <BarChart data={data}>
+      <div className="w-full min-h-[250px]">
+        <ResponsiveContainer width="100%" height={250}>
+          <BarChart data={data}>
           <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
           <XAxis
             dataKey="date"
@@ -54,6 +55,7 @@ export const ActivityChart: React.FC<ActivityChartProps> = ({
           <Bar dataKey="value2" fill="#eab308" radius={[4, 4, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
+      </div>
     </div>
   );
 };
