@@ -1,6 +1,8 @@
 "use client";
 
 import React from "react";
+import { useRouter } from "next/navigation";
+import axios from "axios";
 import { TextInput, FormError, Button } from "..";
 
 export type LoginProps = {
@@ -14,12 +16,32 @@ export const Login: React.FC<LoginProps> = ({
   loading = false,
   error = null,
 }) => {
+  const router = useRouter();
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onSubmit?.({ email, password });
+    setIsLoading(true);
+    setErrorMessage(null);
+
+    try {
+      const response = await axios.post("/api/login", { email, password });
+
+      if (response.data.user) {
+        router.push("/dashboard");
+      }
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        setErrorMessage(error.response?.data?.error || "Login failed");
+      } else {
+        setErrorMessage("Login failed");
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -50,13 +72,13 @@ export const Login: React.FC<LoginProps> = ({
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <FormError message={error ?? undefined} />
+        <FormError message={errorMessage || error || undefined} />
 
         <Button
           type="submit"
           size="md"
           variant="primary"
-          loading={loading}
+          loading={isLoading || loading}
           className="w-full"
         >
           Sign in
