@@ -50,6 +50,7 @@ const initialFormData: FormData = {
   nitrogenRating: "",
   phosphorusRating: "",
   potassiumRating: "",
+  testResults: [],
 };
 
 export function AddRecordForm() {

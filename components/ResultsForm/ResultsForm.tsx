@@ -8,89 +8,118 @@ import {
   getPotassiumRating,
 } from "@/utils/soilRating";
 import { SoilRecommendations } from "@/components/SoilRecommendations";
+import { useTestResults } from "@/utils/useTestResults";
+import { AddMoreTestResultsButton } from "@/components/AddMoreTestResultsButton";
+import { type TestResult } from "@/utils/testResultsHelpers";
 import type { FormData } from "../FarmerDetailsForm";
+import { MdDelete } from "react-icons/md";
 
 type ResultsFormProps = {
   formData: FormData;
   setFormData: React.Dispatch<React.SetStateAction<FormData>>;
 };
 
-export function ResultsForm({ formData, setFormData }: ResultsFormProps) {
+type TestResultFormProps = {
+  testResult: TestResult;
+  index: number;
+  onUpdate: (updates: Partial<TestResult>) => void;
+  onRemove: () => void;
+  canRemove: boolean;
+};
+
+function TestResultForm({
+  testResult,
+  index,
+  onUpdate,
+  onRemove,
+  canRemove,
+}: TestResultFormProps) {
   const handleChange =
-    (field: keyof FormData) => (e: React.ChangeEvent<HTMLInputElement>) => {
+    (field: keyof TestResult) => (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
-      setFormData((prev) => ({
-        ...prev,
-        [field]: value,
-      }));
+      onUpdate({ [field]: value });
     };
 
   return (
-    <>
+    <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 bg-gray-50 dark:bg-gray-900/50 space-y-4">
+      <div className="flex items-center justify-between mb-4">
+        <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+          Test Result {index + 1}
+        </h4>
+        {canRemove && (
+          <button
+            type="button"
+            onClick={onRemove}
+            className="p-1.5 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded transition-colors"
+            aria-label="Remove test result"
+          >
+            <MdDelete size={20} />
+          </button>
+        )}
+      </div>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <TextInput
-          id="ph"
-          name="ph"
+          id={`ph-${testResult.id}`}
+          name={`ph-${testResult.id}`}
           label="pH"
-          value={formData.ph}
+          value={testResult.ph}
           onChange={handleChange("ph")}
         />
         <TextInput
-          id="organicCarbon"
-          name="organicCarbon"
+          id={`organicCarbon-${testResult.id}`}
+          name={`organicCarbon-${testResult.id}`}
           label="Organic Carbon (%)"
-          value={formData.organicCarbon}
+          value={testResult.organicCarbon}
           onChange={handleChange("organicCarbon")}
         />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <TextInput
-          id="nitrogen"
-          name="nitrogen"
+          id={`nitrogen-${testResult.id}`}
+          name={`nitrogen-${testResult.id}`}
           label="Nitrogen (Kg/ha)"
-          value={formData.nitrogen}
+          value={testResult.nitrogen}
           onChange={(e) => {
             const value = e.target.value;
-            setFormData((prev) => ({
-              ...prev,
+            onUpdate({
               nitrogen: value,
               nitrogenRating:
                 value === "" || isNaN(Number(value))
                   ? ""
                   : getNitrogenRating(Number(value)),
-            }));
+            });
           }}
         />
         <TextInput
-          id="nitrogenRating"
-          name="nitrogenRating"
+          id={`nitrogenRating-${testResult.id}`}
+          name={`nitrogenRating-${testResult.id}`}
           label="Nitrogen rating"
-          value={formData.nitrogenRating ?? ""}
+          value={testResult.nitrogenRating ?? ""}
           onChange={() => {}}
           disabled
         />
         <TextInput
-          id="phosphorus"
-          name="phosphorus"
+          id={`phosphorus-${testResult.id}`}
+          name={`phosphorus-${testResult.id}`}
           label="Phosphorus (Kg/ha)"
-          value={formData.phosphorus}
+          value={testResult.phosphorus}
           onChange={(e) => {
             const value = e.target.value;
-            setFormData((prev) => ({
-              ...prev,
+            onUpdate({
               phosphorus: value,
               phosphorusRating:
                 value === "" || isNaN(Number(value))
                   ? ""
                   : getPhosphorusRating(Number(value)),
-            }));
+            });
           }}
         />
         <TextInput
-          id="phosphorusRating"
-          name="phosphorusRating"
+          id={`phosphorusRating-${testResult.id}`}
+          name={`phosphorusRating-${testResult.id}`}
           label="Phosphorus rating"
-          value={formData.phosphorusRating ?? ""}
+          value={testResult.phosphorusRating ?? ""}
           onChange={() => {}}
           disabled
         />
@@ -98,51 +127,92 @@ export function ResultsForm({ formData, setFormData }: ResultsFormProps) {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <TextInput
-          id="potassium"
-          name="potassium"
+          id={`potassium-${testResult.id}`}
+          name={`potassium-${testResult.id}`}
           label="Potassium (Kg/ha)"
-          value={formData.potassium}
+          value={testResult.potassium}
           onChange={(e) => {
             const value = e.target.value;
-            setFormData((prev) => ({
-              ...prev,
+            onUpdate({
               potassium: value,
               potassiumRating:
                 value === "" || isNaN(Number(value))
                   ? ""
                   : getPotassiumRating(Number(value)),
-            }));
+            });
           }}
         />
         <TextInput
-          id="potassiumRating"
-          name="potassiumRating"
+          id={`potassiumRating-${testResult.id}`}
+          name={`potassiumRating-${testResult.id}`}
           label="Potassium rating"
-          value={formData.potassiumRating ?? ""}
+          value={testResult.potassiumRating ?? ""}
           onChange={() => {}}
           disabled
         />
         <TextInput
-          id="calcium"
-          name="calcium"
+          id={`calcium-${testResult.id}`}
+          name={`calcium-${testResult.id}`}
           label="Calcium (meq/100g soil)"
-          value={formData.calcium}
+          value={testResult.calcium}
           onChange={handleChange("calcium")}
         />
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <TextInput
-          id="magnesium"
-          name="magnesium"
+          id={`magnesium-${testResult.id}`}
+          name={`magnesium-${testResult.id}`}
           label="Magnesium (meq/100g soil)"
-          value={formData.magnesium}
+          value={testResult.magnesium}
           onChange={handleChange("magnesium")}
         />
       </div>
 
-      {/* Soil Recommendations Component */}
-      <SoilRecommendations formData={formData} />
-    </>
+      <SoilRecommendations
+        formData={{
+          nitrogen: testResult.nitrogen,
+          phosphorus: testResult.phosphorus,
+          potassium: testResult.potassium,
+        } as FormData}
+      />
+    </div>
   );
 }
 
+export function ResultsForm({ formData, setFormData }: ResultsFormProps) {
+  const testResults = formData.testResults || [];
+
+  const { handleAddTestResult, handleRemoveTestResult, handleUpdateTestResult } =
+    useTestResults(testResults, (updatedResults) => {
+      setFormData((prev) => ({
+        ...prev,
+        testResults: updatedResults,
+      }));
+    });
+
+  if (testResults.length === 0) {
+    return null;
+  }
+
+  return (
+    <>
+      <div className="space-y-6 ">
+        {testResults.map((testResult, index) => (
+          <TestResultForm
+            key={testResult.id}
+            testResult={testResult}
+            index={index}
+            onUpdate={(updates) =>
+              handleUpdateTestResult(testResult.id, updates)
+            }
+            onRemove={() => handleRemoveTestResult(testResult.id)}
+            canRemove={testResults.length > 1}
+          />
+        ))}
+      </div>
+
+      <AddMoreTestResultsButton
+        onClick={handleAddTestResult}
+        className="mt-4 flex justify-end mb-6"
+      />
+    </>
+  );
+}

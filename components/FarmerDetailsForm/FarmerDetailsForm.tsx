@@ -45,6 +45,19 @@ export type FormData = {
   nitrogenRating?: string;
   phosphorusRating?: string;
   potassiumRating?: string;
+  testResults?: Array<{
+    id: string;
+    ph: string;
+    organicCarbon: string;
+    nitrogen: string;
+    phosphorus: string;
+    potassium: string;
+    calcium: string;
+    magnesium: string;
+    nitrogenRating?: string;
+    phosphorusRating?: string;
+    potassiumRating?: string;
+  }>;
 };
 
 type FarmerDetailsFormProps = {
