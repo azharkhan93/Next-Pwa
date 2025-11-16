@@ -18,5 +18,6 @@ export * from "./WeeklyReportChart";
 export * from "./FinanceSummaryChart";
 export * from "./TransactionsChart";
 export * from "./ActivityChart";
+export * from "./AddRecordForm";
 
 

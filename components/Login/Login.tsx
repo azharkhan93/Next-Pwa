@@ -45,11 +45,17 @@ export const Login: React.FC<LoginProps> = ({
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-[linear-gradient(to_right,_#225acb_0%,_#030cb0_50%,_#93c5fd_50%,_#3b82f6_100%)] dark:bg-[linear-gradient(to_right,_#374151_0%,_#4b5563_50%,_#1f2937_50%,_#111827_100%)]">
+    <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-slate-900 via-indigo-900 to-sky-700 dark:from-gray-950 dark:via-slate-900 dark:to-indigo-950 relative overflow-hidden">
+      <div className="pointer-events-none absolute -top-40 -right-40 h-96 w-96 rounded-full bg-gradient-to-br from-indigo-500/30 to-cyan-400/20 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-40 -left-40 h-96 w-96 rounded-full bg-gradient-to-br from-emerald-400/20 to-blue-500/20 blur-3xl" />
       <form
         onSubmit={handleSubmit}
-        className=" rounded-md w-full max-w-sm space-y-4 border-t-2 border-blue-500 border-b-2 border-blue-500 bg-white py-8 px-2 shadow-md shadow-blue-900"
+        className="w-full max-w-sm space-y-5 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 shadow-[0_10px_50px_-10px_rgba(0,0,0,0.5)] p-6"
       >
+        <div className="space-y-1 text-center">
+          <h1 className="text-white text-xl font-semibold">Welcome back</h1>
+          <p className="text-white/70 text-sm">Sign in to continue</p>
+        </div>
         <TextInput
           id="email"
           name="email"
@@ -76,13 +82,18 @@ export const Login: React.FC<LoginProps> = ({
 
         <Button
           type="submit"
-          size="md"
+          size="sm"
           variant="primary"
           loading={isLoading || loading}
-          className="w-full"
+          className="w-full "
         >
           Sign in
         </Button>
+        <div className="text-center">
+          <span className="text-xs text-white/60">
+            Having trouble? Contact your administrator.
+          </span>
+        </div>
       </form>
     </div>
   );

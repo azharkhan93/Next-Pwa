@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { connectDB } from "@/utils/mongodb";
-import { User } from "@/models";
+import { prisma } from "@/utils/prisma";
 import { verifyPassword } from "@/utils/password";
 
 /**
@@ -9,9 +8,6 @@ import { verifyPassword } from "@/utils/password";
  */
 export async function POST(request: NextRequest) {
   try {
-    // Connect to database
-    await connectDB();
-
     // Parse request body
     const body = await request.json();
     const { email, password } = body;
@@ -24,10 +20,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Find user by email (include password field)
-    const user = await User.findOne({ email: email.toLowerCase() }).select(
-      "+password"
-    );
+    // Find user by email
+    const user = await prisma.user.findUnique({
+      where: { email: String(email).toLowerCase() },
+    });
 
     // Check if user exists
     if (!user) {
@@ -48,7 +44,7 @@ export async function POST(request: NextRequest) {
 
     // Return user data (without password)
     const userData = {
-      id: user._id.toString(),
+      id: user.id,
       email: user.email,
       role: user.role,
     };

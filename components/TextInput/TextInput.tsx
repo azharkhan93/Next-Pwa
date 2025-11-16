@@ -42,7 +42,7 @@ export const TextInput: React.FC<TextInputProps> = ({
       {label ? (
         <label
           htmlFor={inputId}
-          className={`block text-sm font-medium font-bold text-black dark:text-black ${
+          className={`block text-sm font-bold text-white  ${
             labelClassName ?? ""
           }`.trim()}
         >

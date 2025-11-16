@@ -33,10 +33,10 @@ export const FilterBar: React.FC<FilterBarProps> = ({
 
   return (
     <div
-      className={`max-w-[90%] flex flex-wrap border-2 border-amber-400  items-center gap-11 p-4 rounded-lg   ${className ?? ""}`}
+      className={` w-full md:max-w-[90%] flex flex-wrap  items-center gap-6 md:gap-11 p-4 rounded-lg   ${className ?? ""}`}
     >
       {searchComponent}
-      <div className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+      <div className="flex items-center gap-2 text-sm font-medium text-gray-700 ">
         <MdFilterList size={20} />
         <span>Filters:</span>
       </div>
@@ -66,7 +66,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
       {hasActiveFilters && onClearAll && (
         <button
           onClick={onClearAll}
-          className="ml-auto flex items-center gap-1 px-3 py-1.5 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
+          className="ml-auto flex items-center gap-1 px-3 py-1.5 text-sm text-gray-600  hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 rounded-md transition-colors"
         >
           <MdClear size={16} />
           <span>Clear all</span>

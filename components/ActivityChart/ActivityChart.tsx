@@ -29,8 +29,8 @@ export const ActivityChart: React.FC<ActivityChartProps> = ({
   data = defaultData,
 }) => {
   return (
-    <div className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6">
-      <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+    <div className="rounded-lg border border-gray-200  bg-white p-6">
+      <h3 className="text-lg font-semibold text-gray-900  mb-4">
         Activity
       </h3>
       <div className="w-full min-h-[250px]">
