@@ -2,39 +2,11 @@
 
 import React from "react";
 import { useRouter } from "next/navigation";
-import { TextInput, FormError, Button, Dropdown, Checkbox } from "@/components";
+import { FormError, Button } from "@/components";
 import { getCurrentCoordinates, reverseGeocode } from "@/utils/geolocation";
-
-type FormData = {
-  name: string;
-  parentage: string;
-  address: string;
-  district: string;
-  pinCode: string;
-  phoneNo: string;
-  adharNo: string;
-  khasraNo: string;
-  latitude: string;
-  longitude: string;
-  location: string;
-  city: string;
-  stateVal: string;
-  crop?: string;
-  plantationType?: string;
-  age?: number | "";
-  noTrees?: number | "";
-  area?: number | "";
-  noOfSamples?: number | "";
-  soilDepth?: string;
-  drainage?: string;
-  irrigationMethod?: string;
-  paramPh?: boolean;
-  paramDl?: boolean;
-  paramCl?: boolean;
-  gender: string;
-  productName: string;
-  quantity: number | "";
-};
+import { FarmerDetailsForm, type FormData } from "@/components/FarmerDetailsForm";
+import { FarmDetailsForm } from "@/components/FarmDetailsForm";
+import { ResultsForm } from "@/components/ResultsForm";
 
 const initialFormData: FormData = {
   name: "",
@@ -51,20 +23,33 @@ const initialFormData: FormData = {
   city: "",
   stateVal: "",
   crop: "",
+  cropOther: "",
   plantationType: "",
+  plantationTypeOther: "",
   age: "",
   noTrees: "",
   area: "",
   noOfSamples: "",
   soilDepth: "",
+  soilType: "",
+  soilTypeOther: "",
   drainage: "",
+  drainageOther: "",
   irrigationMethod: "",
+  irrigationMethodOther: "",
   paramPh: false,
   paramDl: false,
   paramCl: false,
-  gender: "",
-  productName: "",
-  quantity: "",
+  ph: "",
+  organicCarbon: "",
+  nitrogen: "",
+  phosphorus: "",
+  potassium: "",
+  calcium: "",
+  magnesium: "",
+  nitrogenRating: "",
+  phosphorusRating: "",
+  potassiumRating: "",
 };
 
 export function AddRecordForm() {
@@ -81,8 +66,8 @@ export function AddRecordForm() {
       { title: "Farmer details", fields: [] as const },
       { title: "Farm details", fields: [] as const },
       {
-        title: "Details",
-        fields: ["gender", "productName", "quantity"] as const,
+        title: "Results",
+        fields: [] as const,
       },
     ],
     []
@@ -90,16 +75,6 @@ export function AddRecordForm() {
 
   const isLastStep = step === steps.length - 1;
   const progressPct = ((step + 1) / steps.length) * 100;
-
-  const handleChange =
-    (field: keyof FormData) => (e: React.ChangeEvent<HTMLInputElement>) => {
-      const value = e.target.value;
-      setFormData((prev) => ({
-        ...prev,
-        [field]:
-          field === "quantity" ? (value === "" ? "" : Number(value)) : value,
-      }));
-    };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -200,305 +175,19 @@ export function AddRecordForm() {
       </div>
       <form onSubmit={handleSubmit} className="space-y-4   rounded-lg   p-4">
         {step === 0 && (
-          <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <TextInput
-                id="name"
-                name="name"
-                label="Name"
-                value={formData.name}
-                onChange={handleChange("name")}
-                required
-              />
-              <TextInput
-                id="parentage"
-                name="parentage"
-                label="Parentage"
-                value={formData.parentage}
-                onChange={handleChange("parentage")}
-              />
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <TextInput
-                id="address"
-                name="address"
-                label="Address"
-                value={formData.address}
-                onChange={handleChange("address")}
-              />
-              <TextInput
-                id="district"
-                name="district"
-                label="District"
-                value={formData.district}
-                onChange={handleChange("district")}
-              />
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <TextInput
-                id="pinCode"
-                name="pinCode"
-                label="Pin code"
-                value={formData.pinCode}
-                onChange={handleChange("pinCode")}
-              />
-              <TextInput
-                id="phoneNo"
-                name="phoneNo"
-                type="tel"
-                label="Phone No."
-                autoComplete="tel"
-                value={formData.phoneNo}
-                onChange={handleChange("phoneNo")}
-              />
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <TextInput
-                id="adharNo"
-                name="adharNo"
-                label="Adhar No."
-                value={formData.adharNo}
-                onChange={handleChange("adharNo")}
-              />
-              <TextInput
-                id="khasraNo"
-                name="khasraNo"
-                label="Khasra No."
-                value={formData.khasraNo}
-                onChange={handleChange("khasraNo")}
-              />
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <TextInput
-                id="latitude"
-                name="latitude"
-                label="Latitude"
-                value={formData.latitude}
-                onChange={handleChange("latitude")}
-                disabled
-              />
-              <TextInput
-                id="longitude"
-                name="longitude"
-                label="Longitude"
-                value={formData.longitude}
-                onChange={handleChange("longitude")}
-                disabled
-              />
-            </div>
-            {locating ? (
-              <div className="text-sm text-gray-500">Detecting location…</div>
-            ) : null}
-          </>
+          <FarmerDetailsForm
+            formData={formData}
+            setFormData={setFormData}
+            locating={locating}
+          />
         )}
 
         {step === 1 && (
-          <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <Dropdown
-                id="crop"
-                name="crop"
-                label="Crop"
-                value={formData.crop ?? ""}
-                onChange={(v) => setFormData((p) => ({ ...p, crop: v }))}
-                options={[
-                  { label: "Apple", value: "apple" },
-                  { label: "Paddy", value: "paddy" },
-                  { label: "Rice", value: "rice" },
-                  { label: "Vegetables", value: "vegetables" },
-                  { label: "Saffron", value: "saffron" },
-                ]}
-              />
-              <Dropdown
-                id="plantationType"
-                name="plantationType"
-                label="Type"
-                value={formData.plantationType ?? ""}
-                onChange={(v) =>
-                  setFormData((p) => ({ ...p, plantationType: v }))
-                }
-                options={[
-                  { label: "High Density", value: "high-density" },
-                  { label: "Traditional", value: "traditional" },
-                ]}
-              />
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <TextInput
-                id="age"
-                name="age"
-                type="number"
-                label="Age (years)"
-                value={
-                  formData.age === "" || formData.age === undefined
-                    ? ""
-                    : String(formData.age)
-                }
-                onChange={(e) =>
-                  setFormData((p) => ({
-                    ...p,
-                    age: e.target.value === "" ? "" : Number(e.target.value),
-                  }))
-                }
-              />
-              <TextInput
-                id="noTrees"
-                name="noTrees"
-                type="number"
-                label="No. of Trees"
-                value={
-                  formData.noTrees === "" || formData.noTrees === undefined
-                    ? ""
-                    : String(formData.noTrees)
-                }
-                onChange={(e) =>
-                  setFormData((p) => ({
-                    ...p,
-                    noTrees:
-                      e.target.value === "" ? "" : Number(e.target.value),
-                  }))
-                }
-              />
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <TextInput
-                id="area"
-                name="area"
-                type="number"
-                label="Area"
-                value={
-                  formData.area === "" || formData.area === undefined
-                    ? ""
-                    : String(formData.area)
-                }
-                onChange={(e) =>
-                  setFormData((p) => ({
-                    ...p,
-                    area: e.target.value === "" ? "" : Number(e.target.value),
-                  }))
-                }
-              />
-              <TextInput
-                id="noOfSamples"
-                name="noOfSamples"
-                type="number"
-                label="No. of Samples"
-                value={
-                  formData.noOfSamples === "" ||
-                  formData.noOfSamples === undefined
-                    ? ""
-                    : String(formData.noOfSamples)
-                }
-                onChange={(e) =>
-                  setFormData((p) => ({
-                    ...p,
-                    noOfSamples:
-                      e.target.value === "" ? "" : Number(e.target.value),
-                  }))
-                }
-              />
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <TextInput
-                id="soilDepth"
-                name="soilDepth"
-                label="Soil Depth"
-                value={formData.soilDepth ?? ""}
-                onChange={(e) =>
-                  setFormData((p) => ({ ...p, soilDepth: e.target.value }))
-                }
-              />
-              <Dropdown
-                id="drainage"
-                name="drainage"
-                label="Drainage"
-                value={formData.drainage ?? ""}
-                onChange={(v) => setFormData((p) => ({ ...p, drainage: v }))}
-                options={[
-                  { label: "Good", value: "good" },
-                  { label: "Moderate", value: "moderate" },
-                  { label: "Poor", value: "poor" },
-                ]}
-              />
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <Dropdown
-                id="irrigationMethod"
-                name="irrigationMethod"
-                label="Irrigation method"
-                value={formData.irrigationMethod ?? ""}
-                onChange={(v) =>
-                  setFormData((p) => ({ ...p, irrigationMethod: v }))
-                }
-                options={[
-                  { label: "Flood", value: "flood" },
-                  { label: "Furrow", value: "furrow" },
-                  { label: "Rainfed", value: "rainfed" },
-                ]}
-              />
-              <div />
-            </div>
-            <div>
-              <div className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Parameters to be tested
-              </div>
-              <div className="grid grid-cols-3 gap-4">
-                <Checkbox
-                  name="paramPh"
-                  label="pH"
-                  checked={!!formData.paramPh}
-                  onChange={(c) => setFormData((p) => ({ ...p, paramPh: c }))}
-                />
-                <Checkbox
-                  name="paramDl"
-                  label="DL"
-                  checked={!!formData.paramDl}
-                  onChange={(c) => setFormData((p) => ({ ...p, paramDl: c }))}
-                />
-                <Checkbox
-                  name="paramCl"
-                  label="CL"
-                  checked={!!formData.paramCl}
-                  onChange={(c) => setFormData((p) => ({ ...p, paramCl: c }))}
-                />
-              </div>
-            </div>
-          </>
+          <FarmDetailsForm formData={formData} setFormData={setFormData} />
         )}
 
         {step === 2 && (
-          <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <TextInput
-                id="gender"
-                name="gender"
-                label="Gender"
-                placeholder="e.g., Male / Female / Other"
-                value={formData.gender}
-                onChange={handleChange("gender")}
-              />
-              <div />
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <TextInput
-                id="productName"
-                name="productName"
-                label="Product name"
-                value={formData.productName}
-                onChange={handleChange("productName")}
-              />
-              <TextInput
-                id="quantity"
-                name="quantity"
-                type="number"
-                label="Quantity"
-                value={
-                  formData.quantity === "" ? "" : String(formData.quantity)
-                }
-                onChange={handleChange("quantity")}
-              />
-            </div>
-          </>
+          <ResultsForm formData={formData} setFormData={setFormData} />
         )}
 
         <FormError message={error ?? undefined} />
@@ -540,3 +229,4 @@ export function AddRecordForm() {
     </div>
   );
 }
+
