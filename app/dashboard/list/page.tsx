@@ -7,92 +7,158 @@ import {
   Search,
   Pagination,
   ExportMenu,
+  TestResultsCell,
+  Loading,
 } from "@/components";
 import React from "react";
+import { useRecords, type RecordData, useDebounce } from "@/hooks";
+import { useRouter } from "next/navigation";
 
 export default function ListPage() {
-  const columns = [
-    "Name",
-    "Full name",
-    "Email",
-    "Phone",
-    "Address",
-    "Location",
-    "City",
-    "State",
-    "Gender",
-    "Product name",
-    "Quantity",
-  ];
-
-  const data = [
-    [
-      "J. Doe",
-      "John Doe",
-      "john@example.com",
-      "+1 555-0100",
-      "123 Main St",
-      "Downtown",
-      "Seattle",
-      "WA",
-      "Male",
-      "Keyboard",
-      2,
-    ],
-    [
-      "A. Smith",
-      "Alice Smith",
-      "alice@example.com",
-      "+1 555-0111",
-      "456 Pine Ave",
-      "Midtown",
-      "Austin",
-      "TX",
-      "Female",
-      "Headphones",
-      1,
-    ],
-    [
-      "B. Lee",
-      "Bruce Lee",
-      "bruce@example.com",
-      "+1 555-0122",
-      "789 Cedar Rd",
-      "Uptown",
-      "San Jose",
-      "CA",
-      "Other",
-      "Mouse",
-      3,
-    ],
-  ];
-
+  const router = useRouter();
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const itemsPerPage = 10;
   const [searchValue, setSearchValue] = React.useState("");
-  const [genderFilter, setGenderFilter] = React.useState("");
+
+  // Debounce search value with 500ms delay
+  const debouncedSearch = useDebounce(searchValue, 500);
+
+  const {
+    records,
+    loading,
+    error,
+    totalPages,
+    fetchRecords,
+    deleteRecord,
+    refetch,
+  } = useRecords({
+    page: currentPage,
+    limit: itemsPerPage,
+    autoFetch: true,
+    search: debouncedSearch,
+  });
+
   const [stateFilter, setStateFilter] = React.useState("");
   const [cityFilter, setCityFilter] = React.useState("");
-  const [currentPage, setCurrentPage] = React.useState(1);
   const [confirmOpen, setConfirmOpen] = React.useState(false);
-  const [selectedRow, setSelectedRow] = React.useState<number | null>(null);
+  const [selectedRow, setSelectedRow] = React.useState<string | null>(null);
   const [selectedRows, setSelectedRows] = React.useState<number[]>([]);
 
-  const itemsPerPage = 10;
-  const totalPages = Math.ceil(data.length / itemsPerPage);
+  // Reset to page 1 when debounced search changes
+  React.useEffect(() => {
+    setCurrentPage(1);
+  }, [debouncedSearch]);
+
+  // Fetch records when page or debounced search changes
+  React.useEffect(() => {
+    fetchRecords({
+      page: currentPage,
+      limit: itemsPerPage,
+      search: debouncedSearch,
+    });
+  }, [currentPage, debouncedSearch, fetchRecords, itemsPerPage]);
+
+  // Column configuration with key mapping
+  const columnConfig = React.useMemo(() => {
+    const columnMap: Array<{ key: keyof RecordData; label: string }> = [
+      { key: "consumerId", label: "Consumer ID" },
+      { key: "name", label: "Name" },
+      { key: "phoneNo", label: "Phone" },
+      { key: "district", label: "District" },
+      { key: "crop", label: "Crop" },
+      { key: "testResults", label: "Test Results" },
+      { key: "createdAt", label: "Created At" },
+      { key: "parentage", label: "Parentage" },
+      { key: "address", label: "Address" },
+      { key: "pinCode", label: "Pin Code" },
+      { key: "adharNo", label: "Aadhar No" },
+      { key: "khasraNo", label: "Khasra No" },
+      { key: "location", label: "Location" },
+      { key: "plantationType", label: "Plantation Type" },
+      { key: "age", label: "Age" },
+      { key: "noTrees", label: "No. of Trees" },
+      { key: "area", label: "Area" },
+      { key: "noOfSamples", label: "No. of Samples" },
+      { key: "soilDepth", label: "Soil Depth" },
+      { key: "soilType", label: "Soil Type" },
+      { key: "drainage", label: "Drainage" },
+      { key: "irrigationMethod", label: "Irrigation Method" },
+    ];
+
+    // If we have records, use Object.keys from first record to determine which columns to show
+    if (records.length > 0) {
+      const firstRecord = records[0];
+      const availableKeys = Object.keys(firstRecord) as Array<keyof RecordData>;
+
+      // Filter to only show columns that exist in the data, excluding city and stateVal
+      return columnMap.filter(
+        (col) =>
+          availableKeys.includes(col.key) &&
+          col.key !== "city" &&
+          col.key !== "stateVal"
+      );
+    }
+
+    // Default columns if no records
+    return columnMap
+      .filter((col) => col.key !== "city" && col.key !== "stateVal")
+      .slice(0, 9);
+  }, [records]);
+
+  // Generate columns from configuration
+  const columns = React.useMemo(() => {
+    return columnConfig.map((col) => col.label);
+  }, [columnConfig]);
+
+  // Get filtered records for edit/delete operations (only client-side filters now)
+  // Search is now handled on the backend, so we only need to apply state/city filters
+  const filteredRecords = React.useMemo(() => {
+    let filtered = records;
+
+    // Apply state filter
+    if (stateFilter) {
+      filtered = filtered.filter((record) => record.stateVal === stateFilter);
+    }
+
+    // Apply city filter
+    if (cityFilter) {
+      filtered = filtered.filter((record) => record.city === cityFilter);
+    }
+
+    return filtered;
+  }, [records, stateFilter, cityFilter]);
 
   const handleEdit = (idx: number) => {
-    console.log("edit row", idx);
-    alert(`Edit row #${idx + 1}`);
+    const record = filteredRecords[idx];
+    if (record?.id) {
+      router.push(`/dashboard/edit/${record.id}`);
+    }
   };
 
   const handleDelete = (idx: number) => {
-    setSelectedRow(idx);
-    setConfirmOpen(true);
+    const record = filteredRecords[idx];
+    if (record?.id) {
+      setSelectedRow(record.id);
+      setConfirmOpen(true);
+    }
+  };
+
+  const handleConfirmDelete = async () => {
+    if (selectedRow) {
+      const success = await deleteRecord(selectedRow);
+      if (success) {
+        setConfirmOpen(false);
+        setSelectedRow(null);
+        await refetch();
+      }
+    }
   };
 
   const handleClearFilters = () => {
-    setGenderFilter("");
     setStateFilter("");
     setCityFilter("");
+    setSearchValue("");
+    setCurrentPage(1);
   };
 
   const handleExport = (format: "pdf" | "word") => {
@@ -102,7 +168,7 @@ export default function ListPage() {
     console.log("Selected row indices:", selectedRows);
     console.log(
       "Selected data:",
-      selectedRows.map((idx) => data[idx])
+      selectedRows.map((idx) => filteredRecords[idx])
     );
     alert(
       `Export functionality for ${format.toUpperCase()} format will be implemented here. Selected ${
@@ -111,23 +177,81 @@ export default function ListPage() {
     );
   };
 
-  const genderOptions = [
-    { label: "Male", value: "Male" },
-    { label: "Female", value: "Female" },
-    { label: "Other", value: "Other" },
-  ];
+  // Generate filter options from actual data (keeping filters but not showing columns)
+  const stateOptions = React.useMemo(() => {
+    const states = Array.from(
+      new Set(records.map((r) => r.stateVal).filter(Boolean))
+    ).sort();
+    return states.map((state) => ({
+      label: state as string,
+      value: state as string,
+    }));
+  }, [records]);
 
-  const stateOptions = [
-    { label: "WA", value: "WA" },
-    { label: "TX", value: "TX" },
-    { label: "CA", value: "CA" },
-  ];
+  const cityOptions = React.useMemo(() => {
+    const cities = Array.from(
+      new Set(records.map((r) => r.city).filter(Boolean))
+    ).sort();
+    return cities.map((city) => ({
+      label: city as string,
+      value: city as string,
+    }));
+  }, [records]);
 
-  const cityOptions = [
-    { label: "Seattle", value: "Seattle" },
-    { label: "Austin", value: "Austin" },
-    { label: "San Jose", value: "San Jose" },
-  ];
+  // Filter data based on search and filters
+  const filteredData = React.useMemo(() => {
+    // Transform filtered records to table data format
+    return filteredRecords.map((record) => {
+      return columnConfig.map((col) => {
+        const rawValue = record[col.key];
+        let displayValue: string | React.ReactNode;
+
+        // Format special fields
+        if (col.key === "testResults") {
+          // Use TestResultsCell component for test results
+          return (
+            <TestResultsCell
+              key={`test-results-${
+                record.id || record.consumerId || Math.random()
+              }`}
+              testResults={record.testResults}
+            />
+          );
+        } else if (col.key === "createdAt" && rawValue) {
+          displayValue = new Date(rawValue as string).toLocaleDateString();
+        } else if (col.key === "location" && rawValue) {
+          // Extract only the first part (city/area name) from the full address
+          const locationStr = String(rawValue);
+          const firstPart = locationStr.split(",")[0].trim();
+          displayValue = firstPart || "-";
+        } else if (
+          rawValue === null ||
+          rawValue === undefined ||
+          rawValue === ""
+        ) {
+          displayValue = "-";
+        } else if (typeof rawValue === "object") {
+          displayValue = JSON.stringify(rawValue);
+        } else {
+          displayValue = String(rawValue);
+        }
+
+        return displayValue;
+      });
+    });
+  }, [filteredRecords, columnConfig]);
+
+  if (loading && records.length === 0) {
+    return <Loading  fullScreen />;
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center p-8">
+        <div className="text-red-600 dark:text-red-400">Error: {error}</div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4">
@@ -137,17 +261,10 @@ export default function ListPage() {
           <Search
             value={searchValue}
             onChange={setSearchValue}
-            placeholder="Search..."
+            placeholder="Search by Consumer ID, Phone, or Lab Test No..."
           />
         }
         filters={[
-          {
-            label: "Gender",
-            key: "gender",
-            options: genderOptions,
-            value: genderFilter,
-            onChange: setGenderFilter,
-          },
           {
             label: "State",
             key: "state",
@@ -169,7 +286,7 @@ export default function ListPage() {
       {/* Data Table */}
       <DataTable
         columns={columns}
-        data={data}
+        data={filteredData}
         onEditRow={handleEdit}
         onDeleteRow={handleDelete}
         enableSelection={true}
@@ -178,7 +295,7 @@ export default function ListPage() {
         exportMenu={
           <ExportMenu
             selectedRows={selectedRows}
-            totalRows={data.length}
+            totalRows={filteredData.length}
             onExport={handleExport}
             disabled={selectedRows.length === 0}
           />
@@ -201,15 +318,9 @@ export default function ListPage() {
         <ConfirmDialog
           isOpen={confirmOpen}
           onClose={() => setConfirmOpen(false)}
-          onConfirm={() => {
-            console.log("deleted row", selectedRow);
-            setConfirmOpen(false);
-            setSelectedRow(null);
-          }}
+          onConfirm={handleConfirmDelete}
           title="Confirm delete"
-          description={`Are you sure you want to delete this record${
-            selectedRow !== null ? ` #${selectedRow + 1}` : ""
-          }? This action cannot be undone.`}
+          description={`Are you sure you want to delete this record? This action cannot be undone.`}
           confirmText="Delete"
           cancelText="Cancel"
         />

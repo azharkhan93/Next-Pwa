@@ -2,65 +2,62 @@
 
 import { DownloadPDFButton } from '@/components/PDF';
 import { testPDFDownload } from '@/utils/testPDF';
-import { Button } from '@/components';
+import { Button, Loading } from '@/components';
+import { useRecords } from '@/hooks/useRecords';
+import { useState } from 'react';
 
 export default function TestPDFPage() {
-  const dummyData = {
-    name: 'John Doe',
-    consumerId: '12345',
-    parentage: 'Father Name',
-    address: '123 Main Street',
-    district: 'Test District',
-    pinCode: '123456',
-    phoneNo: '9876543210',
-    adharNo: '1234-5678-9012',
-    khasraNo: 'KH-001',
-    latitude: '28.6139',
-    longitude: '77.2090',
-    location: 'New Delhi',
-    city: 'Delhi',
-    stateVal: 'Delhi',
-    crop: 'wheat',
-    plantationType: 'irrigated',
-    age: 5,
-    noTrees: 100,
-    area: 2.5,
-    noOfSamples: 1,
-    soilDepth: '0-30cm',
-    soilType: 'loam',
-    drainage: 'good',
-    irrigationMethod: 'drip',
-    paramPh: true,
-    paramDl: false,
-    paramCl: false,
-    testResults: [
-      {
-        id: 'test-1',
-        labTestNo: '01',
-        ph: '7.2',
-        organicCarbon: '0.8',
-        nitrogen: '200',
-        phosphorus: '15',
-        potassium: '150',
-        calcium: '1200',
-        magnesium: '300',
-      },
-    ],
-    createdAt: new Date().toISOString(),
-  };
+  const [selectedRecordId, setSelectedRecordId] = useState<string>('');
+  const { records, loading } = useRecords({ autoFetch: true });
 
   return (
     <div className="p-8 space-y-6">
       <h1 className="text-2xl font-bold">Test PDF Generation</h1>
       
       <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
-        <h2 className="text-xl font-semibold mb-4">Download PDF with Dummy Data</h2>
+        <h2 className="text-xl font-semibold mb-4">Download PDF with Fetched Data</h2>
         <p className="text-gray-600 dark:text-gray-400 mb-4">
-          Click the button below to generate and download a PDF with sample soil test data.
+          Select a record from the list below to download its PDF. The PDF will use data fetched from the backend.
+        </p>
+        
+        {loading ? (
+          <Loading text="Loading records..." />
+        ) : records.length > 0 ? (
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium mb-2">Select a Record:</label>
+              <select
+                value={selectedRecordId}
+                onChange={(e) => setSelectedRecordId(e.target.value)}
+                className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700"
+              >
+                <option value="">-- Select a record --</option>
+                {records.map((record) => (
+                  <option key={record.id} value={record.id}>
+                    {record.name} - {record.consumerId} ({record.testResults?.length || 0} test(s))
+                  </option>
+                ))}
+              </select>
+            </div>
+            
+            {selectedRecordId && (
+              <div className="space-x-4">
+                <DownloadPDFButton recordId={selectedRecordId} />
+              </div>
+            )}
+          </div>
+        ) : (
+          <p className="text-gray-600 dark:text-gray-400">No records found. Please add some records first.</p>
+        )}
+      </div>
+
+      <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
+        <h2 className="text-xl font-semibold mb-4">Test with Dummy Data (Legacy)</h2>
+        <p className="text-gray-600 dark:text-gray-400 mb-4">
+          For testing purposes only - uses hardcoded dummy data.
         </p>
         
         <div className="space-x-4">
-          <DownloadPDFButton data={dummyData} />
           <Button
             onClick={testPDFDownload}
             variant="primary"

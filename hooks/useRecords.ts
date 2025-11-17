@@ -48,16 +48,44 @@ export type RecordData = {
   testResults?: Array<{
     id: string;
     labTestNo?: string;
-    ph: string;
-    organicCarbon: string;
-    nitrogen: string;
-    phosphorus: string;
-    potassium: string;
-    calcium: string;
-    magnesium: string;
+    ph?: string;
+    organicCarbon?: string;
+    phRating?: string;
+    organicCarbonRating?: string;
+    nitrogen?: string;
+    phosphorus?: string;
+    potassium?: string;
+    calcium?: string;
+    magnesium?: string;
+    sulfur?: string;
+    iron?: string;
+    manganese?: string;
+    zinc?: string;
+    copper?: string;
+    boron?: string;
+    molybdenum?: string;
+    chlorine?: string;
+    nickel?: string;
+    sodium?: string;
+    electricalConductivity?: string;
     nitrogenRating?: string;
     phosphorusRating?: string;
     potassiumRating?: string;
+    nitrogenRecommendation?: {
+      level: string;
+      increasePercent: number;
+      suggestion: string;
+    };
+    phosphorusRecommendation?: {
+      level: string;
+      increasePercent: number;
+      suggestion: string;
+    };
+    potassiumRecommendation?: {
+      level: string;
+      increasePercent: number;
+      suggestion: string;
+    };
   }>;
   createdAt?: string;
   updatedAt?: string;
@@ -67,6 +95,7 @@ type UseRecordsOptions = {
   page?: number;
   limit?: number;
   autoFetch?: boolean;
+  search?: string;
 };
 
 type UseRecordsReturn = {
@@ -101,10 +130,14 @@ export function useRecords(
       try {
         const page = options.page || currentPage;
         const limit = options.limit || initialOptions.limit || 10;
+        const search = options.search !== undefined ? options.search : initialOptions.search;
 
-        const response = await axios.get("/api/records", {
-          params: { page, limit },
-        });
+        const params: Record<string, string | number> = { page, limit };
+        if (search && search.trim() !== "") {
+          params.search = search.trim();
+        }
+
+        const response = await axios.get("/api/records", { params });
 
         setRecords(response.data.data || []);
         setTotal(response.data.pagination?.total || 0);
@@ -121,7 +154,7 @@ export function useRecords(
         setLoading(false);
       }
     },
-    [currentPage, initialOptions.limit]
+    [currentPage, initialOptions.limit, initialOptions.search]
   );
 
   const createRecord = useCallback(

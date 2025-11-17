@@ -13,6 +13,17 @@ export async function generatePDF(recordData: RecordData): Promise<Blob> {
 }
 
 /**
+ * Sanitize filename by removing invalid characters
+ */
+function sanitizeFilename(name: string): string {
+  // Replace invalid filename characters with underscores
+  return name
+    .replace(/[<>:"/\\|?*]/g, '_')
+    .replace(/\s+/g, '_')
+    .trim();
+}
+
+/**
  * Download PDF file from record data
  */
 export async function downloadPDF(recordData: RecordData, filename?: string): Promise<void> {
@@ -21,7 +32,16 @@ export async function downloadPDF(recordData: RecordData, filename?: string): Pr
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = filename || `Soil_Test_Report_${recordData.consumerId || recordData.id || 'report'}_${new Date().getTime()}.pdf`;
+    
+    // Generate filename: Soil-Test_Report_[name]_Report.pdf
+    if (filename) {
+      link.download = filename;
+    } else {
+      const name = recordData.name || 'Report';
+      const sanitizedName = sanitizeFilename(name);
+      link.download = `${sanitizedName}_Report.pdf`;
+    }
+    
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

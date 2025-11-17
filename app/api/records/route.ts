@@ -1,30 +1,29 @@
 import { NextRequest, NextResponse } from "next/server";
+import { Prisma } from "@prisma/client";
 import { prisma } from "@/utils/prisma";
 import { generateConsumerId } from "@/utils/generateConsumerId";
-import {
-  getNitrogenRecommendation,
-  getPhosphorusRecommendation,
-  getPotassiumRecommendation,
-} from "@/utils/soilRating";
+import { searchRecords, getPaginatedRecords } from "@/utils/recordSearch";
+import { processTestResults } from "@/utils/processTestResults";
 
 /**
- * GET /api/records - Get all records
+ * GET /api/records - Get all records with optional search
+ * Query params:
+ * - page: page number (default: 1)
+ * - limit: records per page (default: 10)
+ * - search: search term for consumerId, phoneNo, or labTestNo
  */
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const page = parseInt(searchParams.get("page") || "1");
     const limit = parseInt(searchParams.get("limit") || "10");
-    const skip = (page - 1) * limit;
+    const search = searchParams.get("search") || "";
 
-    const [records, total] = await Promise.all([
-      prisma.record.findMany({
-        skip,
-        take: limit,
-        orderBy: { createdAt: "desc" },
-      }),
-      prisma.record.count(),
-    ]);
+    // Use utility functions for search or pagination
+    const { records, total } =
+      search && search.trim() !== ""
+        ? await searchRecords(search, page, limit)
+        : await getPaginatedRecords(page, limit);
 
     return NextResponse.json(
       {
@@ -66,57 +65,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Process test results and add labTestNo and recommendations
-    let testResults = body.testResults || [];
-    if (Array.isArray(testResults) && testResults.length > 0) {
-      testResults = testResults.map(
-        (result: Record<string, unknown>, index: number) => {
-          const processedResult: Record<string, unknown> = {
-            ...result,
-            labTestNo: String(index + 1).padStart(2, "0"), // 01, 02, 03, etc.
-          };
-
-          // Calculate and add recommendations for nitrogen, phosphorus, and potassium
-          if (result.nitrogen && typeof result.nitrogen === 'string' && result.nitrogen.trim() !== '') {
-            const nValue = parseFloat(result.nitrogen);
-            if (!isNaN(nValue)) {
-              const nRec = getNitrogenRecommendation(nValue);
-              processedResult.nitrogenRecommendation = {
-                level: nRec.level,
-                increasePercent: nRec.increasePercent,
-                suggestion: nRec.suggestion,
-              };
-            }
-          }
-
-          if (result.phosphorus && typeof result.phosphorus === 'string' && result.phosphorus.trim() !== '') {
-            const pValue = parseFloat(result.phosphorus);
-            if (!isNaN(pValue)) {
-              const pRec = getPhosphorusRecommendation(pValue);
-              processedResult.phosphorusRecommendation = {
-                level: pRec.level,
-                increasePercent: pRec.increasePercent,
-                suggestion: pRec.suggestion,
-              };
-            }
-          }
-
-          if (result.potassium && typeof result.potassium === 'string' && result.potassium.trim() !== '') {
-            const kValue = parseFloat(result.potassium);
-            if (!isNaN(kValue)) {
-              const kRec = getPotassiumRecommendation(kValue);
-              processedResult.potassiumRecommendation = {
-                level: kRec.level,
-                increasePercent: kRec.increasePercent,
-                suggestion: kRec.suggestion,
-              };
-            }
-          }
-
-          return processedResult;
-        }
-      );
-    }
+    // Process test results using utility function
+    const testResults = processTestResults(body.testResults || []);
 
     // Create record
     const record = await prisma.record.create({
@@ -165,7 +115,7 @@ export async function POST(request: NextRequest) {
         nitrogenRating: body.nitrogenRating || null,
         phosphorusRating: body.phosphorusRating || null,
         potassiumRating: body.potassiumRating || null,
-        testResults: testResults.length > 0 ? testResults : null,
+        testResults: testResults.length > 0 ? (testResults as Prisma.InputJsonValue) : null,
       },
     });
 
