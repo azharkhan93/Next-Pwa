@@ -20,7 +20,21 @@ export function useTestResults(
   // Initialize with one test result if empty
   useEffect(() => {
     if (testResults.length === 0) {
-      onUpdate([createEmptyTestResult()]);
+      const initial = createEmptyTestResult();
+      initial.labTestNo = "01";
+      onUpdate([initial]);
+    } else {
+      // Ensure all test results have labTestNo
+      const needsRenumbering = testResults.some(
+        (result, index) => result.labTestNo !== String(index + 1).padStart(2, "0")
+      );
+      if (needsRenumbering) {
+        const renumbered = testResults.map((result, index) => ({
+          ...result,
+          labTestNo: String(index + 1).padStart(2, "0"),
+        }));
+        onUpdate(renumbered);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

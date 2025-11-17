@@ -48,14 +48,18 @@ export const Dropdown: React.FC<DropdownProps> = ({
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setIsOpen(false);
       }
     };
 
     if (isOpen) {
       document.addEventListener("mousedown", handleClickOutside);
-      return () => document.removeEventListener("mousedown", handleClickOutside);
+      return () =>
+        document.removeEventListener("mousedown", handleClickOutside);
     }
   }, [isOpen]);
 
@@ -103,7 +107,10 @@ export const Dropdown: React.FC<DropdownProps> = ({
   return (
     <div className={`relative ${className ?? ""}`} ref={dropdownRef}>
       {label && (
-        <label htmlFor={id || name} className="block text-sm font-bold text-white mb-1">
+        <label
+          htmlFor={id || name}
+          className="block text-sm font-bold text-white mb-1"
+        >
           {label}
         </label>
       )}
@@ -117,11 +124,16 @@ export const Dropdown: React.FC<DropdownProps> = ({
         aria-haspopup="listbox"
         aria-expanded={isOpen}
       >
-        <span className={value ? "" : "text-gray-500  cursor-pointer"}>{displayValue}</span>
-        <MdKeyboardArrowDown className={`transition-transform ${isOpen ? "rotate-180" : ""}`} size={20} />
+        <span className={value ? "" : "text-gray-500  cursor-pointer"}>
+          {displayValue}
+        </span>
+        <MdKeyboardArrowDown
+          className={`transition-transform ${isOpen ? "rotate-180" : ""}`}
+          size={20}
+        />
       </button>
 
-      {isOpen && (
+      {isOpen ? (
         <div className="absolute z-50 w-full mt-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-md shadow-lg max-h-60 overflow-auto">
           {options.map((option) => {
             const isSelected = option.value === value;
@@ -137,7 +149,11 @@ export const Dropdown: React.FC<DropdownProps> = ({
                   isSelected
                     ? "bg-blue-100 dark:bg-blue-900 text-blue-900 dark:text-blue-100 font-medium"
                     : "text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700"
-                } ${isDisabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
+                } ${
+                  isDisabled
+                    ? "opacity-50 cursor-not-allowed"
+                    : "cursor-pointer"
+                }`}
                 role="option"
                 aria-selected={isSelected}
               >
@@ -146,7 +162,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
             );
           })}
         </div>
-      )}
+      ) : null}
     </div>
   );
 };

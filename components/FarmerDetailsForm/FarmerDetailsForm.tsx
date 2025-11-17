@@ -47,6 +47,7 @@ export type FormData = {
   potassiumRating?: string;
   testResults?: Array<{
     id: string;
+    labTestNo?: string;
     ph: string;
     organicCarbon: string;
     nitrogen: string;

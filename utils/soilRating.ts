@@ -125,7 +125,7 @@ export const getNitrogenRating = (value: number): NitrogenLevel =>
  * Classify soil test phosphorus (Kg ha⁻¹, as DAP) into levels with recommendations.
  *
  *  Low:    <5       → +25% RD
- *          6–12     → +15% RD
+ *          6–12     → +15% RDf
  *  Medium: 13–15    → +10% RD
  *          16–22    → +5% RD
  *  High:   23–33    → +2% RD

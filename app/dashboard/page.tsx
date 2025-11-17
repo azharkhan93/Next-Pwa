@@ -7,6 +7,8 @@ import {
   TransactionsChart,
   ActivityChart,
 } from "@/components";
+import { DownloadPDFButton } from "@/components/PDF";
+
 import React from "react";
 
 export default function DashboardPage() {
@@ -34,6 +36,9 @@ export default function DashboardPage() {
         <WeeklyReportChart />
         <FinanceSummaryChart />
       </div>
+   
+      
+    
 
       <div className="grid gap-4 lg:grid-cols-2">
         <TransactionsChart />

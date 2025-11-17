@@ -1,5 +1,6 @@
 export type TestResult = {
   id: string;
+  labTestNo?: string;
   ph: string;
   organicCarbon: string;
   nitrogen: string;
@@ -32,20 +33,27 @@ export const createEmptyTestResult = (): TestResult => {
 };
 
 /**
- * Adds a new test result to the array
+ * Adds a new test result to the array with labTestNo
  */
 export const addTestResult = (results: TestResult[]): TestResult[] => {
-  return [...results, createEmptyTestResult()];
+  const newResult = createEmptyTestResult();
+  const labTestNo = String(results.length + 1).padStart(2, "0"); // 01, 02, 03, etc.
+  return [...results, { ...newResult, labTestNo }];
 };
 
 /**
- * Removes a test result by ID
+ * Removes a test result by ID and renumbers labTestNo
  */
 export const removeTestResult = (
   results: TestResult[],
   id: string
 ): TestResult[] => {
-  return results.filter((result) => result.id !== id);
+  const filtered = results.filter((result) => result.id !== id);
+  // Renumber labTestNo after removal
+  return filtered.map((result, index) => ({
+    ...result,
+    labTestNo: String(index + 1).padStart(2, "0"),
+  }));
 };
 
 /**

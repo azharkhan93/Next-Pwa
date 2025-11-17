@@ -33,7 +33,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
 
   return (
     <div
-      className={` w-full md:max-w-[90%] flex flex-wrap  items-center gap-6 md:gap-11 p-4 rounded-lg   ${className ?? ""}`}
+      className={` w-full md:max-w-[90%] flex flex-wrap  items-center justify-between gap-6 md:gap-11 p-4 rounded-lg   ${className ?? ""}`}
     >
       {searchComponent}
       <div className="flex items-center gap-2 text-sm font-medium text-gray-700 ">

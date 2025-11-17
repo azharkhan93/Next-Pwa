@@ -21,3 +21,62 @@ model User {
   role      Role     @default(superAdmin)
 }
 
+model Record {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  consumerId String   @unique
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  // Farmer Details
+  name      String
+  parentage String?
+  address   String?
+  district  String?
+  pinCode   String?
+  phoneNo   String?
+  adharNo   String?
+  khasraNo  String?
+  latitude  String?
+  longitude String?
+  location  String?
+  city      String?
+  stateVal  String?
+
+  // Farm Details
+  crop                String?
+  cropOther           String?
+  plantationType      String?
+  plantationTypeOther String?
+  age                 Float?
+  noTrees             Float?
+  area                Float?
+  noOfSamples         Float?
+  soilDepth           String?
+  soilType            String?
+  soilTypeOther       String?
+  drainage            String?
+  drainageOther       String?
+  irrigationMethod    String?
+  irrigationMethodOther String?
+  paramPh             Boolean? @default(false)
+  paramDl             Boolean? @default(false)
+  paramCl             Boolean? @default(false)
+
+  // Legacy single test result fields (for backward compatibility)
+  ph                  String?
+  organicCarbon       String?
+  nitrogen            String?
+  phosphorus          String?
+  potassium           String?
+  calcium             String?
+  magnesium           String?
+  nitrogenRating      String?
+  phosphorusRating    String?
+  potassiumRating     String?
+
+  // Multiple test results (array of embedded documents as JSON)
+  // Each test result contains: id, labTestNo, ph, organicCarbon, nitrogen, phosphorus, 
+  // potassium, calcium, magnesium, nitrogenRating, phosphorusRating, potassiumRating
+  testResults         Json? @default("[]")
+}
+
