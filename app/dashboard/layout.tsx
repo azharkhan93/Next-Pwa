@@ -40,7 +40,7 @@ export default function DashboardLayout({
         isOpen={isSidebarOpen}
         onClose={() => setIsSidebarOpen(false)}
       />
-      <div className="lg:ml-64 min-h-screen">
+      <div className="lg:ml-64 min-h-screen bg-gradient-to-br from-slate-800 via-slate-700 to-blue-900 dark:from-slate-900 dark:via-slate-800 dark:to-blue-950">
         <Topbar
           title="Admin Panel"
           onAddClick={onButtonClick}

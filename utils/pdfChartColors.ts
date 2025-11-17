@@ -48,6 +48,105 @@ export const getMagnesiumRating = (mg: number): RatingLevel => {
   return "Very High";
 };
 
+// Get rating for Sulfur (ideal: 10-20 ppm)
+export const getSulfurRating = (s: number): RatingLevel => {
+  if (s < 5) return "Very Low";
+  if (s < 10) return "Low";
+  if (s <= 20) return "Optimum";
+  if (s <= 30) return "Medium";
+  return "Very High";
+};
+
+// Get rating for Iron (ideal: 4-10 ppm)
+export const getIronRating = (fe: number): RatingLevel => {
+  if (fe < 2) return "Very Low";
+  if (fe < 4) return "Low";
+  if (fe <= 10) return "Optimum";
+  if (fe <= 15) return "Medium";
+  return "Very High";
+};
+
+// Get rating for Manganese (ideal: 10-20 ppm)
+export const getManganeseRating = (mn: number): RatingLevel => {
+  if (mn < 5) return "Very Low";
+  if (mn < 10) return "Low";
+  if (mn <= 20) return "Optimum";
+  if (mn <= 25) return "Medium";
+  return "Very High";
+};
+
+// Get rating for Zinc (ideal: 1.0-2.5 ppm)
+export const getZincRating = (zn: number): RatingLevel => {
+  if (zn < 0.5) return "Very Low";
+  if (zn < 1.0) return "Low";
+  if (zn <= 2.5) return "Optimum";
+  if (zn <= 3.5) return "Medium";
+  return "Very High";
+};
+
+// Get rating for Copper (ideal: 0.5-2.0 ppm)
+export const getCopperRating = (cu: number): RatingLevel => {
+  if (cu < 0.2) return "Very Low";
+  if (cu < 0.5) return "Low";
+  if (cu <= 2.0) return "Optimum";
+  if (cu <= 3.0) return "Medium";
+  return "Very High";
+};
+
+// Get rating for Boron (ideal: 0.5-1.0 ppm)
+export const getBoronRating = (b: number): RatingLevel => {
+  if (b < 0.2) return "Very Low";
+  if (b < 0.5) return "Low";
+  if (b <= 1.0) return "Optimum";
+  if (b <= 1.5) return "Medium";
+  return "Very High";
+};
+
+// Get rating for Molybdenum (ideal: 0.1-0.3 ppm)
+export const getMolybdenumRating = (mo: number): RatingLevel => {
+  if (mo < 0.05) return "Very Low";
+  if (mo < 0.1) return "Low";
+  if (mo <= 0.3) return "Optimum";
+  if (mo <= 0.5) return "Medium";
+  return "Very High";
+};
+
+// Get rating for Chlorine (ideal: 20-50 ppm)
+export const getChlorineRating = (cl: number): RatingLevel => {
+  if (cl < 10) return "Very Low";
+  if (cl < 20) return "Low";
+  if (cl <= 50) return "Optimum";
+  if (cl <= 75) return "Medium";
+  return "Very High";
+};
+
+// Get rating for Nickel (ideal: 0.3-1.0 ppm)
+export const getNickelRating = (ni: number): RatingLevel => {
+  if (ni < 0.1) return "Very Low";
+  if (ni < 0.3) return "Low";
+  if (ni <= 1.0) return "Optimum";
+  if (ni <= 1.5) return "Medium";
+  return "Very High";
+};
+
+// Get rating for Sodium (ideal: 50-100 ppm)
+export const getSodiumRating = (na: number): RatingLevel => {
+  if (na < 20) return "Very Low";
+  if (na < 50) return "Low";
+  if (na <= 100) return "Optimum";
+  if (na <= 150) return "Medium";
+  return "Very High";
+};
+
+// Get rating for Electrical Conductivity (ideal: 1.0-2.0 dS/m)
+export const getElectricalConductivityRating = (ec: number): RatingLevel => {
+  if (ec < 0.5) return "Very Low";
+  if (ec < 1.0) return "Low";
+  if (ec <= 2.0) return "Optimum";
+  if (ec <= 3.0) return "Medium";
+  return "Very High";
+};
+
 // Get ranges for bar chart visualization
 export const getParameterRanges = (param: string): { min: number; max: number; ranges: Array<{ level: RatingLevel; min: number; max: number }> } => {
   const ranges: Record<string, { min: number; max: number; ranges: Array<{ level: RatingLevel; min: number; max: number }> }> = {
@@ -130,6 +229,127 @@ export const getParameterRanges = (param: string): { min: number; max: number; r
         { level: "Optimum", min: 0.5, max: 1.5 },
         { level: "Medium", min: 1.5, max: 2.0 },
         { level: "Very High", min: 2.0, max: 5.0 },
+      ],
+    },
+    sulfur: {
+      min: 0,
+      max: 50,
+      ranges: [
+        { level: "Very Low", min: 0, max: 5 },
+        { level: "Low", min: 5, max: 10 },
+        { level: "Optimum", min: 10, max: 20 },
+        { level: "Medium", min: 20, max: 30 },
+        { level: "Very High", min: 30, max: 50 },
+      ],
+    },
+    iron: {
+      min: 0,
+      max: 20,
+      ranges: [
+        { level: "Very Low", min: 0, max: 2 },
+        { level: "Low", min: 2, max: 4 },
+        { level: "Optimum", min: 4, max: 10 },
+        { level: "Medium", min: 10, max: 15 },
+        { level: "Very High", min: 15, max: 20 },
+      ],
+    },
+    manganese: {
+      min: 0,
+      max: 30,
+      ranges: [
+        { level: "Very Low", min: 0, max: 5 },
+        { level: "Low", min: 5, max: 10 },
+        { level: "Optimum", min: 10, max: 20 },
+        { level: "Medium", min: 20, max: 25 },
+        { level: "Very High", min: 25, max: 30 },
+      ],
+    },
+    zinc: {
+      min: 0,
+      max: 5,
+      ranges: [
+        { level: "Very Low", min: 0, max: 0.5 },
+        { level: "Low", min: 0.5, max: 1.0 },
+        { level: "Optimum", min: 1.0, max: 2.5 },
+        { level: "Medium", min: 2.5, max: 3.5 },
+        { level: "Very High", min: 3.5, max: 5.0 },
+      ],
+    },
+    copper: {
+      min: 0,
+      max: 5,
+      ranges: [
+        { level: "Very Low", min: 0, max: 0.2 },
+        { level: "Low", min: 0.2, max: 0.5 },
+        { level: "Optimum", min: 0.5, max: 2.0 },
+        { level: "Medium", min: 2.0, max: 3.0 },
+        { level: "Very High", min: 3.0, max: 5.0 },
+      ],
+    },
+    boron: {
+      min: 0,
+      max: 2,
+      ranges: [
+        { level: "Very Low", min: 0, max: 0.2 },
+        { level: "Low", min: 0.2, max: 0.5 },
+        { level: "Optimum", min: 0.5, max: 1.0 },
+        { level: "Medium", min: 1.0, max: 1.5 },
+        { level: "Very High", min: 1.5, max: 2.0 },
+      ],
+    },
+    molybdenum: {
+      min: 0,
+      max: 1,
+      ranges: [
+        { level: "Very Low", min: 0, max: 0.05 },
+        { level: "Low", min: 0.05, max: 0.1 },
+        { level: "Optimum", min: 0.1, max: 0.3 },
+        { level: "Medium", min: 0.3, max: 0.5 },
+        { level: "Very High", min: 0.5, max: 1.0 },
+      ],
+    },
+    chlorine: {
+      min: 0,
+      max: 100,
+      ranges: [
+        { level: "Very Low", min: 0, max: 10 },
+        { level: "Low", min: 10, max: 20 },
+        { level: "Optimum", min: 20, max: 50 },
+        { level: "Medium", min: 50, max: 75 },
+        { level: "Very High", min: 75, max: 100 },
+      ],
+    },
+    nickel: {
+      min: 0,
+      max: 2,
+      ranges: [
+        { level: "Very Low", min: 0, max: 0.1 },
+        { level: "Low", min: 0.1, max: 0.3 },
+        { level: "Optimum", min: 0.3, max: 1.0 },
+        { level: "Medium", min: 1.0, max: 1.5 },
+        { level: "Very High", min: 1.5, max: 2.0 },
+      ],
+    },
+    sodium: {
+      min: 0,
+      max: 200,
+      ranges: [
+        { level: "Very Low", min: 0, max: 20 },
+        { level: "Low", min: 20, max: 50 },
+        { level: "Optimum", min: 50, max: 100 },
+        { level: "Medium", min: 100, max: 150 },
+        { level: "Very High", min: 150, max: 200 },
+      ],
+    },
+    electricalConductivity: {
+      min: 0,
+      max: 4,
+      ranges: [
+        { level: "Very Low", min: 0, max: 0.5 },
+        { level: "Low", min: 0.5, max: 1.0 },
+        { level: "Optimum", min: 1.0, max: 2.0 },
+        { level: "Medium", min: 2.0, max: 3.0 },
+        { level: "Very High", min: 3.0, max: 4.0 },
       ],
     },
   };

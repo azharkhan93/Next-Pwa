@@ -48,13 +48,32 @@ export type FormData = {
   testResults?: Array<{
     id: string;
     labTestNo?: string;
+    // Basic Parameters
     ph: string;
     organicCarbon: string;
+    // Primary Macronutrients
     nitrogen: string;
     phosphorus: string;
     potassium: string;
+    // Secondary Macronutrients
     calcium: string;
     magnesium: string;
+    sulfur: string;
+    // Micronutrients
+    iron: string;
+    manganese: string;
+    zinc: string;
+    copper: string;
+    boron: string;
+    molybdenum: string;
+    chlorine: string;
+    nickel: string;
+    // Other Parameters
+    sodium: string;
+    electricalConductivity: string;
+    // Ratings
+    phRating?: string;
+    organicCarbonRating?: string;
     nitrogenRating?: string;
     phosphorusRating?: string;
     potassiumRating?: string;

@@ -75,8 +75,12 @@ model Record {
   potassiumRating     String?
 
   // Multiple test results (array of embedded documents as JSON)
-  // Each test result contains: id, labTestNo, ph, organicCarbon, nitrogen, phosphorus, 
-  // potassium, calcium, magnesium, nitrogenRating, phosphorusRating, potassiumRating
+  // Each test result contains: id, labTestNo, ph, organicCarbon, 
+  // Primary Macronutrients: nitrogen, phosphorus, potassium
+  // Secondary Macronutrients: calcium, magnesium, sulfur
+  // Micronutrients: iron, manganese, zinc, copper, boron, molybdenum, chlorine, nickel
+  // Other: sodium, electricalConductivity
+  // Ratings: nitrogenRating, phosphorusRating, potassiumRating
   testResults         Json? @default("[]")
 }
 

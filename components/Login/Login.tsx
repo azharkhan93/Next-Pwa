@@ -31,7 +31,14 @@ export const Login: React.FC<LoginProps> = ({
       const response = await axios.post("/api/login", { email, password });
 
       if (response.data.user) {
-        router.push("/dashboard");
+        // Check if there's a redirect parameter in the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const redirectTo = urlParams.get("redirect");
+        // Only redirect to dashboard or dashboard sub-routes for security
+        const destination = redirectTo && redirectTo.startsWith("/dashboard") 
+          ? redirectTo 
+          : "/dashboard";
+        router.push(destination);
       }
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {

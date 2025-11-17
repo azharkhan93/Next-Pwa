@@ -49,13 +49,25 @@ export async function POST(request: NextRequest) {
       role: user.role,
     };
 
-    return NextResponse.json(
+    // Create response
+    const response = NextResponse.json(
       {
         message: "Login successful",
         user: userData,
       },
       { status: 200 }
     );
+
+    // Set authentication cookie
+    response.cookies.set("auth-token", user.id, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 60 * 60 * 24 * 7, // 7 days
+      path: "/",
+    });
+
+    return response;
   } catch (error) {
     console.error("Login error:", error);
     return NextResponse.json(

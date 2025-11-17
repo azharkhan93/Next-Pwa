@@ -1,13 +1,32 @@
 export type TestResult = {
   id: string;
   labTestNo?: string;
+  // Basic Parameters
   ph: string;
   organicCarbon: string;
+  // Primary Macronutrients
   nitrogen: string;
   phosphorus: string;
   potassium: string;
+  // Secondary Macronutrients
   calcium: string;
   magnesium: string;
+  sulfur: string;
+  // Micronutrients
+  iron: string;
+  manganese: string;
+  zinc: string;
+  copper: string;
+  boron: string;
+  molybdenum: string;
+  chlorine: string;
+  nickel: string;
+  // Other Parameters
+  sodium: string;
+  electricalConductivity: string;
+  // Ratings
+  phRating?: string;
+  organicCarbonRating?: string;
   nitrogenRating?: string;
   phosphorusRating?: string;
   potassiumRating?: string;
@@ -19,13 +38,32 @@ export type TestResult = {
 export const createEmptyTestResult = (): TestResult => {
   return {
     id: `test-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+    // Basic Parameters
     ph: "",
     organicCarbon: "",
+    // Primary Macronutrients
     nitrogen: "",
     phosphorus: "",
     potassium: "",
+    // Secondary Macronutrients
     calcium: "",
     magnesium: "",
+    sulfur: "",
+    // Micronutrients
+    iron: "",
+    manganese: "",
+    zinc: "",
+    copper: "",
+    boron: "",
+    molybdenum: "",
+    chlorine: "",
+    nickel: "",
+    // Other Parameters
+    sodium: "",
+    electricalConductivity: "",
+    // Ratings
+    phRating: "",
+    organicCarbonRating: "",
     nitrogenRating: "",
     phosphorusRating: "",
     potassiumRating: "",

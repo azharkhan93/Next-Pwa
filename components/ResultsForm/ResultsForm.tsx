@@ -6,6 +6,8 @@ import {
   getNitrogenRating,
   getPhosphorusRating,
   getPotassiumRating,
+  getPhRating,
+  getOrganicCarbonRating,
 } from "@/utils/soilRating";
 import { SoilRecommendations } from "@/components/SoilRecommendations";
 import { useTestResults } from "@/utils/useTestResults";
@@ -41,10 +43,10 @@ function TestResultForm({
     };
 
   return (
-    <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 bg-gray-50 dark:bg-gray-900/50 space-y-4">
+    <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 bg-gray-50 dark:bg-gray-900/50 space-y-6">
       <div className="flex items-center justify-between mb-4">
         <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
-          Test Result {index + 1}
+          Test Result {index + 1} {testResult.labTestNo && `(Lab #${testResult.labTestNo})`}
         </h4>
         {canRemove && (
           <button
@@ -58,112 +60,260 @@ function TestResultForm({
         )}
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <TextInput
-          id={`ph-${testResult.id}`}
-          name={`ph-${testResult.id}`}
-          label="pH"
-          value={testResult.ph}
-          onChange={handleChange("ph")}
-        />
-        <TextInput
-          id={`organicCarbon-${testResult.id}`}
-          name={`organicCarbon-${testResult.id}`}
-          label="Organic Carbon (%)"
-          value={testResult.organicCarbon}
-          onChange={handleChange("organicCarbon")}
-        />
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <TextInput
-          id={`nitrogen-${testResult.id}`}
-          name={`nitrogen-${testResult.id}`}
-          label="Nitrogen (Kg/ha)"
-          value={testResult.nitrogen}
-          onChange={(e) => {
-            const value = e.target.value;
-            onUpdate({
-              nitrogen: value,
-              nitrogenRating:
-                value === "" || isNaN(Number(value))
-                  ? ""
-                  : getNitrogenRating(Number(value)),
-            });
-          }}
-        />
-        <TextInput
-          id={`nitrogenRating-${testResult.id}`}
-          name={`nitrogenRating-${testResult.id}`}
-          label="Nitrogen rating"
-          value={testResult.nitrogenRating ?? ""}
-          onChange={() => {}}
-          disabled
-        />
-        <TextInput
-          id={`phosphorus-${testResult.id}`}
-          name={`phosphorus-${testResult.id}`}
-          label="Phosphorus (Kg/ha)"
-          value={testResult.phosphorus}
-          onChange={(e) => {
-            const value = e.target.value;
-            onUpdate({
-              phosphorus: value,
-              phosphorusRating:
-                value === "" || isNaN(Number(value))
-                  ? ""
-                  : getPhosphorusRating(Number(value)),
-            });
-          }}
-        />
-        <TextInput
-          id={`phosphorusRating-${testResult.id}`}
-          name={`phosphorusRating-${testResult.id}`}
-          label="Phosphorus rating"
-          value={testResult.phosphorusRating ?? ""}
-          onChange={() => {}}
-          disabled
-        />
+      {/* Basic Parameters */}
+      <div>
+        <h5 className="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-3 uppercase tracking-wide">
+          Basic Parameters
+        </h5>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <TextInput
+            id={`ph-${testResult.id}`}
+            name={`ph-${testResult.id}`}
+            label="pH"
+            value={testResult.ph}
+            onChange={(e) => {
+              const value = e.target.value;
+              onUpdate({
+                ph: value,
+                phRating:
+                  value === "" || isNaN(Number(value))
+                    ? ""
+                    : getPhRating(Number(value)),
+              });
+            }}
+          />
+          <TextInput
+            id={`phRating-${testResult.id}`}
+            name={`phRating-${testResult.id}`}
+            label="pH Rating"
+            value={testResult.phRating ?? ""}
+            onChange={() => {}}
+            disabled
+          />
+          <TextInput
+            id={`organicCarbon-${testResult.id}`}
+            name={`organicCarbon-${testResult.id}`}
+            label="Organic Carbon (%)"
+            value={testResult.organicCarbon}
+            onChange={(e) => {
+              const value = e.target.value;
+              onUpdate({
+                organicCarbon: value,
+                organicCarbonRating:
+                  value === "" || isNaN(Number(value))
+                    ? ""
+                    : getOrganicCarbonRating(Number(value)),
+              });
+            }}
+          />
+          <TextInput
+            id={`organicCarbonRating-${testResult.id}`}
+            name={`organicCarbonRating-${testResult.id}`}
+            label="Organic Carbon Rating"
+            value={testResult.organicCarbonRating ?? ""}
+            onChange={() => {}}
+            disabled
+          />
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <TextInput
-          id={`potassium-${testResult.id}`}
-          name={`potassium-${testResult.id}`}
-          label="Potassium (Kg/ha)"
-          value={testResult.potassium}
-          onChange={(e) => {
-            const value = e.target.value;
-            onUpdate({
-              potassium: value,
-              potassiumRating:
-                value === "" || isNaN(Number(value))
-                  ? ""
-                  : getPotassiumRating(Number(value)),
-            });
-          }}
-        />
-        <TextInput
-          id={`potassiumRating-${testResult.id}`}
-          name={`potassiumRating-${testResult.id}`}
-          label="Potassium rating"
-          value={testResult.potassiumRating ?? ""}
-          onChange={() => {}}
-          disabled
-        />
-        <TextInput
-          id={`calcium-${testResult.id}`}
-          name={`calcium-${testResult.id}`}
-          label="Calcium (meq/100g soil)"
-          value={testResult.calcium}
-          onChange={handleChange("calcium")}
-        />
-        <TextInput
-          id={`magnesium-${testResult.id}`}
-          name={`magnesium-${testResult.id}`}
-          label="Magnesium (meq/100g soil)"
-          value={testResult.magnesium}
-          onChange={handleChange("magnesium")}
-        />
+      {/* Primary Macronutrients */}
+      <div>
+        <h5 className="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-3 uppercase tracking-wide">
+          Primary Macronutrients
+        </h5>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <TextInput
+            id={`nitrogen-${testResult.id}`}
+            name={`nitrogen-${testResult.id}`}
+            label="Nitrogen (Kg/ha)"
+            value={testResult.nitrogen}
+            onChange={(e) => {
+              const value = e.target.value;
+              onUpdate({
+                nitrogen: value,
+                nitrogenRating:
+                  value === "" || isNaN(Number(value))
+                    ? ""
+                    : getNitrogenRating(Number(value)),
+              });
+            }}
+          />
+          <TextInput
+            id={`nitrogenRating-${testResult.id}`}
+            name={`nitrogenRating-${testResult.id}`}
+            label="Nitrogen Rating"
+            value={testResult.nitrogenRating ?? ""}
+            onChange={() => {}}
+            disabled
+          />
+          <TextInput
+            id={`phosphorus-${testResult.id}`}
+            name={`phosphorus-${testResult.id}`}
+            label="Phosphorus (Kg/ha)"
+            value={testResult.phosphorus}
+            onChange={(e) => {
+              const value = e.target.value;
+              onUpdate({
+                phosphorus: value,
+                phosphorusRating:
+                  value === "" || isNaN(Number(value))
+                    ? ""
+                    : getPhosphorusRating(Number(value)),
+              });
+            }}
+          />
+          <TextInput
+            id={`phosphorusRating-${testResult.id}`}
+            name={`phosphorusRating-${testResult.id}`}
+            label="Phosphorus Rating"
+            value={testResult.phosphorusRating ?? ""}
+            onChange={() => {}}
+            disabled
+          />
+          <TextInput
+            id={`potassium-${testResult.id}`}
+            name={`potassium-${testResult.id}`}
+            label="Potassium (Kg/ha)"
+            value={testResult.potassium}
+            onChange={(e) => {
+              const value = e.target.value;
+              onUpdate({
+                potassium: value,
+                potassiumRating:
+                  value === "" || isNaN(Number(value))
+                    ? ""
+                    : getPotassiumRating(Number(value)),
+              });
+            }}
+          />
+          <TextInput
+            id={`potassiumRating-${testResult.id}`}
+            name={`potassiumRating-${testResult.id}`}
+            label="Potassium Rating"
+            value={testResult.potassiumRating ?? ""}
+            onChange={() => {}}
+            disabled
+          />
+        </div>
+      </div>
+
+      {/* Secondary Macronutrients */}
+      <div>
+        <h5 className="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-3 uppercase tracking-wide">
+          Secondary Macronutrients
+        </h5>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <TextInput
+            id={`calcium-${testResult.id}`}
+            name={`calcium-${testResult.id}`}
+            label="Calcium (ppm)"
+            value={testResult.calcium}
+            onChange={handleChange("calcium")}
+          />
+          <TextInput
+            id={`magnesium-${testResult.id}`}
+            name={`magnesium-${testResult.id}`}
+            label="Magnesium (ppm)"
+            value={testResult.magnesium}
+            onChange={handleChange("magnesium")}
+          />
+          <TextInput
+            id={`sulfur-${testResult.id}`}
+            name={`sulfur-${testResult.id}`}
+            label="Sulfur (ppm)"
+            value={testResult.sulfur}
+            onChange={handleChange("sulfur")}
+          />
+        </div>
+      </div>
+
+      {/* Micronutrients */}
+      <div>
+        <h5 className="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-3 uppercase tracking-wide">
+          Micronutrients
+        </h5>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <TextInput
+            id={`iron-${testResult.id}`}
+            name={`iron-${testResult.id}`}
+            label="Iron (Fe) - ppm"
+            value={testResult.iron}
+            onChange={handleChange("iron")}
+          />
+          <TextInput
+            id={`manganese-${testResult.id}`}
+            name={`manganese-${testResult.id}`}
+            label="Manganese (Mn) - ppm"
+            value={testResult.manganese}
+            onChange={handleChange("manganese")}
+          />
+          <TextInput
+            id={`zinc-${testResult.id}`}
+            name={`zinc-${testResult.id}`}
+            label="Zinc (Zn) - ppm"
+            value={testResult.zinc}
+            onChange={handleChange("zinc")}
+          />
+          <TextInput
+            id={`copper-${testResult.id}`}
+            name={`copper-${testResult.id}`}
+            label="Copper (Cu) - ppm"
+            value={testResult.copper}
+            onChange={handleChange("copper")}
+          />
+          <TextInput
+            id={`boron-${testResult.id}`}
+            name={`boron-${testResult.id}`}
+            label="Boron (B) - ppm"
+            value={testResult.boron}
+            onChange={handleChange("boron")}
+          />
+          <TextInput
+            id={`molybdenum-${testResult.id}`}
+            name={`molybdenum-${testResult.id}`}
+            label="Molybdenum (Mo) - ppm"
+            value={testResult.molybdenum}
+            onChange={handleChange("molybdenum")}
+          />
+          <TextInput
+            id={`chlorine-${testResult.id}`}
+            name={`chlorine-${testResult.id}`}
+            label="Chlorine (Cl) - ppm"
+            value={testResult.chlorine}
+            onChange={handleChange("chlorine")}
+          />
+          <TextInput
+            id={`nickel-${testResult.id}`}
+            name={`nickel-${testResult.id}`}
+            label="Nickel (Ni) - ppm"
+            value={testResult.nickel}
+            onChange={handleChange("nickel")}
+          />
+        </div>
+      </div>
+
+      {/* Other Parameters */}
+      <div>
+        <h5 className="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-3 uppercase tracking-wide">
+          Other Parameters
+        </h5>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <TextInput
+            id={`sodium-${testResult.id}`}
+            name={`sodium-${testResult.id}`}
+            label="Sodium (Na) - ppm"
+            value={testResult.sodium}
+            onChange={handleChange("sodium")}
+          />
+          <TextInput
+            id={`electricalConductivity-${testResult.id}`}
+            name={`electricalConductivity-${testResult.id}`}
+            label="Electrical Conductivity (EC) - dS/m"
+            value={testResult.electricalConductivity}
+            onChange={handleChange("electricalConductivity")}
+          />
+        </div>
       </div>
 
       <SoilRecommendations

@@ -13,6 +13,7 @@ import {
   MdLogout,
 } from "react-icons/md";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 import { Button } from "../Button";
 
 type IconName =
@@ -50,8 +51,17 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const pathname = usePathname();
   const router = useRouter();
 
-  const handleLogout = () => {
-    router.push("/");
+  const handleLogout = async () => {
+    try {
+      // Call logout API to clear cookie
+      await axios.post("/api/logout");
+      // Redirect to login page
+      router.push("/");
+    } catch (error) {
+      console.error("Logout error:", error);
+      // Still redirect even if API call fails
+      router.push("/");
+    }
   };
 
   return (
@@ -64,7 +74,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         />
       )}
       <nav
-        className={`fixed inset-y-0 left-0 z-40 w-64 border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-800 transform transition-transform duration-300 ease-in-out flex flex-col shadow-lg ${
+        className={`fixed inset-y-0 left-0 z-40 w-64 border-r border-purple-300/20 dark:border-purple-500/20 bg-gradient-to-b from-purple-200 via-purple-300 to-blue-900 dark:from-purple-900 dark:via-purple-800 dark:to-blue-950 transform transition-transform duration-300 ease-in-out flex flex-col shadow-lg shadow-purple-500/20 ${
           isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         }`}
       >
@@ -72,16 +82,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <div className="p-6 pb-4">
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center shadow-md">
+                <div className="w-8 h-8 bg-gradient-to-br from-purple-600 via-purple-500 to-blue-700 rounded-lg flex items-center justify-center shadow-md shadow-purple-500/50">
                   <MdDashboard className="text-white" size={20} />
                 </div>
-                <div className="text-xl font-bold text-gray-900 dark:text-gray-100">
+                <div className="text-xl font-bold text-purple-900 dark:text-purple-100">
                   Dashboard
                 </div>
               </div>
               <button
                 onClick={onClose}
-                className="lg:hidden p-2 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-all duration-200 hover:scale-110 active:scale-95"
+                className="lg:hidden p-2 text-purple-700 dark:text-purple-300 hover:bg-purple-100/50 dark:hover:bg-purple-800/30 rounded-lg transition-all duration-200 hover:scale-110 active:scale-95"
                 aria-label="Close menu"
               >
                 <MdClose size={20} />
@@ -101,8 +111,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
                       }}
                       className={`group relative flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200 ${
                         active
-                          ? "bg-blue-600 text-white shadow-lg shadow-blue-600/30 scale-[1.02]"
-                          : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50 hover:translate-x-1"
+                          ? "bg-gradient-to-r from-purple-600 to-blue-700 text-white shadow-lg shadow-purple-600/40 scale-[1.02]"
+                          : "text-purple-900 dark:text-purple-200 hover:bg-purple-100/50 dark:hover:bg-purple-800/30 hover:translate-x-1"
                       }`}
                     >
                       {active && (
@@ -112,7 +122,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                         className={`transition-transform duration-200 ${
                           active
                             ? "text-white"
-                            : "text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-gray-100"
+                            : "text-purple-600 dark:text-purple-300 group-hover:text-purple-800 dark:group-hover:text-purple-100"
                         }`}
                       >
                         {item.icon ? iconMap[item.icon] : null}
@@ -121,7 +131,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                         className={`transition-colors duration-200 ${
                           active
                             ? "text-white font-semibold"
-                            : "font-medium group-hover:text-gray-900 dark:group-hover:text-gray-100"
+                            : "font-medium text-purple-900 dark:text-purple-200 group-hover:text-purple-950 dark:group-hover:text-purple-100"
                         }`}
                       >
                         {item.label}
@@ -133,7 +143,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </ul>
           </div>
         </div>
-        <div className="p-4 pt-3 border-t border-gray-200 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-900/50">
+        <div className="p-4 pt-3 border-t border-purple-300/30 dark:border-purple-600/30 bg-purple-100/30 dark:bg-purple-900/30">
           <Button
             variant="error"
             size="md"

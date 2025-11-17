@@ -6,7 +6,18 @@ import {
   getPhRating,
   getOrganicCarbonRating,
   getCalciumRating,
-  getMagnesiumRating
+  getMagnesiumRating,
+  getSulfurRating,
+  getIronRating,
+  getManganeseRating,
+  getZincRating,
+  getCopperRating,
+  getBoronRating,
+  getMolybdenumRating,
+  getChlorineRating,
+  getNickelRating,
+  getSodiumRating,
+  getElectricalConductivityRating
 } from '@/utils/pdfChartColors';
 import {
   getNitrogenRating,
@@ -291,13 +302,29 @@ const styles = StyleSheet.create({
 
 
 interface TestResult {
+  // Basic Parameters
   ph?: string;
   organicCarbon?: string;
+  // Primary Macronutrients
   nitrogen?: string;
   phosphorus?: string;
   potassium?: string;
+  // Secondary Macronutrients
   calcium?: string;
   magnesium?: string;
+  sulfur?: string;
+  // Micronutrients
+  iron?: string;
+  manganese?: string;
+  zinc?: string;
+  copper?: string;
+  boron?: string;
+  molybdenum?: string;
+  chlorine?: string;
+  nickel?: string;
+  // Other Parameters
+  sodium?: string;
+  electricalConductivity?: string;
 }
 
 const renderRatingHeader = () => {
@@ -391,6 +418,17 @@ export const RecordPDFTemplate = ({ data }: { data: RecordData }) => {
     potassium: '150',
     calcium: '1200',
     magnesium: '300',
+    sulfur: '10',
+    iron: '5.2',
+    manganese: '8.5',
+    zinc: '1.2',
+    copper: '0.8',
+    boron: '0.5',
+    molybdenum: '0.1',
+    chlorine: '15',
+    nickel: '0.3',
+    sodium: '25',
+    electricalConductivity: '0.5',
   };
 
   // Parse values
@@ -401,15 +439,42 @@ export const RecordPDFTemplate = ({ data }: { data: RecordData }) => {
   const k = testResult.potassium ? parseFloat(testResult.potassium) : null;
   const ca = testResult.calcium ? parseFloat(testResult.calcium) : null;
   const mg = testResult.magnesium ? parseFloat(testResult.magnesium) : null;
+  const s = testResult.sulfur ? parseFloat(testResult.sulfur) : null;
+  const fe = testResult.iron ? parseFloat(testResult.iron) : null;
+  const mn = testResult.manganese ? parseFloat(testResult.manganese) : null;
+  const zn = testResult.zinc ? parseFloat(testResult.zinc) : null;
+  const cu = testResult.copper ? parseFloat(testResult.copper) : null;
+  const b = testResult.boron ? parseFloat(testResult.boron) : null;
+  const mo = testResult.molybdenum ? parseFloat(testResult.molybdenum) : null;
+  const cl = testResult.chlorine ? parseFloat(testResult.chlorine) : null;
+  const ni = testResult.nickel ? parseFloat(testResult.nickel) : null;
+  const na = testResult.sodium ? parseFloat(testResult.sodium) : null;
+  const ec = testResult.electricalConductivity ? parseFloat(testResult.electricalConductivity) : null;
 
   const testParams = [
-    { name: 'Soil pH', value: ph, unit: '', method: '1:1', param: 'ph' },
-    { name: 'Phosphorus (P)', value: p, unit: ' ppm', method: 'M3', param: 'phosphorus' },
-    { name: 'Potassium (K)', value: k, unit: ' ppm', method: 'M3', param: 'potassium' },
-    { name: 'Calcium (Ca)', value: ca, unit: ' ppm', method: 'M3', param: 'calcium' },
-    { name: 'Magnesium (Mg)', value: mg, unit: ' ppm', method: 'M3', param: 'magnesium' },
-    { name: 'Organic Matter', value: oc, unit: '%', method: 'LOI', param: 'organicCarbon' },
-    { name: 'Nitrogen (N)', value: n, unit: ' Kg/ha', method: 'M3', param: 'nitrogen' },
+    // Basic Parameters
+    { name: 'Soil pH', value: ph, unit: '', method: '1:1', param: 'ph', category: 'Basic Parameters' },
+    { name: 'Organic Matter', value: oc, unit: '%', method: 'LOI', param: 'organicCarbon', category: 'Basic Parameters' },
+    // Primary Macronutrients
+    { name: 'Nitrogen (N)', value: n, unit: ' Kg/ha', method: 'M3', param: 'nitrogen', category: 'Primary Macronutrients' },
+    { name: 'Phosphorus (P)', value: p, unit: ' ppm', method: 'M3', param: 'phosphorus', category: 'Primary Macronutrients' },
+    { name: 'Potassium (K)', value: k, unit: ' ppm', method: 'M3', param: 'potassium', category: 'Primary Macronutrients' },
+    // Secondary Macronutrients
+    { name: 'Calcium (Ca)', value: ca, unit: ' ppm', method: 'M3', param: 'calcium', category: 'Secondary Macronutrients' },
+    { name: 'Magnesium (Mg)', value: mg, unit: ' ppm', method: 'M3', param: 'magnesium', category: 'Secondary Macronutrients' },
+    { name: 'Sulfur (S)', value: s, unit: ' ppm', method: 'M3', param: 'sulfur', category: 'Secondary Macronutrients' },
+    // Micronutrients
+    { name: 'Iron (Fe)', value: fe, unit: ' ppm', method: 'M3', param: 'iron', category: 'Micronutrients' },
+    { name: 'Manganese (Mn)', value: mn, unit: ' ppm', method: 'M3', param: 'manganese', category: 'Micronutrients' },
+    { name: 'Zinc (Zn)', value: zn, unit: ' ppm', method: 'M3', param: 'zinc', category: 'Micronutrients' },
+    { name: 'Copper (Cu)', value: cu, unit: ' ppm', method: 'M3', param: 'copper', category: 'Micronutrients' },
+    { name: 'Boron (B)', value: b, unit: ' ppm', method: 'M3', param: 'boron', category: 'Micronutrients' },
+    { name: 'Molybdenum (Mo)', value: mo, unit: ' ppm', method: 'M3', param: 'molybdenum', category: 'Micronutrients' },
+    { name: 'Chlorine (Cl)', value: cl, unit: ' ppm', method: 'M3', param: 'chlorine', category: 'Micronutrients' },
+    { name: 'Nickel (Ni)', value: ni, unit: ' ppm', method: 'M3', param: 'nickel', category: 'Micronutrients' },
+    // Other Parameters
+    { name: 'Sodium (Na)', value: na, unit: ' ppm', method: 'M3', param: 'sodium', category: 'Other Parameters' },
+    { name: 'Electrical Conductivity (EC)', value: ec, unit: ' dS/m', method: 'EC', param: 'electricalConductivity', category: 'Other Parameters' },
   ];
 
   // Calculate CEC and saturation (simplified calculations)
@@ -503,8 +568,7 @@ export const RecordPDFTemplate = ({ data }: { data: RecordData }) => {
             // Get rating for display
             let rating = 'N/A';
             if (param.param === 'ph') {
-              const phRating = getPhRating(param.value);
-              rating = phRating;
+              rating = getPhRating(param.value);
             } else if (param.param === 'nitrogen') {
               const nRating = getNitrogenRating(param.value);
               rating = nRating === 'High' ? 'Optimum' : nRating;
@@ -515,14 +579,33 @@ export const RecordPDFTemplate = ({ data }: { data: RecordData }) => {
               const kRating = getPotassiumRating(param.value);
               rating = kRating === 'High' ? 'Optimum' : kRating;
             } else if (param.param === 'calcium') {
-              const caRating = getCalciumRating(param.value);
-              rating = caRating;
+              rating = getCalciumRating(param.value);
             } else if (param.param === 'magnesium') {
-              const mgRating = getMagnesiumRating(param.value);
-              rating = mgRating;
+              rating = getMagnesiumRating(param.value);
             } else if (param.param === 'organicCarbon') {
-              const ocRating = getOrganicCarbonRating(param.value);
-              rating = ocRating;
+              rating = getOrganicCarbonRating(param.value);
+            } else if (param.param === 'sulfur') {
+              rating = getSulfurRating(param.value);
+            } else if (param.param === 'iron') {
+              rating = getIronRating(param.value);
+            } else if (param.param === 'manganese') {
+              rating = getManganeseRating(param.value);
+            } else if (param.param === 'zinc') {
+              rating = getZincRating(param.value);
+            } else if (param.param === 'copper') {
+              rating = getCopperRating(param.value);
+            } else if (param.param === 'boron') {
+              rating = getBoronRating(param.value);
+            } else if (param.param === 'molybdenum') {
+              rating = getMolybdenumRating(param.value);
+            } else if (param.param === 'chlorine') {
+              rating = getChlorineRating(param.value);
+            } else if (param.param === 'nickel') {
+              rating = getNickelRating(param.value);
+            } else if (param.param === 'sodium') {
+              rating = getSodiumRating(param.value);
+            } else if (param.param === 'electricalConductivity') {
+              rating = getElectricalConductivityRating(param.value);
             }
             
             return (

@@ -1,6 +1,8 @@
 export type NitrogenLevel = "Low" | "Medium" | "High" | "Very High";
 export type PhosphorusLevel = "Low" | "Medium" | "High" | "Very High";
 export type PotassiumLevel = "Low" | "Medium" | "High" | "Very High";
+export type PhLevel = "Low" | "Medium" | "High";
+export type OrganicCarbonLevel = "Low" | "Medium" | "High";
 
 export type NitrogenRecommendation = {
   level: NitrogenLevel;
@@ -306,3 +308,37 @@ export const getPotassiumRecommendation = (
  */
 export const getPotassiumRating = (value: number): PotassiumLevel =>
   getPotassiumRecommendation(value).level;
+
+/**
+ * Classify soil test pH into levels.
+ * 
+ *  Low:    < 5
+ *  Medium: 5 - 6.5
+ *  High:   > 6.5
+ */
+export const getPhRating = (value: number): PhLevel => {
+  if (value < 5) {
+    return "Low";
+  }
+  if (value >= 5 && value <= 6.5) {
+    return "Medium";
+  }
+  return "High";
+};
+
+/**
+ * Classify soil test organic carbon (%) into levels.
+ * 
+ *  Low:    < 0.5
+ *  Medium: 0.5 - 1.1
+ *  High:   > 1.1
+ */
+export const getOrganicCarbonRating = (value: number): OrganicCarbonLevel => {
+  if (value < 0.5) {
+    return "Low";
+  }
+  if (value >= 0.5 && value <= 1.1) {
+    return "Medium";
+  }
+  return "High";
+};
