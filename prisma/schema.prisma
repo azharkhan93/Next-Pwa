@@ -80,7 +80,9 @@ model Record {
   // Secondary Macronutrients: calcium, magnesium, sulfur
   // Micronutrients: iron, manganese, zinc, copper, boron, molybdenum, chlorine, nickel
   // Other: sodium, electricalConductivity
-  // Ratings: nitrogenRating, phosphorusRating, potassiumRating
+  // Ratings: phRating, organicCarbonRating, nitrogenRating, phosphorusRating, potassiumRating
+  // Recommendations (calculated on backend): nitrogenRecommendation, phosphorusRecommendation, potassiumRecommendation
+  // Each recommendation contains: { level, increasePercent, suggestion }
   testResults         Json? @default("[]")
 }
 

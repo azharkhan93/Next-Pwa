@@ -7,6 +7,7 @@ import { getCurrentCoordinates, reverseGeocode } from "@/utils/geolocation";
 import { FarmerDetailsForm, type FormData } from "@/components/FarmerDetailsForm";
 import { FarmDetailsForm } from "@/components/FarmDetailsForm";
 import { ResultsForm } from "@/components/ResultsForm";
+import { useRecords } from "@/hooks/useRecords";
 
 const initialFormData: FormData = {
   name: "",
@@ -55,6 +56,7 @@ const initialFormData: FormData = {
 
 export function AddRecordForm() {
   const router = useRouter();
+  const { createRecord } = useRecords();
   const [formData, setFormData] = React.useState<FormData>(initialFormData);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
@@ -86,9 +88,43 @@ export function AddRecordForm() {
     }
     setLoading(true);
     try {
-      await new Promise((r) => setTimeout(r, 800));
-      router.push("/dashboard");
+      // Prepare payload - filter out empty "other" fields
+      const payload: Record<string, unknown> = {
+        ...formData,
+        testResults: formData.testResults || [],
+      };
+
+      // Remove empty "other" fields - only include if they have values
+      const otherFields = [
+        'cropOther',
+        'plantationTypeOther',
+        'soilTypeOther',
+        'drainageOther',
+        'irrigationMethodOther'
+      ];
+
+      otherFields.forEach(field => {
+        const value = payload[field];
+        if (!value || (typeof value === 'string' && value.trim() === '')) {
+          delete payload[field];
+        }
+      });
+
+      // Log the full payload before sending to backend
+      console.log("=== AddRecordForm Payload ===");
+      console.log(JSON.stringify(payload, null, 2));
+      console.log("=============================");
+
+      // Send data to backend
+      const result = await createRecord(payload as FormData);
+      
+      if (result) {
+        router.push("/dashboard");
+      } else {
+        setError("Failed to add data. Please try again.");
+      }
     } catch (err) {
+      console.error("Error submitting form:", err);
       setError("Failed to add data. Please try again.");
     } finally {
       setLoading(false);
@@ -123,7 +159,7 @@ export function AddRecordForm() {
         } catch {
           // ignore reverse geocode failures
         }
-      } catch (err: unknown) {
+      } catch {
         // If user denies or geolocation fails, keep fields empty and show a gentle message
         setError(
           "Location access denied or unavailable. You can proceed without it."

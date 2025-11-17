@@ -1,6 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/utils/prisma";
 import { generateConsumerId } from "@/utils/generateConsumerId";
+import {
+  getNitrogenRecommendation,
+  getPhosphorusRecommendation,
+  getPotassiumRecommendation,
+} from "@/utils/soilRating";
 
 /**
  * GET /api/records - Get all records
@@ -61,14 +66,55 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Process test results and add labTestNo
+    // Process test results and add labTestNo and recommendations
     let testResults = body.testResults || [];
     if (Array.isArray(testResults) && testResults.length > 0) {
       testResults = testResults.map(
-        (result: Record<string, unknown>, index: number) => ({
-          ...result,
-          labTestNo: String(index + 1).padStart(2, "0"), // 01, 02, 03, etc.
-        })
+        (result: Record<string, unknown>, index: number) => {
+          const processedResult: Record<string, unknown> = {
+            ...result,
+            labTestNo: String(index + 1).padStart(2, "0"), // 01, 02, 03, etc.
+          };
+
+          // Calculate and add recommendations for nitrogen, phosphorus, and potassium
+          if (result.nitrogen && typeof result.nitrogen === 'string' && result.nitrogen.trim() !== '') {
+            const nValue = parseFloat(result.nitrogen);
+            if (!isNaN(nValue)) {
+              const nRec = getNitrogenRecommendation(nValue);
+              processedResult.nitrogenRecommendation = {
+                level: nRec.level,
+                increasePercent: nRec.increasePercent,
+                suggestion: nRec.suggestion,
+              };
+            }
+          }
+
+          if (result.phosphorus && typeof result.phosphorus === 'string' && result.phosphorus.trim() !== '') {
+            const pValue = parseFloat(result.phosphorus);
+            if (!isNaN(pValue)) {
+              const pRec = getPhosphorusRecommendation(pValue);
+              processedResult.phosphorusRecommendation = {
+                level: pRec.level,
+                increasePercent: pRec.increasePercent,
+                suggestion: pRec.suggestion,
+              };
+            }
+          }
+
+          if (result.potassium && typeof result.potassium === 'string' && result.potassium.trim() !== '') {
+            const kValue = parseFloat(result.potassium);
+            if (!isNaN(kValue)) {
+              const kRec = getPotassiumRecommendation(kValue);
+              processedResult.potassiumRecommendation = {
+                level: kRec.level,
+                increasePercent: kRec.increasePercent,
+                suggestion: kRec.suggestion,
+              };
+            }
+          }
+
+          return processedResult;
+        }
       );
     }
 
@@ -90,9 +136,9 @@ export async function POST(request: NextRequest) {
         city: body.city || null,
         stateVal: body.stateVal || null,
         crop: body.crop || null,
-        cropOther: body.cropOther || null,
+        cropOther: body.cropOther && body.cropOther.trim() !== '' ? body.cropOther : null,
         plantationType: body.plantationType || null,
-        plantationTypeOther: body.plantationTypeOther || null,
+        plantationTypeOther: body.plantationTypeOther && body.plantationTypeOther.trim() !== '' ? body.plantationTypeOther : null,
         age: body.age ? parseFloat(String(body.age)) : null,
         noTrees: body.noTrees ? parseFloat(String(body.noTrees)) : null,
         area: body.area ? parseFloat(String(body.area)) : null,
@@ -101,11 +147,11 @@ export async function POST(request: NextRequest) {
           : null,
         soilDepth: body.soilDepth || null,
         soilType: body.soilType || null,
-        soilTypeOther: body.soilTypeOther || null,
+        soilTypeOther: body.soilTypeOther && body.soilTypeOther.trim() !== '' ? body.soilTypeOther : null,
         drainage: body.drainage || null,
-        drainageOther: body.drainageOther || null,
+        drainageOther: body.drainageOther && body.drainageOther.trim() !== '' ? body.drainageOther : null,
         irrigationMethod: body.irrigationMethod || null,
-        irrigationMethodOther: body.irrigationMethodOther || null,
+        irrigationMethodOther: body.irrigationMethodOther && body.irrigationMethodOther.trim() !== '' ? body.irrigationMethodOther : null,
         paramPh: body.paramPh || false,
         paramDl: body.paramDl || false,
         paramCl: body.paramCl || false,

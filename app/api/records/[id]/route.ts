@@ -1,5 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/utils/prisma";
+import {
+  getNitrogenRecommendation,
+  getPhosphorusRecommendation,
+  getPotassiumRecommendation,
+} from "@/utils/soilRating";
 
 /**
  * GET /api/records/[id] - Get a single record by ID
@@ -55,14 +60,55 @@ export async function PUT(
       );
     }
 
-    // Process test results and update labTestNo
+    // Process test results and update labTestNo and recommendations
     let testResults = body.testResults;
     if (Array.isArray(testResults) && testResults.length > 0) {
       testResults = testResults.map(
-        (result: Record<string, unknown>, index: number) => ({
-          ...result,
-          labTestNo: String(index + 1).padStart(2, "0"), // Always renumber: 01, 02, 03, etc.
-        })
+        (result: Record<string, unknown>, index: number) => {
+          const processedResult: Record<string, unknown> = {
+            ...result,
+            labTestNo: String(index + 1).padStart(2, "0"), // Always renumber: 01, 02, 03, etc.
+          };
+
+          // Calculate and add recommendations for nitrogen, phosphorus, and potassium
+          if (result.nitrogen && typeof result.nitrogen === 'string' && result.nitrogen.trim() !== '') {
+            const nValue = parseFloat(result.nitrogen);
+            if (!isNaN(nValue)) {
+              const nRec = getNitrogenRecommendation(nValue);
+              processedResult.nitrogenRecommendation = {
+                level: nRec.level,
+                increasePercent: nRec.increasePercent,
+                suggestion: nRec.suggestion,
+              };
+            }
+          }
+
+          if (result.phosphorus && typeof result.phosphorus === 'string' && result.phosphorus.trim() !== '') {
+            const pValue = parseFloat(result.phosphorus);
+            if (!isNaN(pValue)) {
+              const pRec = getPhosphorusRecommendation(pValue);
+              processedResult.phosphorusRecommendation = {
+                level: pRec.level,
+                increasePercent: pRec.increasePercent,
+                suggestion: pRec.suggestion,
+              };
+            }
+          }
+
+          if (result.potassium && typeof result.potassium === 'string' && result.potassium.trim() !== '') {
+            const kValue = parseFloat(result.potassium);
+            if (!isNaN(kValue)) {
+              const kRec = getPotassiumRecommendation(kValue);
+              processedResult.potassiumRecommendation = {
+                level: kRec.level,
+                increasePercent: kRec.increasePercent,
+                suggestion: kRec.suggestion,
+              };
+            }
+          }
+
+          return processedResult;
+        }
       );
     }
 
@@ -84,20 +130,30 @@ export async function PUT(
         city: body.city !== undefined ? body.city : existingRecord.city,
         stateVal: body.stateVal !== undefined ? body.stateVal : existingRecord.stateVal,
         crop: body.crop !== undefined ? body.crop : existingRecord.crop,
-        cropOther: body.cropOther !== undefined ? body.cropOther : existingRecord.cropOther,
+        cropOther: body.cropOther !== undefined 
+          ? (body.cropOther && body.cropOther.trim() !== '' ? body.cropOther : null)
+          : existingRecord.cropOther,
         plantationType: body.plantationType !== undefined ? body.plantationType : existingRecord.plantationType,
-        plantationTypeOther: body.plantationTypeOther !== undefined ? body.plantationTypeOther : existingRecord.plantationTypeOther,
+        plantationTypeOther: body.plantationTypeOther !== undefined 
+          ? (body.plantationTypeOther && body.plantationTypeOther.trim() !== '' ? body.plantationTypeOther : null)
+          : existingRecord.plantationTypeOther,
         age: body.age !== undefined ? (body.age ? parseFloat(String(body.age)) : null) : existingRecord.age,
         noTrees: body.noTrees !== undefined ? (body.noTrees ? parseFloat(String(body.noTrees)) : null) : existingRecord.noTrees,
         area: body.area !== undefined ? (body.area ? parseFloat(String(body.area)) : null) : existingRecord.area,
         noOfSamples: body.noOfSamples !== undefined ? (body.noOfSamples ? parseFloat(String(body.noOfSamples)) : null) : existingRecord.noOfSamples,
         soilDepth: body.soilDepth !== undefined ? body.soilDepth : existingRecord.soilDepth,
         soilType: body.soilType !== undefined ? body.soilType : existingRecord.soilType,
-        soilTypeOther: body.soilTypeOther !== undefined ? body.soilTypeOther : existingRecord.soilTypeOther,
+        soilTypeOther: body.soilTypeOther !== undefined 
+          ? (body.soilTypeOther && body.soilTypeOther.trim() !== '' ? body.soilTypeOther : null)
+          : existingRecord.soilTypeOther,
         drainage: body.drainage !== undefined ? body.drainage : existingRecord.drainage,
-        drainageOther: body.drainageOther !== undefined ? body.drainageOther : existingRecord.drainageOther,
+        drainageOther: body.drainageOther !== undefined 
+          ? (body.drainageOther && body.drainageOther.trim() !== '' ? body.drainageOther : null)
+          : existingRecord.drainageOther,
         irrigationMethod: body.irrigationMethod !== undefined ? body.irrigationMethod : existingRecord.irrigationMethod,
-        irrigationMethodOther: body.irrigationMethodOther !== undefined ? body.irrigationMethodOther : existingRecord.irrigationMethodOther,
+        irrigationMethodOther: body.irrigationMethodOther !== undefined 
+          ? (body.irrigationMethodOther && body.irrigationMethodOther.trim() !== '' ? body.irrigationMethodOther : null)
+          : existingRecord.irrigationMethodOther,
         paramPh: body.paramPh !== undefined ? body.paramPh : existingRecord.paramPh,
         paramDl: body.paramDl !== undefined ? body.paramDl : existingRecord.paramDl,
         paramCl: body.paramCl !== undefined ? body.paramCl : existingRecord.paramCl,
