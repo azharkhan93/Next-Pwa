@@ -74,7 +74,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         />
       )}
       <nav
-        className={`fixed inset-y-0 left-0 z-40 w-64 border-r border-purple-300/20 dark:border-purple-500/20 bg-gradient-to-b from-purple-200 via-purple-300 to-blue-900 dark:from-purple-900 dark:via-purple-800 dark:to-blue-950 transform transition-transform duration-300 ease-in-out flex flex-col shadow-lg shadow-purple-500/20 ${
+        className={`fixed inset-y-0 left-0 z-40 w-64 border-r border-purple-300/20 dark:border-purple-500/20 bg-gray-800 transform transition-transform duration-300 ease-in-out flex flex-col shadow-lg shadow-purple-500/20 ${
           isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         }`}
       >
