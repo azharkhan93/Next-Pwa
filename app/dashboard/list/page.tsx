@@ -44,6 +44,12 @@ export default function ListPage() {
   const [confirmOpen, setConfirmOpen] = React.useState(false);
   const [selectedRow, setSelectedRow] = React.useState<string | null>(null);
   const [selectedRows, setSelectedRows] = React.useState<number[]>([]);
+  const [isExporting, setIsExporting] = React.useState(false);
+  const [exportProgress, setExportProgress] = React.useState<{
+    current: number;
+    total: number;
+    currentRecord?: string;
+  } | null>(null);
 
   // Reset to page 1 when debounced search changes
   React.useEffect(() => {
@@ -171,20 +177,61 @@ export default function ListPage() {
         return;
       }
 
+      setIsExporting(true);
+      setExportProgress({ current: 0, total: selectedRecords.length });
+
+      const errors: string[] = [];
+      const successful: string[] = [];
+
       // Download PDFs for each selected record
       for (let i = 0; i < selectedRecords.length; i++) {
         const record = selectedRecords[i];
         if (record) {
           try {
+            setExportProgress({
+              current: i + 1,
+              total: selectedRecords.length,
+              currentRecord: record.name || record.consumerId || `Record ${i + 1}`,
+            });
+
             await downloadPDF(record);
-            // Add a small delay between downloads to avoid browser blocking multiple downloads
+            successful.push(record.name || record.consumerId || `Record ${i + 1}`);
+            
+            // Add a delay between downloads to avoid browser blocking multiple downloads
+            // Increased delay for better browser compatibility
             if (i < selectedRecords.length - 1) {
-              await new Promise((resolve) => setTimeout(resolve, 500));
+              await new Promise((resolve) => setTimeout(resolve, 800));
             }
           } catch (error) {
             console.error(`Error generating PDF for record ${record.id}:`, error);
-            alert(`Failed to generate PDF for ${record.name || record.consumerId}. Please try again.`);
+            const recordName = record.name || record.consumerId || `Record ${i + 1}`;
+            errors.push(recordName);
           }
+        }
+      }
+
+      setIsExporting(false);
+      setExportProgress(null);
+
+      // Show summary of results
+      if (errors.length > 0 && successful.length > 0) {
+        alert(
+          `Export completed with some errors:\n\n` +
+          `✅ Successfully exported: ${successful.length} PDF(s)\n` +
+          `❌ Failed: ${errors.length} PDF(s)\n\n` +
+          `Failed records: ${errors.join(", ")}`
+        );
+      } else if (errors.length > 0) {
+        alert(
+          `Failed to export all PDFs:\n\n` +
+          `❌ Failed: ${errors.length} PDF(s)\n\n` +
+          `Records: ${errors.join(", ")}\n\n` +
+          `Please try again or export them individually.`
+        );
+      } else {
+        // All successful
+        if (successful.length > 1) {
+          alert(`✅ Successfully exported ${successful.length} PDF files!`);
         }
       }
     } else if (format === "word") {
@@ -317,6 +364,8 @@ export default function ListPage() {
             totalRows={filteredData.length}
             onExport={handleExport}
             disabled={selectedRows.length === 0}
+            isExporting={isExporting}
+            exportProgress={exportProgress}
           />
         }
       />

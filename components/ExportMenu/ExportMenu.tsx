@@ -13,6 +13,12 @@ export type ExportMenuProps = {
   onExport: (format: ExportFormat) => void;
   disabled?: boolean;
   className?: string;
+  isExporting?: boolean;
+  exportProgress?: {
+    current: number;
+    total: number;
+    currentRecord?: string;
+  } | null;
 };
 
 export const ExportMenu: React.FC<ExportMenuProps> = ({
@@ -21,6 +27,8 @@ export const ExportMenu: React.FC<ExportMenuProps> = ({
   onExport,
   disabled = false,
   className,
+  isExporting = false,
+  exportProgress = null,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const selectedCount = selectedRows.length;
@@ -37,14 +45,20 @@ export const ExportMenu: React.FC<ExportMenuProps> = ({
         variant="primary"
         size="md"
         onClick={() => setIsOpen(true)}
-        disabled={disabled || !hasSelection}
+        disabled={disabled || !hasSelection || isExporting}
+        loading={isExporting}
         className="inline-flex items-center gap-2"
       >
         <MdFileDownload size={18} />
-        <span>Export Data</span>
-        {hasSelection && (
+        <span>{isExporting ? "Exporting..." : "Export Data"}</span>
+        {hasSelection && !isExporting && (
           <span className="ml-1 px-2 py-0.5 text-xs bg-white/20 rounded-full">
             {selectedCount}
+          </span>
+        )}
+        {isExporting && exportProgress && (
+          <span className="ml-1 px-2 py-0.5 text-xs bg-white/20 rounded-full">
+            {exportProgress.current}/{exportProgress.total}
           </span>
         )}
       </Button>
@@ -74,25 +88,59 @@ export const ExportMenu: React.FC<ExportMenuProps> = ({
 
           {hasSelection ? (
             <div className="grid grid-cols-1 gap-3">
-              <button
-                onClick={() => handleExport("pdf")}
-                className="flex items-center gap-3 p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg hover:border-blue-500 dark:hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all group cursor-pointer"
-              >
-                <div className="flex-shrink-0 w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-lg flex items-center justify-center group-hover:bg-red-200 dark:group-hover:bg-red-900/50 transition-colors">
-                  <MdPictureAsPdf
-                    className="text-red-600 dark:text-red-400"
-                    size={24}
-                  />
-                </div>
-                <div className="flex-1 text-left">
-                  <p className="font-semibold text-gray-900 dark:text-gray-100">
-                    Export as PDF
+              {isExporting && exportProgress ? (
+                <div className="p-4 border-2 border-blue-200 dark:border-blue-700 rounded-lg bg-blue-50 dark:bg-blue-900/20">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="flex-shrink-0 w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+                      <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600 dark:border-blue-400"></div>
+                    </div>
+                    <div className="flex-1">
+                      <p className="font-semibold text-gray-900 dark:text-gray-100">
+                        Exporting PDFs...
+                      </p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                        {exportProgress.currentRecord && (
+                          <>Processing: {exportProgress.currentRecord}</>
+                        )}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                    <div
+                      className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                      style={{
+                        width: `${(exportProgress.current / exportProgress.total) * 100}%`,
+                      }}
+                    ></div>
+                  </div>
+                  <p className="text-xs text-gray-600 dark:text-gray-400 mt-2 text-center">
+                    {exportProgress.current} of {exportProgress.total} PDFs generated
                   </p>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
-                    Download selected data in PDF format
-                  </p>
                 </div>
-              </button>
+              ) : (
+                <button
+                  onClick={() => handleExport("pdf")}
+                  disabled={isExporting}
+                  className="flex items-center gap-3 p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg hover:border-blue-500 dark:hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all group cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <div className="flex-shrink-0 w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-lg flex items-center justify-center group-hover:bg-red-200 dark:group-hover:bg-red-900/50 transition-colors">
+                    <MdPictureAsPdf
+                      className="text-red-600 dark:text-red-400"
+                      size={24}
+                    />
+                  </div>
+                  <div className="flex-1 text-left">
+                    <p className="font-semibold text-gray-900 dark:text-gray-100">
+                      Export as PDF
+                    </p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                      {selectedCount === 1
+                        ? "Download selected data in PDF format"
+                        : `Download ${selectedCount} selected records as PDF files`}
+                    </p>
+                  </div>
+                </button>
+              )}
             </div>
           ): null}
 
