@@ -96,7 +96,7 @@ export const ExportMenu: React.FC<ExportMenuProps> = ({
             </div>
           ): null}
 
-          {!hasSelection && (
+          {!hasSelection ? (
             <div className="pt-4 border-t border-gray-200 dark:border-gray-700 cursor-pointer">
               <Button
                 variant="outlined"
@@ -107,7 +107,7 @@ export const ExportMenu: React.FC<ExportMenuProps> = ({
                 Close
               </Button>
             </div>
-          )}
+          ): null}
         </div>
       </Modal>
     </div>

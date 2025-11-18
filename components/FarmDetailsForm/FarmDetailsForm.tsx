@@ -3,6 +3,7 @@
 import React from "react";
 import { TextInput, Dropdown, Checkbox } from "@/components";
 import { createOtherOption } from "@/utils/dropdownHelpers";
+import { BaseRecommendedDoseDisplay } from "@/components/BaseRecommendedDoseDisplay";
 import type { FormData } from "../FarmerDetailsForm";
 
 type FarmDetailsFormProps = {
@@ -197,7 +198,7 @@ export function FarmDetailsForm({
         />
       </div>
       <div>
-        <div className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+        <div className="text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
           Parameters to be tested
         </div>
         <div className="grid grid-cols-3 gap-4">
@@ -221,6 +222,15 @@ export function FarmDetailsForm({
           />
         </div>
       </div>
+
+    
+      <BaseRecommendedDoseDisplay
+        plantationType={formData.plantationType}
+        age={formData.age}
+        crop={formData.crop}
+        cropOther={formData.cropOther}
+        showOnlyForApple={true}
+      />
     </>
   );
 }

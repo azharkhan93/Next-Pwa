@@ -6,6 +6,11 @@ import {
   getPhosphorusRecommendation,
   getPotassiumRecommendation,
 } from "@/utils/soilRating";
+import {
+  calculateFinalDose,
+  getBaseRecommendedDose,
+} from "@/utils/baseRecommendedDose";
+import { BaseRecommendedDoseDisplay } from "@/components/BaseRecommendedDoseDisplay";
 import type { FormData } from "../FarmerDetailsForm";
 
 type SoilRecommendationsProps = {
@@ -13,11 +18,18 @@ type SoilRecommendationsProps = {
 };
 
 export function SoilRecommendations({ formData }: SoilRecommendationsProps) {
+  // Get base recommended dose based on plantation type and age
+  const baseRD = React.useMemo(() => {
+    return getBaseRecommendedDose(formData.plantationType, formData.age);
+  }, [formData.plantationType, formData.age]);
+
   const recommendations = React.useMemo(() => {
     const results: Array<{
       name: string;
       fertilizer: string;
       value: number;
+      baseRD: number | null;
+      finalDose: number | null;
       recommendation: {
         level: string;
         increasePercent: number | null;
@@ -29,10 +41,17 @@ export function SoilRecommendations({ formData }: SoilRecommendationsProps) {
     if (formData.nitrogen && !isNaN(Number(formData.nitrogen))) {
       const nitrogenValue = Number(formData.nitrogen);
       const nitrogenRec = getNitrogenRecommendation(nitrogenValue);
+      const baseUrea = baseRD?.urea ?? null;
+      const finalUrea = baseUrea !== null 
+        ? calculateFinalDose(baseUrea, nitrogenRec.increasePercent)
+        : null;
+      
       results.push({
         name: "Nitrogen",
         fertilizer: "Urea",
         value: nitrogenValue,
+        baseRD: baseUrea,
+        finalDose: finalUrea,
         recommendation: nitrogenRec,
       });
     }
@@ -41,10 +60,17 @@ export function SoilRecommendations({ formData }: SoilRecommendationsProps) {
     if (formData.phosphorus && !isNaN(Number(formData.phosphorus))) {
       const phosphorusValue = Number(formData.phosphorus);
       const phosphorusRec = getPhosphorusRecommendation(phosphorusValue);
+      const baseDAP = baseRD?.dap ?? null;
+      const finalDAP = baseDAP !== null
+        ? calculateFinalDose(baseDAP, phosphorusRec.increasePercent)
+        : null;
+      
       results.push({
         name: "Phosphorus",
         fertilizer: "DAP",
         value: phosphorusValue,
+        baseRD: baseDAP,
+        finalDose: finalDAP,
         recommendation: phosphorusRec,
       });
     }
@@ -53,16 +79,23 @@ export function SoilRecommendations({ formData }: SoilRecommendationsProps) {
     if (formData.potassium && !isNaN(Number(formData.potassium))) {
       const potassiumValue = Number(formData.potassium);
       const potassiumRec = getPotassiumRecommendation(potassiumValue);
+      const baseMOP = baseRD?.mop ?? null;
+      const finalMOP = baseMOP !== null
+        ? calculateFinalDose(baseMOP, potassiumRec.increasePercent)
+        : null;
+      
       results.push({
         name: "Potassium",
         fertilizer: "MOP",
         value: potassiumValue,
+        baseRD: baseMOP,
+        finalDose: finalMOP,
         recommendation: potassiumRec,
       });
     }
 
     return results;
-  }, [formData.nitrogen, formData.phosphorus, formData.potassium]);
+  }, [formData.nitrogen, formData.phosphorus, formData.potassium, baseRD]);
 
   if (recommendations.length === 0) {
     return null;
@@ -85,9 +118,23 @@ export function SoilRecommendations({ formData }: SoilRecommendationsProps) {
 
   return (
     <div className="mt-6 space-y-4">
-      <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
-        Fertilizer Recommendations
-      </h3>
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+          Fertilizer Recommendations
+        </h3>
+      </div>
+
+      {/* Base Recommended Dose Display */}
+      <div className="mb-4">
+        <BaseRecommendedDoseDisplay
+          plantationType={formData.plantationType}
+          age={formData.age}
+          crop={formData.crop}
+          cropOther={formData.cropOther}
+          showOnlyForApple={false}
+        />
+      </div>
+
       <div className="space-y-4">
         {recommendations.map((rec, index) => (
           <div
@@ -123,6 +170,32 @@ export function SoilRecommendations({ formData }: SoilRecommendationsProps) {
                   </span>
                 </div>
 
+                {/* Base RD and Final Dose */}
+                {rec.baseRD !== null && (
+                  <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-md p-3">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <p className="text-xs text-green-700 dark:text-green-300 mb-1">
+                          Base RD:
+                        </p>
+                        <p className="text-sm font-semibold text-green-900 dark:text-green-100">
+                          {rec.baseRD} g/tree
+                        </p>
+                      </div>
+                      {rec.finalDose !== null && (
+                        <div>
+                          <p className="text-xs text-green-700 dark:text-green-300 mb-1">
+                            Final Recommended Dose:
+                          </p>
+                          <p className="text-sm font-semibold text-green-900 dark:text-green-100">
+                            {rec.finalDose} g/tree
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
                 {/* Recommendation Details */}
                 <div className="bg-gray-50 dark:bg-gray-900/50 rounded-md p-4 space-y-2">
                   <div className="flex items-start gap-2">
@@ -131,12 +204,12 @@ export function SoilRecommendations({ formData }: SoilRecommendationsProps) {
                     </span>
                     <div className="flex-1">
                       <p className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">
-                        Recommendation:
+                        Adjustment:
                       </p>
                       <p className="text-sm text-gray-700 dark:text-gray-300">
                         {rec.recommendation.increasePercent !== null
-                          ? `Apply ${rec.recommendation.increasePercent}% more than the Recommended Dose (RD)`
-                          : "Do not increase beyond the Recommended Dose (RD)"}
+                          ? `Apply ${rec.recommendation.increasePercent}% more than the Base Recommended Dose (RD)`
+                          : "Do not increase beyond the Base Recommended Dose (RD)"}
                       </p>
                     </div>
                   </div>

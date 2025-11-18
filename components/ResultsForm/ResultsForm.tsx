@@ -27,6 +27,7 @@ type TestResultFormProps = {
   onUpdate: (updates: Partial<TestResult>) => void;
   onRemove: () => void;
   canRemove: boolean;
+  formData: FormData;
 };
 
 function TestResultForm({
@@ -35,6 +36,7 @@ function TestResultForm({
   onUpdate,
   onRemove,
   canRemove,
+  formData,
 }: TestResultFormProps) {
   const handleChange =
     (field: keyof TestResult) => (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -318,6 +320,7 @@ function TestResultForm({
 
       <SoilRecommendations
         formData={{
+          ...formData,
           nitrogen: testResult.nitrogen,
           phosphorus: testResult.phosphorus,
           potassium: testResult.potassium,
@@ -355,6 +358,7 @@ export function ResultsForm({ formData, setFormData }: ResultsFormProps) {
             }
             onRemove={() => handleRemoveTestResult(testResult.id)}
             canRemove={testResults.length > 1}
+            formData={formData}
           />
         ))}
       </div>
