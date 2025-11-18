@@ -29,12 +29,12 @@ export default function DashboardLayout({
           {
             label: "Add Data",
             href: "/dashboard/add",
-            icon: "MdReceiptLong",
+            icon: "MdAdd",
           },
           {
             label: "View Data",
             href: "/dashboard/list",
-            icon: "MdReceiptLong",
+            icon: "MdList",
           },
         ]}
         isOpen={isSidebarOpen}

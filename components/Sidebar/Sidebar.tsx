@@ -11,6 +11,8 @@ import {
   MdSettings,
   MdClose,
   MdLogout,
+  MdAdd,
+  MdList,
 } from "react-icons/md";
 import { useRouter } from "next/navigation";
 import axios from "axios";
@@ -21,7 +23,9 @@ type IconName =
   | "MdHome"
   | "MdPeople"
   | "MdReceiptLong"
-  | "MdSettings";
+  | "MdSettings"
+  | "MdAdd"
+  | "MdList";
 
 export type SidebarItem = {
   label: string;
@@ -35,6 +39,8 @@ const iconMap: Record<IconName, React.ReactNode> = {
   MdPeople: <MdPeople size={20} />,
   MdReceiptLong: <MdReceiptLong size={20} />,
   MdSettings: <MdSettings size={20} />,
+  MdAdd: <MdAdd size={20} />,
+  MdList: <MdList size={20} />,
 };
 
 export type SidebarProps = {

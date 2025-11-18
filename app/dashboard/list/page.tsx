@@ -13,6 +13,7 @@ import {
 import React from "react";
 import { useRecords, type RecordData, useDebounce } from "@/hooks";
 import { useRouter } from "next/navigation";
+import { downloadPDF } from "@/utils/generatePDF";
 
 export default function ListPage() {
   const router = useRouter();
@@ -161,20 +162,38 @@ export default function ListPage() {
     setCurrentPage(1);
   };
 
-  const handleExport = (format: "pdf" | "word") => {
-    console.log(
-      `Exporting ${selectedRows.length} rows as ${format.toUpperCase()}`
-    );
-    console.log("Selected row indices:", selectedRows);
-    console.log(
-      "Selected data:",
-      selectedRows.map((idx) => filteredRecords[idx])
-    );
-    alert(
-      `Export functionality for ${format.toUpperCase()} format will be implemented here. Selected ${
-        selectedRows.length
-      } row(s).`
-    );
+  const handleExport = async (format: "pdf" | "word") => {
+    if (format === "pdf") {
+      const selectedRecords = selectedRows.map((idx) => filteredRecords[idx]);
+      
+      if (selectedRecords.length === 0) {
+        alert("No records selected for export.");
+        return;
+      }
+
+      // Download PDFs for each selected record
+      for (let i = 0; i < selectedRecords.length; i++) {
+        const record = selectedRecords[i];
+        if (record) {
+          try {
+            await downloadPDF(record);
+            // Add a small delay between downloads to avoid browser blocking multiple downloads
+            if (i < selectedRecords.length - 1) {
+              await new Promise((resolve) => setTimeout(resolve, 500));
+            }
+          } catch (error) {
+            console.error(`Error generating PDF for record ${record.id}:`, error);
+            alert(`Failed to generate PDF for ${record.name || record.consumerId}. Please try again.`);
+          }
+        }
+      }
+    } else if (format === "word") {
+      alert(
+        `Word export functionality will be implemented here. Selected ${
+          selectedRows.length
+        } row(s).`
+      );
+    }
   };
 
   // Generate filter options from actual data (keeping filters but not showing columns)
