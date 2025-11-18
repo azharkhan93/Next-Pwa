@@ -11,9 +11,17 @@ import {
   Loading,
 } from "@/components";
 import React from "react";
-import { useRecords, type RecordData, useDebounce } from "@/hooks";
+import { useRecords, useDebounce } from "@/hooks";
 import { useRouter } from "next/navigation";
-import { downloadPDF } from "@/utils/generatePDF";
+import {
+  getColumnConfig,
+  getFilteredRecords,
+  getStateOptions,
+  getCityOptions,
+  formatCellValue,
+  handlePDFExport,
+  showExportSummary,
+} from "@/utils/listPageHelpers";
 
 export default function ListPage() {
   const router = useRouter();
@@ -67,49 +75,7 @@ export default function ListPage() {
 
   // Column configuration with key mapping
   const columnConfig = React.useMemo(() => {
-    const columnMap: Array<{ key: keyof RecordData; label: string }> = [
-      { key: "consumerId", label: "Consumer ID" },
-      { key: "name", label: "Name" },
-      { key: "phoneNo", label: "Phone" },
-      { key: "district", label: "District" },
-      { key: "crop", label: "Crop" },
-      { key: "testResults", label: "Test Results" },
-      { key: "createdAt", label: "Created At" },
-      { key: "parentage", label: "Parentage" },
-      { key: "address", label: "Address" },
-      { key: "pinCode", label: "Pin Code" },
-      { key: "adharNo", label: "Aadhar No" },
-      { key: "khasraNo", label: "Khasra No" },
-      { key: "location", label: "Location" },
-      { key: "plantationType", label: "Plantation Type" },
-      { key: "age", label: "Age" },
-      { key: "noTrees", label: "No. of Trees" },
-      { key: "area", label: "Area" },
-      { key: "noOfSamples", label: "No. of Samples" },
-      { key: "soilDepth", label: "Soil Depth" },
-      { key: "soilType", label: "Soil Type" },
-      { key: "drainage", label: "Drainage" },
-      { key: "irrigationMethod", label: "Irrigation Method" },
-    ];
-
-    // If we have records, use Object.keys from first record to determine which columns to show
-    if (records.length > 0) {
-      const firstRecord = records[0];
-      const availableKeys = Object.keys(firstRecord) as Array<keyof RecordData>;
-
-      // Filter to only show columns that exist in the data, excluding city and stateVal
-      return columnMap.filter(
-        (col) =>
-          availableKeys.includes(col.key) &&
-          col.key !== "city" &&
-          col.key !== "stateVal"
-      );
-    }
-
-    // Default columns if no records
-    return columnMap
-      .filter((col) => col.key !== "city" && col.key !== "stateVal")
-      .slice(0, 9);
+    return getColumnConfig(records);
   }, [records]);
 
   // Generate columns from configuration
@@ -120,19 +86,7 @@ export default function ListPage() {
   // Get filtered records for edit/delete operations (only client-side filters now)
   // Search is now handled on the backend, so we only need to apply state/city filters
   const filteredRecords = React.useMemo(() => {
-    let filtered = records;
-
-    // Apply state filter
-    if (stateFilter) {
-      filtered = filtered.filter((record) => record.stateVal === stateFilter);
-    }
-
-    // Apply city filter
-    if (cityFilter) {
-      filtered = filtered.filter((record) => record.city === cityFilter);
-    }
-
-    return filtered;
+    return getFilteredRecords(records, stateFilter, cityFilter);
   }, [records, stateFilter, cityFilter]);
 
   const handleEdit = (idx: number) => {
@@ -171,7 +125,7 @@ export default function ListPage() {
   const handleExport = async (format: "pdf" | "word") => {
     if (format === "pdf") {
       const selectedRecords = selectedRows.map((idx) => filteredRecords[idx]);
-      
+
       if (selectedRecords.length === 0) {
         alert("No records selected for export.");
         return;
@@ -180,88 +134,35 @@ export default function ListPage() {
       setIsExporting(true);
       setExportProgress({ current: 0, total: selectedRecords.length });
 
-      const errors: string[] = [];
-      const successful: string[] = [];
-
-      // Download PDFs for each selected record
-      for (let i = 0; i < selectedRecords.length; i++) {
-        const record = selectedRecords[i];
-        if (record) {
-          try {
-            setExportProgress({
-              current: i + 1,
-              total: selectedRecords.length,
-              currentRecord: record.name || record.consumerId || `Record ${i + 1}`,
-            });
-
-            await downloadPDF(record);
-            successful.push(record.name || record.consumerId || `Record ${i + 1}`);
-            
-            // Add a delay between downloads to avoid browser blocking multiple downloads
-            // Increased delay for better browser compatibility
-            if (i < selectedRecords.length - 1) {
-              await new Promise((resolve) => setTimeout(resolve, 800));
-            }
-          } catch (error) {
-            console.error(`Error generating PDF for record ${record.id}:`, error);
-            const recordName = record.name || record.consumerId || `Record ${i + 1}`;
-            errors.push(recordName);
-          }
-        }
-      }
-
-      setIsExporting(false);
-      setExportProgress(null);
-
-      // Show summary of results
-      if (errors.length > 0 && successful.length > 0) {
-        alert(
-          `Export completed with some errors:\n\n` +
-          `✅ Successfully exported: ${successful.length} PDF(s)\n` +
-          `❌ Failed: ${errors.length} PDF(s)\n\n` +
-          `Failed records: ${errors.join(", ")}`
+      try {
+        const { successful, errors } = await handlePDFExport(
+          selectedRecords,
+          (progress) => setExportProgress(progress)
         );
-      } else if (errors.length > 0) {
-        alert(
-          `Failed to export all PDFs:\n\n` +
-          `❌ Failed: ${errors.length} PDF(s)\n\n` +
-          `Records: ${errors.join(", ")}\n\n` +
-          `Please try again or export them individually.`
-        );
-      } else {
-        // All successful
-        if (successful.length > 1) {
-          alert(`✅ Successfully exported ${successful.length} PDF files!`);
-        }
+
+        setIsExporting(false);
+        setExportProgress(null);
+
+        showExportSummary(successful, errors);
+      } catch (error) {
+        setIsExporting(false);
+        setExportProgress(null);
+        alert(error instanceof Error ? error.message : "Export failed");
       }
     } else if (format === "word") {
       alert(
-        `Word export functionality will be implemented here. Selected ${
-          selectedRows.length
-        } row(s).`
+        `Word export functionality will be implemented here. Selected ${selectedRows.length} row(s).`
       );
     }
   };
 
   // Generate filter options from actual data (keeping filters but not showing columns)
   const stateOptions = React.useMemo(() => {
-    const states = Array.from(
-      new Set(records.map((r) => r.stateVal).filter(Boolean))
-    ).sort();
-    return states.map((state) => ({
-      label: state as string,
-      value: state as string,
-    }));
+    return getStateOptions(records);
   }, [records]);
 
   const cityOptions = React.useMemo(() => {
-    const cities = Array.from(
-      new Set(records.map((r) => r.city).filter(Boolean))
-    ).sort();
-    return cities.map((city) => ({
-      label: city as string,
-      value: city as string,
-    }));
+    return getCityOptions(records);
   }, [records]);
 
   // Filter data based on search and filters
@@ -283,23 +184,8 @@ export default function ListPage() {
               testResults={record.testResults}
             />
           );
-        } else if (col.key === "createdAt" && rawValue) {
-          displayValue = new Date(rawValue as string).toLocaleDateString();
-        } else if (col.key === "location" && rawValue) {
-          // Extract only the first part (city/area name) from the full address
-          const locationStr = String(rawValue);
-          const firstPart = locationStr.split(",")[0].trim();
-          displayValue = firstPart || "-";
-        } else if (
-          rawValue === null ||
-          rawValue === undefined ||
-          rawValue === ""
-        ) {
-          displayValue = "-";
-        } else if (typeof rawValue === "object") {
-          displayValue = JSON.stringify(rawValue);
         } else {
-          displayValue = String(rawValue);
+          displayValue = formatCellValue(rawValue, col.key);
         }
 
         return displayValue;
@@ -308,7 +194,7 @@ export default function ListPage() {
   }, [filteredRecords, columnConfig]);
 
   if (loading && records.length === 0) {
-    return <Loading  fullScreen />;
+    return <Loading fullScreen />;
   }
 
   if (error) {
