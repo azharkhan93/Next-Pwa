@@ -35,7 +35,7 @@ export const Topbar: React.FC<TopbarProps> = ({
       </div>
       <div className="flex items-center gap-3">
         {rightSlot}
-        {onAddClick && (
+        {onAddClick ? (
           <Button
             size="sm"
             variant="primary"
@@ -45,7 +45,7 @@ export const Topbar: React.FC<TopbarProps> = ({
             <MdAdd size={18} />
             <span className="hidden sm:inline">{addText}</span>
           </Button>
-        )}
+        ) : null}
       </div>
     </header>
   );

@@ -19,6 +19,7 @@ export * from "./FinanceSummaryChart";
 export * from "./TransactionsChart";
 export * from "./ActivityChart";
 export * from "./AddRecordForm";
+export * from "./UserForm";
 export * from "./TestResultsCell";
 export * from "./Loading";
 export * from "./Suspense";

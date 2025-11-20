@@ -36,6 +36,11 @@ export default function DashboardLayout({
             href: "/dashboard/list",
             icon: "MdList",
           },
+          {
+            label: "Users",
+            href: "/dashboard/users/list",
+            icon: "MdPeople",
+          },
         ]}
         isOpen={isSidebarOpen}
         onClose={() => setIsSidebarOpen(false)}
@@ -44,7 +49,11 @@ export default function DashboardLayout({
         <Topbar
           title="Admin Panel"
           onAddClick={onButtonClick}
-          addText={pathname?.startsWith("/dashboard/add") ? "View data" : "Add new data"}
+          addText={
+            pathname?.startsWith("/dashboard/add")
+              ? "View data"
+              : "Add new data"
+          }
           onMenuClick={() => setIsSidebarOpen(!isSidebarOpen)}
         />
         <main className="p-4 lg:p-6">{children}</main>
