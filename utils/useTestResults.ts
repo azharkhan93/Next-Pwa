@@ -26,7 +26,8 @@ export function useTestResults(
     } else {
       // Ensure all test results have labTestNo
       const needsRenumbering = testResults.some(
-        (result, index) => result.labTestNo !== String(index + 1).padStart(2, "0")
+        (result, index) =>
+          result.labTestNo !== String(index + 1).padStart(2, "0")
       );
       if (needsRenumbering) {
         const renumbered = testResults.map((result, index) => ({
@@ -66,4 +67,3 @@ export function useTestResults(
     handleUpdateTestResult,
   };
 }
-
