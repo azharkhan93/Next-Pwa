@@ -16,11 +16,11 @@ type TestResultCardProps = {
 
 export const TestResultCard: React.FC<TestResultCardProps> = ({ test, index }) => {
   return (
-    <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-5 bg-gray-50 dark:bg-gray-900/50 hover:shadow-md transition-shadow">
+    <div className="border border-gray-200 rounded-lg p-5 bg-gray-50 hover:shadow-md transition-shadow">
       {/* Lab Test Header */}
-      <div className="flex items-center justify-between mb-4 pb-3 border-b border-gray-200 dark:border-gray-700">
-        <h4 className="text-lg font-semibold text-blue-600 dark:text-blue-400 flex items-center gap-2">
-          <span className="bg-blue-100 dark:bg-blue-900/30 px-3 py-1 rounded-md">
+      <div className="flex items-center justify-between mb-4 pb-3 border-b border-gray-200">
+        <h4 className="text-lg font-semibold text-blue-600 flex items-center gap-2">
+          <span className="bg-blue-100 px-3 py-1 rounded-md">
             Lab Test #{test.labTestNo || String(index + 1).padStart(2, "0")}
           </span>
         </h4>

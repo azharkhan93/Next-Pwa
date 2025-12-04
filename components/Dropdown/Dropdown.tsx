@@ -120,7 +120,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
         type="button"
         onClick={() => !disabled && setIsOpen(!isOpen)}
         disabled={disabled}
-        className="w-full px-3 py-1.5 text-sm flex items-center justify-between border border-gray-300 dark:border-gray-700 cursor-pointer rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-60 disabled:cursor-not-allowed transition-colors"
+        className="w-full px-3 py-1.5 text-sm flex items-center justify-between border border-gray-300 cursor-pointer rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-60 disabled:cursor-not-allowed transition-colors"
         aria-haspopup="listbox"
         aria-expanded={isOpen}
       >
@@ -134,7 +134,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
       </button>
 
       {isOpen ? (
-        <div className="absolute z-50 w-full mt-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-md shadow-lg max-h-60 overflow-auto">
+        <div className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
           {options.map((option) => {
             const isSelected = option.value === value;
             const isDisabled = option.disabled;
@@ -147,8 +147,8 @@ export const Dropdown: React.FC<DropdownProps> = ({
                 disabled={isDisabled}
                 className={`w-full text-left px-3 py-2 text-sm transition-colors ${
                   isSelected
-                    ? "bg-blue-100 dark:bg-blue-900 text-blue-900 dark:text-blue-100 font-medium"
-                    : "text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700"
+                    ? "bg-blue-100 text-blue-900 font-medium"
+                    : "text-gray-900 hover:bg-gray-100"
                 } ${
                   isDisabled
                     ? "opacity-50 cursor-not-allowed"

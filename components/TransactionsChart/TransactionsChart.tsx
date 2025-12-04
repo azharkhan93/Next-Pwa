@@ -27,8 +27,8 @@ export const TransactionsChart: React.FC<TransactionsChartProps> = ({
   ];
 
   return (
-    <div className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6">
-      <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+    <div className="rounded-lg border border-gray-200 bg-white p-6">
+      <h3 className="text-lg font-semibold text-gray-900 mb-4">
         Transactions
       </h3>
       <div className="grid grid-cols-2 gap-4">
@@ -36,8 +36,8 @@ export const TransactionsChart: React.FC<TransactionsChartProps> = ({
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 rounded-full bg-red-500"></div>
             <div>
-              <p className="text-sm text-gray-500 dark:text-gray-400">Errors</p>
-              <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+              <p className="text-sm text-gray-500">Errors</p>
+              <p className="text-lg font-semibold text-gray-900">
                 {errors}
               </p>
             </div>
@@ -45,8 +45,8 @@ export const TransactionsChart: React.FC<TransactionsChartProps> = ({
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 rounded-full bg-blue-500"></div>
             <div>
-              <p className="text-sm text-gray-500 dark:text-gray-400">Completed</p>
-              <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+              <p className="text-sm text-gray-500">Completed</p>
+              <p className="text-lg font-semibold text-gray-900">
                 ${completed.toFixed(2)}
               </p>
             </div>
@@ -54,8 +54,8 @@ export const TransactionsChart: React.FC<TransactionsChartProps> = ({
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 rounded-full bg-cyan-500"></div>
             <div>
-              <p className="text-sm text-gray-500 dark:text-gray-400">Refunded</p>
-              <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+              <p className="text-sm text-gray-500">Refunded</p>
+              <p className="text-lg font-semibold text-gray-900">
                 ${refunded.toFixed(2)}
               </p>
             </div>
@@ -63,8 +63,8 @@ export const TransactionsChart: React.FC<TransactionsChartProps> = ({
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
             <div>
-              <p className="text-sm text-gray-500 dark:text-gray-400">Pending</p>
-              <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+              <p className="text-sm text-gray-500">Pending</p>
+              <p className="text-lg font-semibold text-gray-900">
                 ${pending.toFixed(2)}
               </p>
             </div>
@@ -91,7 +91,7 @@ export const TransactionsChart: React.FC<TransactionsChartProps> = ({
                 y="50%"
                 textAnchor="middle"
                 dominantBaseline="middle"
-                className="text-sm font-semibold fill-gray-900 dark:fill-gray-100"
+                className="text-sm font-semibold fill-gray-900"
               >
                 {serviceNeeded}%
               </text>
@@ -100,7 +100,7 @@ export const TransactionsChart: React.FC<TransactionsChartProps> = ({
                 y="60%"
                 textAnchor="middle"
                 dominantBaseline="middle"
-                className="text-xs fill-gray-500 dark:fill-gray-400"
+                className="text-xs fill-gray-500"
               >
                 Service needed
               </text>

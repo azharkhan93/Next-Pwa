@@ -57,7 +57,7 @@ export const DataTable: React.FC<DataTableProps> = ({
   return (
     <div className={`w-full rounded-lg ${className ?? ""}`}>
       {(title || exportMenu) && (
-        <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between">
+        <div className="px-4 py-3 flex items-center justify-between">
           {title ? (
             <div className="text-sm font-medium">{title}</div>
           ) : exportMenu ? (
@@ -65,12 +65,12 @@ export const DataTable: React.FC<DataTableProps> = ({
           ) : null}
         </div>
       )}
-      <div className="max-w-[90%] lg:max-w-[90%] xl:max-w-[90%] 2xl:max-w-[100%] overflow-x-auto">
+      <div className="max-w-[90%]  overflow-x-auto">
         <table className="w-full text-left text-sm">
-          <thead className="bg-gray-50 dark:bg-gray-900/40">
+          <thead className="">
             <tr>
               {enableSelection && (
-                <th className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 whitespace-nowrap w-12">
+                <th className="px-4 py-3 font-medium text-white whitespace-nowrap w-12">
                   <Checkbox
                     checked={allSelected}
                     onChange={handleSelectAll}
@@ -82,13 +82,13 @@ export const DataTable: React.FC<DataTableProps> = ({
               {columns.map((c) => (
                 <th
                   key={c}
-                  className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 whitespace-nowrap"
+                  className="px-4 py-3 font-bold text-white whitespace-nowrap"
                 >
                   {c}
                 </th>
               ))}
               {showActions ? (
-                <th className="px-4 py-3 font-medium text-gray-600 dark:text-gray-300 text-right whitespace-nowrap">
+                <th className="px-4 py-3 font-bold text-white text-right whitespace-nowrap">
                   Actions
                 </th>
               ) : null}
@@ -98,7 +98,7 @@ export const DataTable: React.FC<DataTableProps> = ({
             {data.map((row, idx) => (
               <tr
                 key={idx}
-                className="border-t border-gray-100 dark:border-gray-800"
+                className="border-t border-gray-100"
               >
                 {enableSelection && (
                   <td className="px-4 py-3 whitespace-nowrap">
@@ -113,7 +113,7 @@ export const DataTable: React.FC<DataTableProps> = ({
                 {row.map((cell, i) => (
                   <td
                     key={i}
-                    className="px-4 py-3 text-gray-800 dark:text-gray-100 whitespace-nowrap"
+                    className="px-4 py-3 text-white font-bold whitespace-nowrap"
                   >
                     {cell}
                   </td>
@@ -124,7 +124,7 @@ export const DataTable: React.FC<DataTableProps> = ({
                       {onEditRow ? (
                         <button
                           aria-label="Edit"
-                          className="p-1 cursor-pointer rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-blue-600 dark:text-blue-400"
+                          className="p-1 cursor-pointer rounded hover:bg-gray-100 text-blue-600"
                           onClick={() => onEditRow(idx)}
                         >
                           <MdEdit size={18} />
@@ -133,7 +133,7 @@ export const DataTable: React.FC<DataTableProps> = ({
                       {onDeleteRow ? (
                         <button
                           aria-label="Delete"
-                          className="p-1 cursor-pointer rounded hover:bg-gray-100 dark:hover:bg-gray-700 text-red-600 dark:text-red-400"
+                          className="p-1 cursor-pointer rounded hover:bg-gray-100 text-red-600"
                           onClick={() => onDeleteRow(idx)}
                         >
                           <MdDelete size={18} />

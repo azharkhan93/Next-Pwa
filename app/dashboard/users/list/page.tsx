@@ -132,7 +132,7 @@ export default function UsersListPage() {
         disabled
         onChange={() => {}}
         className="m-0"
-        inputClassName="w-24 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 cursor-not-allowed"
+        inputClassName="w-24 bg-gray-100 text-gray-600 cursor-not-allowed"
       />
     ) as React.ReactElement,
     formatRole(user.role),
@@ -146,7 +146,7 @@ export default function UsersListPage() {
   if (error) {
     return (
       <div className="flex items-center justify-center p-8">
-        <div className="text-red-600 dark:text-red-400">Error: {error}</div>
+        <div className="text-red-600">Error: {error}</div>
       </div>
     );
   }

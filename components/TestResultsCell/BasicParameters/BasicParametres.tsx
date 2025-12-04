@@ -10,14 +10,14 @@ type BasicParametersProps = {
 export const BasicParameters: React.FC<BasicParametersProps> = ({ test }) => {
   return (
     <div>
-      <h5 className="text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300 uppercase tracking-wide">
+      <h5 className="text-sm font-semibold mb-2 text-gray-700 uppercase tracking-wide">
         Basic Parameters
       </h5>
       <div className="grid grid-cols-2 gap-2">
-        <div className="bg-white dark:bg-gray-800 p-3 rounded border border-gray-200 dark:border-gray-700">
-          <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">pH</div>
+        <div className="bg-white p-3 rounded border border-gray-200">
+          <div className="text-xs text-gray-500 mb-1">pH</div>
           <div className="flex items-center gap-2">
-            <span className="font-semibold text-gray-900 dark:text-gray-100">
+            <span className="font-semibold text-gray-900">
               {test.ph || "-"}
             </span>
             {test.phRating && (
@@ -27,10 +27,10 @@ export const BasicParameters: React.FC<BasicParametersProps> = ({ test }) => {
             )}
           </div>
         </div>
-        <div className="bg-white dark:bg-gray-800 p-3 rounded border border-gray-200 dark:border-gray-700">
-          <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">Organic Carbon (%)</div>
+        <div className="bg-white p-3 rounded border border-gray-200">
+          <div className="text-xs text-gray-500 mb-1">Organic Carbon (%)</div>
           <div className="flex items-center gap-2">
-            <span className="font-semibold text-gray-900 dark:text-gray-100">
+            <span className="font-semibold text-gray-900">
               {test.organicCarbon || "-"}
             </span>
             {test.organicCarbonRating && (

@@ -9,16 +9,16 @@ type PrimaryMacronutrientsProps = {
 export const PrimaryMacronutrients: React.FC<PrimaryMacronutrientsProps> = ({ test }) => {
   return (
     <div>
-      <h5 className="text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300 uppercase tracking-wide">
+      <h5 className="text-sm font-semibold mb-2 text-gray-700 uppercase tracking-wide">
         Primary Macronutrients
       </h5>
       <div className="space-y-2">
-        <div className="bg-white dark:bg-gray-800 p-3 rounded border border-gray-200 dark:border-gray-700">
+        <div className="bg-white p-3 rounded border border-gray-200">
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">Nitrogen (N)</div>
+              <div className="text-xs text-gray-500 mb-1">Nitrogen (N)</div>
               <div className="flex items-center gap-2">
-                <span className="font-semibold text-gray-900 dark:text-gray-100">
+                <span className="font-semibold text-gray-900">
                   {test.nitrogen || "-"} kg/ha
                 </span>
                 {test.nitrogenRating && (
@@ -30,12 +30,12 @@ export const PrimaryMacronutrients: React.FC<PrimaryMacronutrientsProps> = ({ te
             </div>
           </div>
         </div>
-        <div className="bg-white dark:bg-gray-800 p-3 rounded border border-gray-200 dark:border-gray-700">
+        <div className="bg-white p-3 rounded border border-gray-200">
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">Phosphorus (P)</div>
+              <div className="text-xs text-gray-500 mb-1">Phosphorus (P)</div>
               <div className="flex items-center gap-2">
-                <span className="font-semibold text-gray-900 dark:text-gray-100">
+                <span className="font-semibold text-gray-900">
                   {test.phosphorus || "-"} kg/ha
                 </span>
                 {test.phosphorusRating && (
@@ -47,12 +47,12 @@ export const PrimaryMacronutrients: React.FC<PrimaryMacronutrientsProps> = ({ te
             </div>
           </div>
         </div>
-        <div className="bg-white dark:bg-gray-800 p-3 rounded border border-gray-200 dark:border-gray-700">
+        <div className="bg-white p-3 rounded border border-gray-200">
           <div className="flex items-center justify-between">
             <div>
-              <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">Potassium (K)</div>
+              <div className="text-xs text-gray-500 mb-1">Potassium (K)</div>
               <div className="flex items-center gap-2">
-                <span className="font-semibold text-gray-900 dark:text-gray-100">
+                <span className="font-semibold text-gray-900">
                   {test.potassium || "-"} kg/ha
                 </span>
                 {test.potassiumRating && (

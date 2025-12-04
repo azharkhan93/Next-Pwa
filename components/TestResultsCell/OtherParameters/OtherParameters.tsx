@@ -12,20 +12,20 @@ export const OtherParameters: React.FC<OtherParametersProps> = ({ test }) => {
 
   return (
     <div>
-      <h5 className="text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300 uppercase tracking-wide">
+      <h5 className="text-sm font-semibold mb-2 text-gray-700 uppercase tracking-wide">
         Other Parameters
       </h5>
       <div className="grid grid-cols-2 gap-2">
         {test.sodium && (
-          <div className="bg-white dark:bg-gray-800 p-2 rounded border border-gray-200 dark:border-gray-700">
-            <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">Sodium (Na)</div>
-            <div className="font-semibold text-gray-900 dark:text-gray-100">{test.sodium}</div>
+          <div className="bg-white p-2 rounded border border-gray-200">
+            <div className="text-xs text-gray-500 mb-1">Sodium (Na)</div>
+            <div className="font-semibold text-gray-900">{test.sodium}</div>
           </div>
         )}
         {test.electricalConductivity && (
-          <div className="bg-white dark:bg-gray-800 p-2 rounded border border-gray-200 dark:border-gray-700">
-            <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">EC</div>
-            <div className="font-semibold text-gray-900 dark:text-gray-100">{test.electricalConductivity}</div>
+          <div className="bg-white p-2 rounded border border-gray-200">
+            <div className="text-xs text-gray-500 mb-1">EC</div>
+            <div className="font-semibold text-gray-900">{test.electricalConductivity}</div>
           </div>
         )}
       </div>

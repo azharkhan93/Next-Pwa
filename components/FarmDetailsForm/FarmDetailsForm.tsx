@@ -198,7 +198,7 @@ export function FarmDetailsForm({
         />
       </div>
       <div>
-        <div className="text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
+        <div className="text-sm font-bold text-gray-700  mb-2">
           Parameters to be tested
         </div>
         <div className="grid grid-cols-3 gap-4">

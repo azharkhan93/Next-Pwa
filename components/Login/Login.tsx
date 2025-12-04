@@ -52,7 +52,7 @@ export const Login: React.FC<LoginProps> = ({
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-slate-900 via-indigo-900 to-sky-700 dark:from-gray-950 dark:via-slate-900 dark:to-indigo-950 relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-slate-900 via-indigo-900 to-sky-700 relative overflow-hidden">
       <div className="pointer-events-none absolute -top-40 -right-40 h-96 w-96 rounded-full bg-gradient-to-br from-indigo-500/30 to-cyan-400/20 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-40 -left-40 h-96 w-96 rounded-full bg-gradient-to-br from-emerald-400/20 to-blue-500/20 blur-3xl" />
       <form

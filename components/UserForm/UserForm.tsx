@@ -237,7 +237,7 @@ export function UserForm({ userId, onSuccess, onCancel }: UserFormProps) {
   if (fetching) {
     return (
       <div className="flex items-center justify-center p-8">
-        <div className="text-gray-600 dark:text-gray-400">
+        <div className="text-gray-600">
           Loading user data...
         </div>
       </div>
@@ -246,7 +246,7 @@ export function UserForm({ userId, onSuccess, onCancel }: UserFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm space-y-4">
+      <div className="bg-white rounded-lg p-6 shadow-sm space-y-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <TextInput
             id="email"
@@ -303,8 +303,8 @@ export function UserForm({ userId, onSuccess, onCancel }: UserFormProps) {
       </div>
 
       {success && (
-        <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
-          <p className="text-sm text-green-800 dark:text-green-300">
+        <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+          <p className="text-sm text-green-800">
             ✅ User {isEditMode ? "updated" : "created"} successfully!{" "}
             {onSuccess ? "Closing..." : "Redirecting..."}
           </p>

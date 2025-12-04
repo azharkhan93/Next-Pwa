@@ -14,9 +14,9 @@ export default function TestPDFPage() {
     <div className="p-8 space-y-6">
       <h1 className="text-2xl font-bold">Test PDF Generation</h1>
       
-      <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
+      <div className="bg-white p-6 rounded-lg shadow">
         <h2 className="text-xl font-semibold mb-4">Download PDF with Fetched Data</h2>
-        <p className="text-gray-600 dark:text-gray-400 mb-4">
+        <p className="text-gray-600 mb-4">
           Select a record from the list below to download its PDF. The PDF will use data fetched from the backend.
         </p>
         
@@ -29,7 +29,7 @@ export default function TestPDFPage() {
               <select
                 value={selectedRecordId}
                 onChange={(e) => setSelectedRecordId(e.target.value)}
-                className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700"
+                className="w-full p-2 border border-gray-300 rounded-md bg-white"
               >
                 <option value="">-- Select a record --</option>
                 {records.map((record) => (
@@ -47,13 +47,13 @@ export default function TestPDFPage() {
             )}
           </div>
         ) : (
-          <p className="text-gray-600 dark:text-gray-400">No records found. Please add some records first.</p>
+          <p className="text-gray-600">No records found. Please add some records first.</p>
         )}
       </div>
 
-      <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
+      <div className="bg-white p-6 rounded-lg shadow">
         <h2 className="text-xl font-semibold mb-4">Test with Dummy Data (Legacy)</h2>
-        <p className="text-gray-600 dark:text-gray-400 mb-4">
+        <p className="text-gray-600 mb-4">
           For testing purposes only - uses hardcoded dummy data.
         </p>
         
@@ -67,9 +67,9 @@ export default function TestPDFPage() {
         </div>
       </div>
 
-      <div className="bg-gray-50 dark:bg-gray-900 p-6 rounded-lg">
+      <div className="bg-gray-50 p-6 rounded-lg">
         <h3 className="text-lg font-semibold mb-2">PDF Features:</h3>
-        <ul className="list-disc list-inside space-y-1 text-gray-700 dark:text-gray-300">
+        <ul className="list-disc list-inside space-y-1 text-gray-700">
           <li>Header with logo placeholder and company address (left column)</li>
           <li>Name, Customer ID, and Date (right column)</li>
           <li>Table format with parameters in left column</li>

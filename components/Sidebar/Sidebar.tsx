@@ -80,7 +80,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         />
       )}
       <nav
-        className={`fixed inset-y-0 left-0 z-40 w-64 border-r border-purple-300/20 dark:border-purple-500/20 bg-gray-800 transform transition-transform duration-300 ease-in-out flex flex-col shadow-lg shadow-purple-500/20 ${
+        className={`fixed inset-y-0 left-0 z-40 w-64 border-r border-purple-300/20  bg-gray-800 transform transition-transform duration-300 ease-in-out flex flex-col shadow-lg shadow-purple-500/20 ${
           isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         }`}
       >
@@ -91,13 +91,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 <div className="w-8 h-8 bg-gradient-to-br from-purple-600 via-purple-500 to-blue-700 rounded-lg flex items-center justify-center shadow-md shadow-purple-500/50">
                   <MdDashboard className="text-white" size={20} />
                 </div>
-                <div className="text-xl font-bold text-purple-900 dark:text-purple-100">
+                <div className="text-xl font-bold text-purple-100">
                   Dashboard
                 </div>
               </div>
               <button
                 onClick={onClose}
-                className="lg:hidden p-2 text-purple-700 dark:text-purple-300 hover:bg-purple-100/50 dark:hover:bg-purple-800/30 rounded-lg transition-all duration-200 hover:scale-110 active:scale-95"
+                className="lg:hidden p-2 text-purple-300 hover:bg-purple-800/30 rounded-lg transition-all duration-200 hover:scale-110 active:scale-95"
                 aria-label="Close menu"
               >
                 <MdClose size={20} />
@@ -118,7 +118,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                       className={`group relative flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200 ${
                         active
                           ? "bg-gradient-to-r from-purple-600 to-blue-700 text-white shadow-lg shadow-purple-600/40 scale-[1.02]"
-                          : "text-purple-900 dark:text-purple-200 hover:bg-purple-100/50 dark:hover:bg-purple-800/30 hover:translate-x-1"
+                          : "text-purple-900  hover:bg-purple-100/50  hover:translate-x-1"
                       }`}
                     >
                       {active && (
@@ -128,7 +128,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                         className={`transition-transform duration-200 ${
                           active
                             ? "text-white"
-                            : "text-purple-600 dark:text-purple-300 group-hover:text-purple-800 dark:group-hover:text-purple-100"
+                            : "text-purple-300 group-hover:text-purple-100"
                         }`}
                       >
                         {item.icon ? iconMap[item.icon] : null}
@@ -137,7 +137,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                         className={`transition-colors duration-200 ${
                           active
                             ? "text-white font-semibold"
-                            : "font-medium text-purple-900 dark:text-purple-200 group-hover:text-purple-950 dark:group-hover:text-purple-100"
+                            : "font-medium text-purple-200 group-hover:text-purple-100"
                         }`}
                       >
                         {item.label}
@@ -149,7 +149,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </ul>
           </div>
         </div>
-        <div className="p-4 pt-3 border-t border-purple-300/30 dark:border-purple-600/30 bg-purple-100/30 dark:bg-purple-900/30">
+        <div className="p-4 pt-3 border-t border-purple-600/30 bg-purple-900/30">
           <Button
             variant="error"
             size="md"

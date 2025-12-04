@@ -104,7 +104,7 @@ export const Pagination: React.FC<PaginationProps> = ({
             1
           </Button>
           {visiblePages[0] > 2 && (
-            <span className="px-2 text-gray-500 dark:text-gray-400">...</span>
+            <span className="px-2 text-gray-500">...</span>
           )}
         </>
       )}
@@ -126,7 +126,7 @@ export const Pagination: React.FC<PaginationProps> = ({
       {visiblePages[visiblePages.length - 1] < totalPages && (
         <>
           {visiblePages[visiblePages.length - 1] < totalPages - 1 && (
-            <span className="px-2 text-gray-500 dark:text-gray-400">...</span>
+            <span className="px-2 text-gray-500">...</span>
           )}
           <Button
             variant="outlined"

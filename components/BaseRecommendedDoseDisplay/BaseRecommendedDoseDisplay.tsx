@@ -49,49 +49,49 @@ export function BaseRecommendedDoseDisplay({
   }
 
   return (
-    <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
       <div className="flex items-center justify-between mb-3">
-        <h4 className="text-sm font-semibold text-blue-900 dark:text-blue-100">
+        <h4 className="text-sm font-semibold text-blue-900">
           Base Recommended Dose (RD) per Tree
         </h4>
         <div className="flex items-center gap-2">
-          <span className="px-2 py-1 rounded text-xs font-medium bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400">
+          <span className="px-2 py-1 rounded text-xs font-medium bg-purple-100 text-purple-800">
             {plantationTypeDisplay}
           </span>
           {age && (
-            <span className="text-xs text-blue-700 dark:text-blue-300">
+            <span className="text-xs text-blue-700">
               Age: {age} years
             </span>
           )}
         </div>
       </div>
       <div className="grid grid-cols-3 gap-4">
-        <div className="bg-white dark:bg-gray-800 rounded-md p-3 border border-blue-200 dark:border-blue-700">
-          <p className="text-xs text-blue-700 dark:text-blue-300 mb-1 font-medium">
+        <div className="bg-white rounded-md p-3 border border-blue-200">
+          <p className="text-xs text-blue-700 mb-1 font-medium">
             Urea
           </p>
-          <p className="text-lg font-bold text-blue-900 dark:text-blue-100">
+          <p className="text-lg font-bold text-blue-900">
             {baseRD.urea} g/tree
           </p>
         </div>
-        <div className="bg-white dark:bg-gray-800 rounded-md p-3 border border-blue-200 dark:border-blue-700">
-          <p className="text-xs text-blue-700 dark:text-blue-300 mb-1 font-medium">
+        <div className="bg-white rounded-md p-3 border border-blue-200">
+          <p className="text-xs text-blue-700 mb-1 font-medium">
             DAP
           </p>
-          <p className="text-lg font-bold text-blue-900 dark:text-blue-100">
+          <p className="text-lg font-bold text-blue-900">
             {baseRD.dap} g/tree
           </p>
         </div>
-        <div className="bg-white dark:bg-gray-800 rounded-md p-3 border border-blue-200 dark:border-blue-700">
-          <p className="text-xs text-blue-700 dark:text-blue-300 mb-1 font-medium">
+        <div className="bg-white rounded-md p-3 border border-blue-200">
+          <p className="text-xs text-blue-700 mb-1 font-medium">
             MOP
           </p>
-          <p className="text-lg font-bold text-blue-900 dark:text-blue-100">
+          <p className="text-lg font-bold text-blue-900">
             {baseRD.mop} g/tree
           </p>
         </div>
       </div>
-      <p className="text-xs text-blue-600 dark:text-blue-400 mt-3 italic">
+      <p className="text-xs text-blue-600 mt-3 italic">
         * These are base recommended doses. Final recommendations will be
         adjusted based on soil test results.
       </p>

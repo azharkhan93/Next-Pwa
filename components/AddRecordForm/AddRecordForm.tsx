@@ -294,9 +294,9 @@ export function AddRecordForm({ recordId }: AddRecordFormProps = {} as AddRecord
 
   return (
     <div className="mx-auto">
-      <h2 className="text-xl font-semibold mb-4">{isEditMode ? "Edit Record" : "Add New Record"}</h2>
+      <h2 className="text-xl text-white font-semibold mb-4">{isEditMode ? "Edit Record" : "Add New Record"}</h2>
       <div className="mb-4">
-        <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-300">
+        <div className="flex items-center justify-between text-sm text-white">
           {steps.map((s, idx) => (
             <div key={s.title} className="flex-1 flex items-center">
               <div
@@ -306,7 +306,7 @@ export function AddRecordForm({ recordId }: AddRecordFormProps = {} as AddRecord
                   className={`h-6 w-6 rounded-full flex items-center justify-center text-xs font-semibold ${
                     idx <= step
                       ? "bg-blue-600 text-white"
-                      : "bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300"
+                      : "bg-gray-200 text-black"
                   }`}
                 >
                   {idx + 1}
@@ -318,7 +318,7 @@ export function AddRecordForm({ recordId }: AddRecordFormProps = {} as AddRecord
             </div>
           ))}
         </div>
-        <div className="mt-3 h-2 w-full rounded-full bg-gray-200 dark:bg-gray-800 overflow-hidden">
+        <div className="mt-3 h-2 w-full rounded-full bg-gray-200 overflow-hidden">
           <div
             className="h-full bg-blue-600 transition-all"
             style={{ width: `${progressPct}%` }}

@@ -47,15 +47,15 @@ export const WeeklyReportChart: React.FC<WeeklyReportChartProps> = ({
   effectivityRate = 63,
 }) => {
   return (
-    <div className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6">
-      <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+    <div className="rounded-lg border border-gray-200 bg-white p-6">
+      <h3 className="text-lg font-semibold text-gray-900 mb-4">
         Weekly Report
       </h3>
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm text-gray-500 dark:text-gray-400">Total Save</p>
-            <p className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+            <p className="text-sm text-gray-500">Total Save</p>
+            <p className="text-xl font-semibold text-gray-900">
               ${totalSave.toFixed(2)}
             </p>
           </div>
@@ -76,8 +76,8 @@ export const WeeklyReportChart: React.FC<WeeklyReportChartProps> = ({
 
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm text-gray-500 dark:text-gray-400">Electro Save</p>
-            <p className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+            <p className="text-sm text-gray-500">Electro Save</p>
+            <p className="text-xl font-semibold text-gray-900">
               ${electroSave.toFixed(2)}
             </p>
           </div>
@@ -98,8 +98,8 @@ export const WeeklyReportChart: React.FC<WeeklyReportChartProps> = ({
 
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm text-gray-500 dark:text-gray-400">Gas Save</p>
-            <p className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+            <p className="text-sm text-gray-500">Gas Save</p>
+            <p className="text-xl font-semibold text-gray-900">
               ${gasSave.toFixed(2)}
             </p>
           </div>
@@ -118,16 +118,16 @@ export const WeeklyReportChart: React.FC<WeeklyReportChartProps> = ({
           </div>
         </div>
 
-        <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+        <div className="mt-4 pt-4 border-t border-gray-200">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-gray-500 dark:text-gray-400">
+            <span className="text-sm text-gray-500">
               Effectivity Rate
             </span>
-            <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+            <span className="text-sm font-semibold text-gray-900">
               {effectivityRate}%
             </span>
           </div>
-          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+          <div className="w-full bg-gray-200 rounded-full h-2">
             <div
               className="bg-blue-600 h-2 rounded-full transition-all"
               style={{ width: `${effectivityRate}%` }}

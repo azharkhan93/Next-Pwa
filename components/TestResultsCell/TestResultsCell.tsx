@@ -17,7 +17,7 @@ export const TestResultsCell: React.FC<TestResultsCellProps> = ({
 
   if (!testResults || !Array.isArray(testResults) || testResults.length === 0) {
     return (
-      <span className="text-gray-500 dark:text-gray-400 text-sm">No tests</span>
+      <span className="text-gray-500 text-sm">No tests</span>
     );
   }
 
@@ -31,7 +31,7 @@ export const TestResultsCell: React.FC<TestResultsCellProps> = ({
       <button
         type="button"
         onClick={toggleExpanded}
-        className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/30 text-blue-700 dark:text-blue-300 transition-colors text-sm font-medium cursor-pointer"
+        className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-blue-50 hover:bg-blue-100 text-blue-700 transition-colors text-sm font-medium cursor-pointer"
       >
         <MdScience size={16} className="cursor-pointer" />
         <span>  

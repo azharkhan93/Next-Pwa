@@ -66,7 +66,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
       {hasActiveFilters && onClearAll && (
         <button
           onClick={onClearAll}
-          className="ml-auto flex items-center gap-1 px-3 py-1.5 text-sm text-gray-600  hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 rounded-md transition-colors"
+          className="ml-auto flex items-center gap-1 px-3 py-1.5 text-sm text-gray-600  hover:text-gray-900 hover:bg-gray-100 rounded-md transition-colors"
         >
           <MdClear size={16} />
           <span>Clear all</span>

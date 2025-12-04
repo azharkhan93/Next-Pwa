@@ -22,7 +22,7 @@ export default function DashboardLayout({
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gray-50">
       <Sidebar
         items={[
           { label: "Home", href: "/dashboard", icon: "MdHome" },
@@ -45,7 +45,7 @@ export default function DashboardLayout({
         isOpen={isSidebarOpen}
         onClose={() => setIsSidebarOpen(false)}
       />
-      <div className="lg:ml-64 min-h-screen bg-gradient-to-br from-slate-800 via-slate-700 to-blue-900 dark:from-slate-900 dark:via-slate-800 dark:to-blue-950">
+      <div className="lg:ml-64 min-h-screen bg-gradient-to-br from-slate-800 via-slate-700 to-blue-900">
         <Topbar
           title="Admin Panel"
           onAddClick={onButtonClick}

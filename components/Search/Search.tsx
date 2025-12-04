@@ -29,7 +29,7 @@ export const Search: React.FC<SearchProps> = ({
        
       />
       <div className="absolute inset-y-0 right-0 flex items-center  pointer-events-none z-10 top-[8px]">
-        <MdSearch className="w-6 h-6 text-gray-400 dark:text-gray-500" />
+        <MdSearch className="w-6 h-6 text-gray-400" />
       </div>
     </div>
   );

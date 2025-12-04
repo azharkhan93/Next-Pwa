@@ -33,7 +33,7 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
       widthClassName="max-w-md"
     >
       {description ? (
-        <div className="mb-4 text-sm text-gray-700 dark:text-gray-200">
+        <div className="mb-4 text-sm text-gray-700">
           {description}
         </div>
       ) : null}

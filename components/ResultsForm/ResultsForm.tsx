@@ -45,16 +45,16 @@ function TestResultForm({
     };
 
   return (
-    <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 bg-gray-50 dark:bg-gray-900/50 space-y-6">
+    <div className=" rounded-lg p-4  space-y-6">
       <div className="flex items-center justify-between mb-4">
-        <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+        <h4 className="text-sm font-semibold text-white">
           Test Result {index + 1} {testResult.labTestNo && `(Lab #${testResult.labTestNo})`}
         </h4>
         {canRemove && (
           <button
             type="button"
             onClick={onRemove}
-            className="p-1.5 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded transition-colors"
+            className="p-1.5 text-red-600 hover:bg-red-50 rounded transition-colors"
             aria-label="Remove test result"
           >
             <MdDelete size={20} />
@@ -64,7 +64,7 @@ function TestResultForm({
 
       {/* Basic Parameters */}
       <div>
-        <h5 className="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-3 uppercase tracking-wide">
+        <h5 className="text-xs font-semibold text-white mb-3 uppercase tracking-wide">
           Basic Parameters
         </h5>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -121,7 +121,7 @@ function TestResultForm({
 
       {/* Primary Macronutrients */}
       <div>
-        <h5 className="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-3 uppercase tracking-wide">
+        <h5 className="text-xs font-semibold text-white mb-3 uppercase tracking-wide">
           Primary Macronutrients
         </h5>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -202,7 +202,7 @@ function TestResultForm({
 
       {/* Secondary Macronutrients */}
       <div>
-        <h5 className="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-3 uppercase tracking-wide">
+        <h5 className="text-xs font-semibold text-white mb-3 uppercase tracking-wide">
           Secondary Macronutrients
         </h5>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -232,7 +232,7 @@ function TestResultForm({
 
       {/* Micronutrients */}
       <div>
-        <h5 className="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-3 uppercase tracking-wide">
+        <h5 className="text-xs font-semibold text-white mb-3 uppercase tracking-wide">
           Micronutrients
         </h5>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -297,7 +297,7 @@ function TestResultForm({
 
       {/* Other Parameters */}
       <div>
-        <h5 className="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-3 uppercase tracking-wide">
+        <h5 className="text-xs font-semibold text-white mb-3 uppercase tracking-wide">
           Other Parameters
         </h5>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

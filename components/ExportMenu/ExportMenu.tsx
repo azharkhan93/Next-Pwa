@@ -71,11 +71,11 @@ export const ExportMenu: React.FC<ExportMenuProps> = ({
         widthClassName="max-w-md"
       >
         <div className="space-y-4">
-          <div className="text-sm text-gray-600 dark:text-gray-400">
+          <div className="text-sm text-gray-600">
             {hasSelection ? (
               <p>
                 Export{" "}
-                <span className="font-semibold text-gray-900 dark:text-gray-100">
+                <span className="font-semibold text-gray-900">
                   {selectedCount}
                 </span>{" "}
                 selected
@@ -89,23 +89,23 @@ export const ExportMenu: React.FC<ExportMenuProps> = ({
           {hasSelection ? (
             <div className="grid grid-cols-1 gap-3">
               {isExporting && exportProgress ? (
-                <div className="p-4 border-2 border-blue-200 dark:border-blue-700 rounded-lg bg-blue-50 dark:bg-blue-900/20">
+                <div className="p-4 border-2 border-blue-200 rounded-lg bg-blue-50">
                   <div className="flex items-center gap-3 mb-3">
-                    <div className="flex-shrink-0 w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
-                      <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600 dark:border-blue-400"></div>
+                    <div className="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                      <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
                     </div>
                     <div className="flex-1">
-                      <p className="font-semibold text-gray-900 dark:text-gray-100">
+                      <p className="font-semibold text-gray-900">
                         Exporting PDFs...
                       </p>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                      <p className="text-sm text-gray-600">
                         {exportProgress.currentRecord && (
                           <>Processing: {exportProgress.currentRecord}</>
                         )}
                       </p>
                     </div>
                   </div>
-                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                  <div className="w-full bg-gray-200 rounded-full h-2">
                     <div
                       className="bg-blue-600 h-2 rounded-full transition-all duration-300"
                       style={{
@@ -113,7 +113,7 @@ export const ExportMenu: React.FC<ExportMenuProps> = ({
                       }}
                     ></div>
                   </div>
-                  <p className="text-xs text-gray-600 dark:text-gray-400 mt-2 text-center">
+                  <p className="text-xs text-gray-600 mt-2 text-center">
                     {exportProgress.current} of {exportProgress.total} PDFs generated
                   </p>
                 </div>
@@ -121,19 +121,19 @@ export const ExportMenu: React.FC<ExportMenuProps> = ({
                 <button
                   onClick={() => handleExport("pdf")}
                   disabled={isExporting}
-                  className="flex items-center gap-3 p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg hover:border-blue-500 dark:hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all group cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex items-center gap-3 p-4 border-2 border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-all group cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <div className="flex-shrink-0 w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-lg flex items-center justify-center group-hover:bg-red-200 dark:group-hover:bg-red-900/50 transition-colors">
+                  <div className="flex-shrink-0 w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center group-hover:bg-red-200 transition-colors">
                     <MdPictureAsPdf
-                      className="text-red-600 dark:text-red-400"
+                      className="text-red-600"
                       size={24}
                     />
                   </div>
                   <div className="flex-1 text-left">
-                    <p className="font-semibold text-gray-900 dark:text-gray-100">
+                    <p className="font-semibold text-gray-900">
                       Export as PDF
                     </p>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                    <p className="text-sm text-gray-500">
                       {selectedCount === 1
                         ? "Download selected data in PDF format"
                         : `Download ${selectedCount} selected records as PDF files`}
@@ -145,7 +145,7 @@ export const ExportMenu: React.FC<ExportMenuProps> = ({
           ): null}
 
           {!hasSelection ? (
-            <div className="pt-4 border-t border-gray-200 dark:border-gray-700 cursor-pointer">
+            <div className="pt-4 border-t border-gray-200 cursor-pointer">
               <Button
                 variant="outlined"
                 size="md"

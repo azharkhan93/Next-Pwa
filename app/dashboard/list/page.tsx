@@ -3,7 +3,6 @@
 import {
   DataTable,
   ConfirmDialog,
-  FilterBar,
   Search,
   Pagination,
   ExportMenu,
@@ -15,9 +14,6 @@ import { useRecords, useDebounce } from "@/hooks";
 import { useRouter } from "next/navigation";
 import {
   getColumnConfig,
-  getFilteredRecords,
-  getStateOptions,
-  getCityOptions,
   formatCellValue,
   handlePDFExport,
   showExportSummary,
@@ -47,8 +43,6 @@ export default function ListPage() {
     search: debouncedSearch,
   });
 
-  const [stateFilter, setStateFilter] = React.useState("");
-  const [cityFilter, setCityFilter] = React.useState("");
   const [confirmOpen, setConfirmOpen] = React.useState(false);
   const [selectedRow, setSelectedRow] = React.useState<string | null>(null);
   const [selectedRows, setSelectedRows] = React.useState<number[]>([]);
@@ -83,11 +77,10 @@ export default function ListPage() {
     return columnConfig.map((col) => col.label);
   }, [columnConfig]);
 
-  // Get filtered records for edit/delete operations (only client-side filters now)
-  // Search is now handled on the backend, so we only need to apply state/city filters
+  // Use records directly since filters are removed
   const filteredRecords = React.useMemo(() => {
-    return getFilteredRecords(records, stateFilter, cityFilter);
-  }, [records, stateFilter, cityFilter]);
+    return records;
+  }, [records]);
 
   const handleEdit = (idx: number) => {
     const record = filteredRecords[idx];
@@ -115,12 +108,6 @@ export default function ListPage() {
     }
   };
 
-  const handleClearFilters = () => {
-    setStateFilter("");
-    setCityFilter("");
-    setSearchValue("");
-    setCurrentPage(1);
-  };
 
   const handleExport = async (format: "pdf" | "word") => {
     if (format === "pdf") {
@@ -156,16 +143,8 @@ export default function ListPage() {
     }
   };
 
-  // Generate filter options from actual data (keeping filters but not showing columns)
-  const stateOptions = React.useMemo(() => {
-    return getStateOptions(records);
-  }, [records]);
 
-  const cityOptions = React.useMemo(() => {
-    return getCityOptions(records);
-  }, [records]);
-
-  // Filter data based on search and filters
+  // Transform records to table data format
   const filteredData = React.useMemo(() => {
     // Transform filtered records to table data format
     return filteredRecords.map((record) => {
@@ -200,40 +179,23 @@ export default function ListPage() {
   if (error) {
     return (
       <div className="flex items-center justify-center p-8">
-        <div className="text-red-600 dark:text-red-400">Error: {error}</div>
+        <div className="text-red-600">Error: {error}</div>
       </div>
     );
   }
 
   return (
     <div className="space-y-4">
-      {/* Search and Filter Bar */}
-      <FilterBar
-        searchComponent={
+      {/* Search Bar - Centered */}
+      <div className="flex justify-center">
+        <div className="w-full max-w-md">
           <Search
             value={searchValue}
             onChange={setSearchValue}
             placeholder="Search by Consumer ID, Phone, or Lab Test No..."
           />
-        }
-        filters={[
-          {
-            label: "State",
-            key: "state",
-            options: stateOptions,
-            value: stateFilter,
-            onChange: setStateFilter,
-          },
-          {
-            label: "City",
-            key: "city",
-            options: cityOptions,
-            value: cityFilter,
-            onChange: setCityFilter,
-          },
-        ]}
-        onClearAll={handleClearFilters}
-      />
+        </div>
+      </div>
 
       {/* Data Table */}
       <DataTable

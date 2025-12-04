@@ -14,7 +14,7 @@ export const FormError: React.FC<FormErrorProps> = ({ message = null, id, classN
     <p
       id={id}
       role="alert"
-      className={`text-sm text-red-600 dark:text-red-400 ${className ?? ""}`.trim()}
+      className={`text-sm text-red-600 ${className ?? ""}`.trim()}
     >
       {message}
     </p>

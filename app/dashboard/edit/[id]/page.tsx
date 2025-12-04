@@ -11,7 +11,7 @@ export default function EditRecordPage() {
   if (!recordId) {
     return (
       <div className="flex items-center justify-center p-8">
-        <div className="text-red-600 dark:text-red-400">Invalid record ID</div>
+        <div className="text-red-600">Invalid record ID</div>
       </div>
     );
   }

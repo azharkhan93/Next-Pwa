@@ -35,12 +35,12 @@ export const Checkbox: React.FC<CheckboxProps> = ({
         checked={checked}
         onChange={(e) => onChange(e.target.checked)}
         disabled={disabled}
-        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
       />
       {label && (
         <label
           htmlFor={inputId}
-          className={`ml-2 text-sm text-gray-900 dark:text-gray-100 ${
+          className={`ml-2 text-sm text-gray-900 ${
             labelClassName ?? ""
           } ${disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
         >

@@ -104,22 +104,22 @@ export function SoilRecommendations({ formData }: SoilRecommendationsProps) {
   const getLevelColor = (level: string) => {
     switch (level) {
       case "Low":
-        return "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400";
+        return "bg-red-100 text-red-800";
       case "Medium":
-        return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400";
+        return "bg-yellow-100 text-yellow-800";
       case "High":
-        return "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400";
+        return "bg-green-100 text-green-800";
       case "Very High":
-        return "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400";
+        return "bg-blue-100 text-blue-800";
       default:
-        return "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300";
+        return "bg-gray-100 text-gray-800";
     }
   };
 
   return (
     <div className="mt-6 space-y-4">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+        <h3 className="text-lg font-semibold text-gray-900">
           Fertilizer Recommendations
         </h3>
       </div>
@@ -139,7 +139,7 @@ export function SoilRecommendations({ formData }: SoilRecommendationsProps) {
         {recommendations.map((rec, index) => (
           <div
             key={rec.name}
-            className="border border-gray-200 dark:border-gray-700 rounded-lg p-5 bg-white dark:bg-gray-800 shadow-sm"
+            className="border border-gray-200 rounded-lg p-5 bg-white shadow-sm"
           >
             <div className="flex items-start gap-4">
               {/* Step Number */}
@@ -154,10 +154,10 @@ export function SoilRecommendations({ formData }: SoilRecommendationsProps) {
                 {/* Header */}
                 <div className="flex items-start justify-between gap-4">
                   <div>
-                    <h4 className="font-semibold text-gray-900 dark:text-gray-100 text-base">
+                    <h4 className="font-semibold text-gray-900 text-base">
                       {rec.name} ({rec.fertilizer})
                     </h4>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                    <p className="text-sm text-gray-600 mt-1">
                       Soil Test Result: <span className="font-medium">{rec.value} Kg ha⁻¹</span>
                     </p>
                   </div>
@@ -172,22 +172,22 @@ export function SoilRecommendations({ formData }: SoilRecommendationsProps) {
 
                 {/* Base RD and Final Dose */}
                 {rec.baseRD !== null && (
-                  <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-md p-3">
+                  <div className="bg-green-50 border border-green-200 rounded-md p-3">
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <p className="text-xs text-green-700 dark:text-green-300 mb-1">
+                        <p className="text-xs text-green-700 mb-1">
                           Base RD:
                         </p>
-                        <p className="text-sm font-semibold text-green-900 dark:text-green-100">
+                        <p className="text-sm font-semibold text-green-900">
                           {rec.baseRD} g/tree
                         </p>
                       </div>
                       {rec.finalDose !== null && (
                         <div>
-                          <p className="text-xs text-green-700 dark:text-green-300 mb-1">
+                          <p className="text-xs text-green-700 mb-1">
                             Final Recommended Dose:
                           </p>
-                          <p className="text-sm font-semibold text-green-900 dark:text-green-100">
+                          <p className="text-sm font-semibold text-green-900">
                             {rec.finalDose} g/tree
                           </p>
                         </div>
@@ -197,31 +197,31 @@ export function SoilRecommendations({ formData }: SoilRecommendationsProps) {
                 )}
 
                 {/* Recommendation Details */}
-                <div className="bg-gray-50 dark:bg-gray-900/50 rounded-md p-4 space-y-2">
+                <div className="bg-gray-50 rounded-md p-4 space-y-2">
                   <div className="flex items-start gap-2">
-                    <span className="text-blue-600 dark:text-blue-400 font-semibold mt-0.5">
+                    <span className="text-blue-600 font-semibold mt-0.5">
                       →
                     </span>
                     <div className="flex-1">
-                      <p className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">
+                      <p className="text-sm font-medium text-gray-900 mb-1">
                         Adjustment:
                       </p>
-                      <p className="text-sm text-gray-700 dark:text-gray-300">
+                      <p className="text-sm text-gray-700">
                         {rec.recommendation.increasePercent !== null
                           ? `Apply ${rec.recommendation.increasePercent}% more than the Base Recommended Dose (RD)`
                           : "Do not increase beyond the Base Recommended Dose (RD)"}
                       </p>
                     </div>
                   </div>
-                  <div className="flex items-start gap-2 pt-2 border-t border-gray-200 dark:border-gray-700">
-                    <span className="text-blue-600 dark:text-blue-400 font-semibold mt-0.5">
+                  <div className="flex items-start gap-2 pt-2 border-t border-gray-200">
+                    <span className="text-blue-600 font-semibold mt-0.5">
                       →
                     </span>
                     <div className="flex-1">
-                      <p className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">
+                      <p className="text-sm font-medium text-gray-900 mb-1">
                         Suggestion:
                       </p>
-                      <p className="text-sm text-gray-700 dark:text-gray-300">
+                      <p className="text-sm text-gray-700">
                         {rec.recommendation.suggestion}
                       </p>
                     </div>

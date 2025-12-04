@@ -28,7 +28,7 @@ export const Micronutrients: React.FC<MicronutrientsProps> = ({ test }) => {
 
   return (
     <div>
-      <h5 className="text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300 uppercase tracking-wide">
+      <h5 className="text-sm font-semibold mb-2 text-gray-700 uppercase tracking-wide">
         Micronutrients
       </h5>
       <div className="grid grid-cols-4 gap-2">
@@ -39,10 +39,10 @@ export const Micronutrients: React.FC<MicronutrientsProps> = ({ test }) => {
           return (
             <div
               key={field.key}
-              className="bg-white dark:bg-gray-800 p-2 rounded border border-gray-200 dark:border-gray-700 text-center"
+              className="bg-white p-2 rounded border border-gray-200 text-center"
             >
-              <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">{field.label}</div>
-              <div className="font-semibold text-gray-900 dark:text-gray-100 text-sm">{value}</div>
+              <div className="text-xs text-gray-500 mb-1">{field.label}</div>
+              <div className="font-semibold text-gray-900 text-sm">{value}</div>
             </div>
           );
         })}
