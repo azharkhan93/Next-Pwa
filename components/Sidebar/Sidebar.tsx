@@ -115,7 +115,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                       onClick={() => {
                         if (onClose) onClose();
                       }}
-                      className={`group relative flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200 ${
+                      className={`group relative flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all duration-200 ${
                         active
                           ? "bg-gradient-to-r from-purple-600 to-blue-700 text-white shadow-lg shadow-purple-600/40 scale-[1.02]"
                           : "text-purple-900  hover:bg-purple-100/50  hover:translate-x-1"
@@ -136,8 +136,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
                       <span
                         className={`transition-colors duration-200 ${
                           active
-                            ? "text-white font-semibold"
-                            : "font-medium text-purple-200 group-hover:text-purple-100"
+                            ? "text-white font-bold"
+                            : "font-bold text-white group-hover:text-black"
                         }`}
                       >
                         {item.label}

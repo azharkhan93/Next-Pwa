@@ -21,7 +21,7 @@ export const Loading: React.FC<LoadingProps> = ({
   fullScreen = false,
   className = "",
 }) => {
-  const iconClasses = `${sizeClasses[size]} animate-spin text-gray-600`;
+  const iconClasses = `${sizeClasses[size]} animate-spin text-white`;
 
   const content = (
     <div className={`flex items-center justify-center ${className}`}>
