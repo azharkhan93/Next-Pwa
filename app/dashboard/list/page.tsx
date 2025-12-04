@@ -13,7 +13,6 @@ import React from "react";
 import { useRecords, useDebounce } from "@/hooks";
 import { useRouter } from "next/navigation";
 import {
-  getColumnConfig,
   formatCellValue,
   handlePDFExport,
   showExportSummary,
@@ -67,10 +66,15 @@ export default function ListPage() {
     });
   }, [currentPage, debouncedSearch, fetchRecords, itemsPerPage]);
 
-  // Column configuration with key mapping
+  // Column configuration - only show specific columns to avoid overflow
   const columnConfig = React.useMemo(() => {
-    return getColumnConfig(records);
-  }, [records]);
+    return [
+      { key: "consumerId" as const, label: "Consumer ID" },
+      { key: "name" as const, label: "Name" },
+      { key: "phoneNo" as const, label: "Phone" },
+      { key: "testResults" as const, label: "Test Results" },
+    ];
+  }, []);
 
   // Generate columns from configuration
   const columns = React.useMemo(() => {
