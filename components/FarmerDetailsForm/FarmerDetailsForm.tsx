@@ -36,6 +36,9 @@ export type FormData = {
   paramPh?: boolean;
   paramDl?: boolean;
   paramCl?: boolean;
+  parameterPrice?: number;
+  paymentStatus?: string;
+  paymentDate?: string;
   ph: string;
   organicCarbon: string;
   nitrogen: string;

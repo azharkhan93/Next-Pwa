@@ -117,7 +117,11 @@ export default function DashboardPage() {
         const pricePerParameter = 50;
 
         records.forEach((record) => {
-          if (record.testResults && Array.isArray(record.testResults) && record.testResults.length > 0) {
+          if (
+            record.testResults &&
+            Array.isArray(record.testResults) &&
+            record.testResults.length > 0
+          ) {
             const recordDate = new Date(record.createdAt || Date.now());
             const monthKey = recordDate.toLocaleDateString("en-US", {
               month: "short",
@@ -187,14 +191,12 @@ export default function DashboardPage() {
     },
     {
       label: "Total Soil Samples",
-      value: stats.loading
-        ? "..."
-        : stats.totalSoilSamples.toLocaleString(),
+      value: stats.loading ? "..." : stats.totalSoilSamples.toLocaleString(),
       icon: <MdGrass size={24} className="text-green-600" />,
       iconBgColor: "bg-green-100",
     },
     {
-      label: "Total Plants",
+      label: "Total Plant Samples",
       value: stats.loading ? "..." : stats.totalPlants.toLocaleString(),
       icon: <MdLocalFlorist size={24} className="text-purple-600" />,
       iconBgColor: "bg-purple-100",
@@ -245,7 +247,7 @@ export default function DashboardPage() {
 
       {/* Soil Sample Status Stats */}
       <div>
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">
+        <h2 className="text-xl font-semibold text-white mb-4">
           Soil Sample Status
         </h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

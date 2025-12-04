@@ -157,6 +157,12 @@ export async function PUT(
               ? body.cropOther
               : null
             : existingRecord.cropOther,
+        variety:
+          body.variety !== undefined
+            ? body.variety && body.variety.trim() !== ""
+              ? body.variety
+              : null
+            : existingRecord.variety,
         plantationType:
           body.plantationType !== undefined
             ? body.plantationType
@@ -228,6 +234,22 @@ export async function PUT(
           body.paramDl !== undefined ? body.paramDl : existingRecord.paramDl,
         paramCl:
           body.paramCl !== undefined ? body.paramCl : existingRecord.paramCl,
+        parameterPrice:
+          body.parameterPrice !== undefined
+            ? body.parameterPrice
+              ? parseFloat(String(body.parameterPrice))
+              : null
+            : existingRecord.parameterPrice,
+        paymentStatus:
+          body.paymentStatus !== undefined
+            ? body.paymentStatus
+            : existingRecord.paymentStatus,
+        paymentDate:
+          body.paymentDate !== undefined
+            ? body.paymentDate
+              ? new Date(body.paymentDate)
+              : null
+            : existingRecord.paymentDate,
         ph: body.ph !== undefined ? body.ph : existingRecord.ph,
         organicCarbon:
           body.organicCarbon !== undefined

@@ -46,6 +46,7 @@ model Record {
   // Farm Details
   crop                String?
   cropOther           String?
+  variety             String?
   plantationType      String?
   plantationTypeOther String?
   age                 Float?
@@ -62,6 +63,9 @@ model Record {
   paramPh             Boolean? @default(false)
   paramDl             Boolean? @default(false)
   paramCl             Boolean? @default(false)
+  parameterPrice      Float?
+  paymentStatus       String?
+  paymentDate         DateTime?
 
   // Legacy single test result fields (for backward compatibility)
   ph                  String?

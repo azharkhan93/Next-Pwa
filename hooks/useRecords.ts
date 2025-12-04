@@ -19,6 +19,7 @@ export type RecordData = {
   stateVal?: string;
   crop?: string;
   cropOther?: string;
+  variety?: string;
   plantationType?: string;
   plantationTypeOther?: string;
   age?: number | "";
@@ -35,6 +36,9 @@ export type RecordData = {
   paramPh?: boolean;
   paramDl?: boolean;
   paramCl?: boolean;
+  parameterPrice?: number;
+  paymentStatus?: string;
+  paymentDate?: string;
   ph?: string;
   organicCarbon?: string;
   nitrogen?: string;

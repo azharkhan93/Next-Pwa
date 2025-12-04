@@ -8,6 +8,7 @@ import { FarmerDetailsForm, type FormData } from "@/components/FarmerDetailsForm
 import { FarmDetailsForm } from "@/components/FarmDetailsForm";
 import { ResultsForm } from "@/components/ResultsForm";
 import { useRecords } from "@/hooks/useRecords";
+import { calculateParameterPrice } from "@/utils/parameterPricing";
 
 const initialFormData: FormData = {
   name: "",
@@ -41,6 +42,9 @@ const initialFormData: FormData = {
   paramPh: false,
   paramDl: false,
   paramCl: false,
+  parameterPrice: 0,
+  paymentStatus: "",
+  paymentDate: "",
   ph: "",
   organicCarbon: "",
   nitrogen: "",
@@ -111,6 +115,7 @@ export function AddRecordForm({ recordId }: AddRecordFormProps = {} as AddRecord
               stateVal: record.stateVal || "",
               crop: record.crop || "",
               cropOther: record.cropOther || "",
+              variety: record.variety || "",
               plantationType: record.plantationType || "",
               plantationTypeOther: record.plantationTypeOther || "",
               age: record.age !== null && record.age !== undefined ? record.age : "",
@@ -127,6 +132,9 @@ export function AddRecordForm({ recordId }: AddRecordFormProps = {} as AddRecord
               paramPh: record.paramPh || false,
               paramDl: record.paramDl || false,
               paramCl: record.paramCl || false,
+              parameterPrice: record.parameterPrice || 0,
+              paymentStatus: record.paymentStatus || "",
+              paymentDate: record.paymentDate || "",
               ph: record.ph || "",
               organicCarbon: record.organicCarbon || "",
               nitrogen: record.nitrogen || "",
@@ -193,10 +201,18 @@ export function AddRecordForm({ recordId }: AddRecordFormProps = {} as AddRecord
     }
     setLoading(true);
     try {
+      // Calculate parameter price
+      const parameterPrice = calculateParameterPrice(
+        !!formData.paramPh,
+        !!formData.paramDl,
+        !!formData.paramCl
+      );
+
       // Prepare payload - filter out empty "other" fields
       const payload: Record<string, unknown> = {
         ...formData,
         testResults: formData.testResults || [],
+        parameterPrice: parameterPrice > 0 ? parameterPrice : null,
       };
 
       // Remove empty "other" fields - only include if they have values
