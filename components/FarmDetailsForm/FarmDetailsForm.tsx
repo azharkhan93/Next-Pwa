@@ -1,9 +1,10 @@
 "use client";
 
 import React from "react";
-import { TextInput, Dropdown, Checkbox } from "@/components";
+import { TextInput, Dropdown } from "@/components";
 import { createOtherOption } from "@/utils/dropdownHelpers";
 import { BaseRecommendedDoseDisplay } from "@/components/BaseRecommendedDoseDisplay";
+import { ParameterSelection } from "@/components/ParameterSelection";
 import type { FormData } from "../FarmerDetailsForm";
 
 type FarmDetailsFormProps = {
@@ -15,6 +16,11 @@ export function FarmDetailsForm({
   formData,
   setFormData,
 }: FarmDetailsFormProps) {
+  // Determine if crop is apple
+  const isApple = formData.crop === "apple";
+  // Determine if crop is selected and not apple
+  const isOtherCrop = formData.crop && formData.crop !== "apple" && formData.crop !== "";
+
   return (
     <>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -23,7 +29,23 @@ export function FarmDetailsForm({
           name="crop"
           label="Crop"
           value={formData.crop ?? ""}
-          onChange={(v) => setFormData((p) => ({ ...p, crop: v }))}
+          onChange={(v) => {
+            setFormData((p) => {
+              const newData = { ...p, crop: v };
+              // Clear apple-specific fields when switching away from apple
+              if (v !== "apple") {
+                newData.plantationType = "";
+                newData.plantationTypeOther = "";
+                newData.age = "";
+                newData.noTrees = "";
+              }
+              // Clear variety when switching to apple
+              if (v === "apple") {
+                newData.variety = "";
+              }
+              return newData;
+            });
+          }}
           options={[
             { label: "Apple", value: "apple" },
             { label: "Paddy", value: "paddy" },
@@ -33,66 +55,98 @@ export function FarmDetailsForm({
             createOtherOption(),
           ]}
           otherValue={formData.cropOther ?? ""}
-          onOtherValueChange={(v) =>
-            setFormData((p) => ({ ...p, cropOther: v }))
-          }
+          onOtherValueChange={(v) => {
+            setFormData((p) => {
+              const newData = { ...p, cropOther: v };
+              // If "other" is cleared or crop is not apple, clear apple fields
+              if (!v || p.crop !== "apple") {
+                newData.plantationType = "";
+                newData.plantationTypeOther = "";
+                newData.age = "";
+                newData.noTrees = "";
+              }
+              // If crop is apple, clear variety
+              if (p.crop === "apple") {
+                newData.variety = "";
+              }
+              return newData;
+            });
+          }}
         />
-        <Dropdown
-          id="plantationType"
-          name="plantationType"
-          label="Type"
-          value={formData.plantationType ?? ""}
-          onChange={(v) =>
-            setFormData((p) => ({ ...p, plantationType: v }))
-          }
-          options={[
-            { label: "High Density", value: "high-density" },
-            { label: "Traditional", value: "traditional" },
-            createOtherOption(),
-          ]}
-          otherValue={formData.plantationTypeOther ?? ""}
-          onOtherValueChange={(v) =>
-            setFormData((p) => ({ ...p, plantationTypeOther: v }))
-          }
-        />
+        {/* Show Type dropdown only for Apple */}
+        {isApple && (
+          <Dropdown
+            id="plantationType"
+            name="plantationType"
+            label="Type"
+            value={formData.plantationType ?? ""}
+            onChange={(v) =>
+              setFormData((p) => ({ ...p, plantationType: v }))
+            }
+            options={[
+              { label: "High Density", value: "high-density" },
+              { label: "Traditional", value: "traditional" },
+              createOtherOption(),
+            ]}
+            otherValue={formData.plantationTypeOther ?? ""}
+            onOtherValueChange={(v) =>
+              setFormData((p) => ({ ...p, plantationTypeOther: v }))
+            }
+          />
+        )}
+        {/* Show Variety field only for non-Apple crops */}
+        {isOtherCrop && (
+          <TextInput
+            id="variety"
+            name="variety"
+            label="Variety"
+            value={formData.variety ?? ""}
+            onChange={(e) =>
+              setFormData((p) => ({ ...p, variety: e.target.value }))
+            }
+          />
+        )}
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <TextInput
-          id="age"
-          name="age"
-          type="number"
-          label="Age (years)"
-          value={
-            formData.age === "" || formData.age === undefined
-              ? ""
-              : String(formData.age)
-          }
-          onChange={(e) =>
-            setFormData((p) => ({
-              ...p,
-              age: e.target.value === "" ? "" : Number(e.target.value),
-            }))
-          }
-        />
-        <TextInput
-          id="noTrees"
-          name="noTrees"
-          type="number"
-          label="No. of Trees"
-          value={
-            formData.noTrees === "" || formData.noTrees === undefined
-              ? ""
-              : String(formData.noTrees)
-          }
-          onChange={(e) =>
-            setFormData((p) => ({
-              ...p,
-              noTrees:
-                e.target.value === "" ? "" : Number(e.target.value),
-            }))
-          }
-        />
-      </div>
+      {/* Show Age and No. of Trees only for Apple */}
+      {isApple && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <TextInput
+            id="age"
+            name="age"
+            type="number"
+            label="Age (years)"
+            value={
+              formData.age === "" || formData.age === undefined
+                ? ""
+                : String(formData.age)
+            }
+            onChange={(e) =>
+              setFormData((p) => ({
+                ...p,
+                age: e.target.value === "" ? "" : Number(e.target.value),
+              }))
+            }
+          />
+          <TextInput
+            id="noTrees"
+            name="noTrees"
+            type="number"
+            label="No. of Trees"
+            value={
+              formData.noTrees === "" || formData.noTrees === undefined
+                ? ""
+                : String(formData.noTrees)
+            }
+            onChange={(e) =>
+              setFormData((p) => ({
+                ...p,
+                noTrees:
+                  e.target.value === "" ? "" : Number(e.target.value),
+              }))
+            }
+          />
+        </div>
+      )}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <TextInput
           id="area"
@@ -197,31 +251,14 @@ export function FarmDetailsForm({
           }
         />
       </div>
-      <div>
-        <div className="text-sm font-bold text-gray-700  mb-2">
-          Parameters to be tested
-        </div>
-        <div className="grid grid-cols-3 gap-4">
-          <Checkbox
-            name="paramPh"
-            label="pH"
-            checked={!!formData.paramPh}
-            onChange={(c) => setFormData((p) => ({ ...p, paramPh: c }))}
-          />
-          <Checkbox
-            name="paramDl"
-            label="DL"
-            checked={!!formData.paramDl}
-            onChange={(c) => setFormData((p) => ({ ...p, paramDl: c }))}
-          />
-          <Checkbox
-            name="paramCl"
-            label="CL"
-            checked={!!formData.paramCl}
-            onChange={(c) => setFormData((p) => ({ ...p, paramCl: c }))}
-          />
-        </div>
-      </div>
+      <ParameterSelection
+        paramPh={!!formData.paramPh}
+        paramDl={!!formData.paramDl}
+        paramCl={!!formData.paramCl}
+        onParamPhChange={(c) => setFormData((p) => ({ ...p, paramPh: c }))}
+        onParamDlChange={(c) => setFormData((p) => ({ ...p, paramDl: c }))}
+        onParamClChange={(c) => setFormData((p) => ({ ...p, paramCl: c }))}
+      />
 
     
       <BaseRecommendedDoseDisplay

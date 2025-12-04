@@ -120,7 +120,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
         type="button"
         onClick={() => !disabled && setIsOpen(!isOpen)}
         disabled={disabled}
-        className="w-full px-3 py-1.5 text-sm flex items-center justify-between border border-gray-300 cursor-pointer rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-60 disabled:cursor-not-allowed transition-colors"
+        className="w-full px-3 py-3 text-sm flex items-center justify-between border border-gray-300 cursor-pointer rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-60 disabled:cursor-not-allowed transition-colors"
         aria-haspopup="listbox"
         aria-expanded={isOpen}
       >

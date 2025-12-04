@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Button } from "..";
-import { MdAdd, MdMenu } from "react-icons/md";
+import { MdAdd, MdViewList } from "react-icons/md";
 
 export type TopbarProps = {
   title?: string;
@@ -27,7 +27,7 @@ export const Topbar: React.FC<TopbarProps> = ({
           className="lg:hidden p-2 -ml-2 text-gray-600 hover:bg-gray-100 rounded-md transition-colors"
           aria-label="Toggle menu"
         >
-          <MdMenu size={24} />
+          <MdViewList size={24} />
         </button>
         <h1 className="text-lg font-semibold text-gray-900 truncate">
           {title}

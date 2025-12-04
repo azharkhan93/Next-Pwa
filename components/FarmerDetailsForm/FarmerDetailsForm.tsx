@@ -19,6 +19,7 @@ export type FormData = {
   stateVal: string;
   crop?: string;
   cropOther?: string;
+  variety?: string;
   plantationType?: string;
   plantationTypeOther?: string;
   age?: number | "";
