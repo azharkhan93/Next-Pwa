@@ -4,7 +4,10 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import { FormError, Button, Loading } from "@/components";
 import { getCurrentCoordinates, reverseGeocode } from "@/utils/geolocation";
-import { FarmerDetailsForm, type FormData } from "@/components/FarmerDetailsForm";
+import {
+  FarmerDetailsForm,
+  type FormData,
+} from "@/components/FarmerDetailsForm";
 import { FarmDetailsForm } from "@/components/FarmDetailsForm";
 import { ResultsForm } from "@/components/ResultsForm";
 import { useRecords } from "@/hooks/useRecords";
@@ -62,9 +65,16 @@ type AddRecordFormProps = {
   recordId?: string;
 };
 
-export function AddRecordForm({ recordId }: AddRecordFormProps = {} as AddRecordFormProps) {
+export function AddRecordForm(
+  { recordId }: AddRecordFormProps = {} as AddRecordFormProps
+) {
   const router = useRouter();
-  const { createRecord, updateRecord, getRecordById, loading: recordsLoading } = useRecords();
+  const {
+    createRecord,
+    updateRecord,
+    getRecordById,
+    loading: recordsLoading,
+  } = useRecords();
   const [formData, setFormData] = React.useState<FormData>(initialFormData);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
@@ -118,10 +128,22 @@ export function AddRecordForm({ recordId }: AddRecordFormProps = {} as AddRecord
               variety: record.variety || "",
               plantationType: record.plantationType || "",
               plantationTypeOther: record.plantationTypeOther || "",
-              age: record.age !== null && record.age !== undefined ? record.age : "",
-              noTrees: record.noTrees !== null && record.noTrees !== undefined ? record.noTrees : "",
-              area: record.area !== null && record.area !== undefined ? record.area : "",
-              noOfSamples: record.noOfSamples !== null && record.noOfSamples !== undefined ? record.noOfSamples : "",
+              age:
+                record.age !== null && record.age !== undefined
+                  ? record.age
+                  : "",
+              noTrees:
+                record.noTrees !== null && record.noTrees !== undefined
+                  ? record.noTrees
+                  : "",
+              area:
+                record.area !== null && record.area !== undefined
+                  ? record.area
+                  : "",
+              noOfSamples:
+                record.noOfSamples !== null && record.noOfSamples !== undefined
+                  ? record.noOfSamples
+                  : "",
               soilDepth: record.soilDepth || "",
               soilType: record.soilType || "",
               soilTypeOther: record.soilTypeOther || "",
@@ -217,22 +239,22 @@ export function AddRecordForm({ recordId }: AddRecordFormProps = {} as AddRecord
 
       // Remove empty "other" fields - only include if they have values
       const otherFields = [
-        'cropOther',
-        'plantationTypeOther',
-        'soilTypeOther',
-        'drainageOther',
-        'irrigationMethodOther'
+        "cropOther",
+        "plantationTypeOther",
+        "soilTypeOther",
+        "drainageOther",
+        "irrigationMethodOther",
       ];
 
-      otherFields.forEach(field => {
+      otherFields.forEach((field) => {
         const value = payload[field];
-        if (!value || (typeof value === 'string' && value.trim() === '')) {
+        if (!value || (typeof value === "string" && value.trim() === "")) {
           delete payload[field];
         }
       });
 
       // Log the full payload before sending to backend
-      console.log(`=== ${isEditMode ? 'Update' : 'Add'}RecordForm Payload ===`);
+      console.log(`=== ${isEditMode ? "Update" : "Add"}RecordForm Payload ===`);
       console.log(JSON.stringify(payload, null, 2));
       console.log("=============================");
 
@@ -243,15 +265,19 @@ export function AddRecordForm({ recordId }: AddRecordFormProps = {} as AddRecord
       } else {
         result = await createRecord(payload as FormData);
       }
-      
+
       if (result) {
         router.push("/dashboard/list");
       } else {
-        setError(`Failed to ${isEditMode ? 'update' : 'add'} data. Please try again.`);
+        setError(
+          `Failed to ${isEditMode ? "update" : "add"} data. Please try again.`
+        );
       }
     } catch (err) {
       console.error("Error submitting form:", err);
-      setError(`Failed to ${isEditMode ? 'update' : 'add'} data. Please try again.`);
+      setError(
+        `Failed to ${isEditMode ? "update" : "add"} data. Please try again.`
+      );
     } finally {
       setLoading(false);
     }
@@ -305,12 +331,14 @@ export function AddRecordForm({ recordId }: AddRecordFormProps = {} as AddRecord
 
   // Show loading state while fetching record data
   if (isEditMode && !dataLoaded && (loading || recordsLoading)) {
-    return <Loading  fullScreen />;
+    return <Loading fullScreen />;
   }
 
   return (
     <div className="mx-auto">
-      <h2 className="text-xl text-white font-semibold mb-4">{isEditMode ? "Edit Record" : "Add New Record"}</h2>
+      <h2 className="text-xl text-white font-semibold mb-4">
+        {isEditMode ? "Edit Record" : "Add New Record"}
+      </h2>
       <div className="mb-4">
         <div className="flex items-center justify-between text-sm text-white">
           {steps.map((s, idx) => (
@@ -397,4 +425,3 @@ export function AddRecordForm({ recordId }: AddRecordFormProps = {} as AddRecord
     </div>
   );
 }
-
