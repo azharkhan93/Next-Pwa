@@ -250,6 +250,12 @@ export async function PUT(
               ? new Date(body.paymentDate)
               : null
             : existingRecord.paymentDate,
+        paidAmount:
+          body.paidAmount !== undefined
+            ? body.paidAmount
+              ? parseFloat(String(body.paidAmount))
+              : null
+            : existingRecord.paidAmount,
         ph: body.ph !== undefined ? body.ph : existingRecord.ph,
         organicCarbon:
           body.organicCarbon !== undefined

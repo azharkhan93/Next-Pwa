@@ -38,6 +38,7 @@ export type RecordData = {
   paramCl?: boolean;
   parameterPrice?: number;
   paymentStatus?: string;
+  paidAmount?: number;
   paymentDate?: string;
   ph?: string;
   organicCarbon?: string;

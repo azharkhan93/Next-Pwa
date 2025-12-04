@@ -66,6 +66,7 @@ model Record {
   parameterPrice      Float?
   paymentStatus       String?
   paymentDate         DateTime?
+  paidAmount          Float?
 
   // Legacy single test result fields (for backward compatibility)
   ph                  String?
@@ -80,11 +81,11 @@ model Record {
   potassiumRating     String?
 
   // Multiple test results (array of embedded documents as JSON)
-  // Each test result contains: id, labTestNo, ph, organicCarbon, 
+  // Each test result contains: id, labTestNo, ph, bufferPh, organicCarbon, 
   // Primary Macronutrients: nitrogen, phosphorus, potassium
   // Secondary Macronutrients: calcium, magnesium, sulfur
   // Micronutrients: iron, manganese, zinc, copper, boron, molybdenum, chlorine, nickel
-  // Other: sodium, electricalConductivity
+  // Other: sodium, electricalConductivity, solubleSalts
   // Ratings: phRating, organicCarbonRating, nitrogenRating, phosphorusRating, potassiumRating
   // Recommendations (calculated on backend): nitrogenRecommendation, phosphorusRecommendation, potassiumRecommendation
   // Each recommendation contains: { level, increasePercent, suggestion }

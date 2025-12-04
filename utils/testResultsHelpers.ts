@@ -25,6 +25,7 @@ export type TestResult = {
   // Other Parameters
   sodium: string;
   electricalConductivity: string;
+  solubleSalts?: string;
   // Ratings
   phRating?: string;
   organicCarbonRating?: string;
@@ -63,6 +64,7 @@ export const createEmptyTestResult = (): TestResult => {
     // Other Parameters
     sodium: "",
     electricalConductivity: "",
+    solubleSalts: "",
     // Ratings
     phRating: "",
     organicCarbonRating: "",

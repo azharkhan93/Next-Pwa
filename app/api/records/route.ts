@@ -109,6 +109,7 @@ export async function POST(request: NextRequest) {
         parameterPrice: body.parameterPrice ? parseFloat(String(body.parameterPrice)) : null,
         paymentStatus: body.paymentStatus || null,
         paymentDate: body.paymentDate ? new Date(body.paymentDate) : null,
+        paidAmount: body.paidAmount ? parseFloat(String(body.paidAmount)) : null,
         ph: body.ph || null,
         organicCarbon: body.organicCarbon || null,
         nitrogen: body.nitrogen || null,

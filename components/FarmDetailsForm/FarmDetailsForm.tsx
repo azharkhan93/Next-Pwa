@@ -19,7 +19,8 @@ export function FarmDetailsForm({
   // Determine if crop is apple
   const isApple = formData.crop === "apple";
   // Determine if crop is selected and not apple
-  const isOtherCrop = formData.crop && formData.crop !== "apple" && formData.crop !== "";
+  const isOtherCrop =
+    formData.crop && formData.crop !== "apple" && formData.crop !== "";
 
   return (
     <>
@@ -80,9 +81,7 @@ export function FarmDetailsForm({
             name="plantationType"
             label="Type"
             value={formData.plantationType ?? ""}
-            onChange={(v) =>
-              setFormData((p) => ({ ...p, plantationType: v }))
-            }
+            onChange={(v) => setFormData((p) => ({ ...p, plantationType: v }))}
             options={[
               { label: "High Density", value: "high-density" },
               { label: "Traditional", value: "traditional" },
@@ -140,8 +139,7 @@ export function FarmDetailsForm({
             onChange={(e) =>
               setFormData((p) => ({
                 ...p,
-                noTrees:
-                  e.target.value === "" ? "" : Number(e.target.value),
+                noTrees: e.target.value === "" ? "" : Number(e.target.value),
               }))
             }
           />
@@ -171,16 +169,14 @@ export function FarmDetailsForm({
           type="number"
           label="No. of Samples"
           value={
-            formData.noOfSamples === "" ||
-            formData.noOfSamples === undefined
+            formData.noOfSamples === "" || formData.noOfSamples === undefined
               ? ""
               : String(formData.noOfSamples)
           }
           onChange={(e) =>
             setFormData((p) => ({
               ...p,
-              noOfSamples:
-                e.target.value === "" ? "" : Number(e.target.value),
+              noOfSamples: e.target.value === "" ? "" : Number(e.target.value),
             }))
           }
         />
@@ -236,9 +232,7 @@ export function FarmDetailsForm({
           name="irrigationMethod"
           label="Irrigation method"
           value={formData.irrigationMethod ?? ""}
-          onChange={(v) =>
-            setFormData((p) => ({ ...p, irrigationMethod: v }))
-          }
+          onChange={(v) => setFormData((p) => ({ ...p, irrigationMethod: v }))}
           options={[
             { label: "Flood", value: "flood" },
             { label: "Furrow", value: "furrow" },
@@ -260,7 +254,46 @@ export function FarmDetailsForm({
         onParamClChange={(c) => setFormData((p) => ({ ...p, paramCl: c }))}
       />
 
-    
+      {/* Payment Status */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <Dropdown
+          id="paymentStatus"
+          name="paymentStatus"
+          label="Payment Status"
+          value={formData.paymentStatus ?? ""}
+          onChange={(v) => {
+            setFormData((p) => ({
+              ...p,
+              paymentStatus: v,
+              // Clear paid amount if status is not "paid"
+              paidAmount: v === "paid" ? p.paidAmount : undefined,
+            }));
+          }}
+          options={[
+            { value: "pending", label: "Pending" },
+            { value: "in progress", label: "In Progress" },
+            { value: "paid", label: "Paid" },
+          ]}
+        />
+        {formData.paymentStatus === "paid" && (
+          <TextInput
+            id="paidAmount"
+            name="paidAmount"
+            label="Enter Paid Amount (₹)"
+            type="number"
+            value={formData.paidAmount ? String(formData.paidAmount) : ""}
+            onChange={(e) => {
+              const value = e.target.value;
+              setFormData((p) => ({
+                ...p,
+                paidAmount: value === "" ? undefined : parseFloat(value),
+              }));
+            }}
+            placeholder="Enter amount"
+          />
+        )}
+      </div>
+
       <BaseRecommendedDoseDisplay
         plantationType={formData.plantationType}
         age={formData.age}
@@ -271,4 +304,3 @@ export function FarmDetailsForm({
     </>
   );
 }
-

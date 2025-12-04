@@ -305,6 +305,13 @@ function TestResultForm({
             value={testResult.electricalConductivity}
             onChange={handleChange("electricalConductivity")}
           />
+          <TextInput
+            id={`solubleSalts-${testResult.id}`}
+            name={`solubleSalts-${testResult.id}`}
+            label="Soluble Salts - dS/m"
+            value={testResult.solubleSalts ?? ""}
+            onChange={handleChange("solubleSalts")}
+          />
         </div>
       </div>
 
