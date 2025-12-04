@@ -32,18 +32,18 @@ import {
 
 const styles = StyleSheet.create({
   page: {
-    padding: 15,
-    paddingBottom: 15,
-    fontSize: 8,
+    padding: 12,
+    paddingBottom: 12,
+    fontSize: 7,
     fontFamily: "Times-Roman",
     backgroundColor: "#ffffff",
   },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 15,
+    marginBottom: 10,
     borderBottom: "2 solid #dc2626",
-    paddingBottom: 12,
+    paddingBottom: 8,
   },
   headerLeft: {
     width: "50%",
@@ -60,15 +60,15 @@ const styles = StyleSheet.create({
     objectFit: "contain",
   },
   companyName: {
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: "bold",
     color: "#374151",
     fontFamily: "Times-Bold",
   },
   addressColumn: {
-    fontSize: 8,
+    fontSize: 7,
     color: "#374151",
-    lineHeight: 1.5,
+    lineHeight: 1.4,
     marginBottom: 1,
   },
   slogan: {
@@ -82,16 +82,16 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
   },
   reportTitle: {
-    fontSize: 13,
+    fontSize: 11,
     fontWeight: "medium",
     color: "#111827",
-    marginBottom: 8,
+    marginBottom: 6,
     fontFamily: "Times-Bold",
   },
   infoRow: {
-    fontSize: 8,
+    fontSize: 7,
     color: "#374151",
-    marginBottom: 3,
+    marginBottom: 2,
     textAlign: "right",
   },
   generalInfo: {
@@ -142,18 +142,18 @@ const styles = StyleSheet.create({
     border: "1 solid #000000",
     borderRadius: 10,
     overflow: "hidden",
-    flex: 1,
+    width: "68%",
   },
   tableHeader: {
     flexDirection: "row",
     backgroundColor: "#f3f4f6",
     borderBottom: "2 solid #000000",
-    paddingVertical: 6,
-    paddingHorizontal: 4,
+    paddingVertical: 4,
+    paddingHorizontal: 2,
     alignItems: "flex-start",
   },
   headerCell: {
-    fontSize: 7,
+    fontSize: 6,
     fontWeight: "bold",
     color: "#000000",
     fontFamily: "Times-Bold",
@@ -161,57 +161,57 @@ const styles = StyleSheet.create({
   },
   testCell: {
     width: "12%",
-    paddingRight: 3,
-    paddingLeft: 3,
+    paddingRight: 2,
+    paddingLeft: 2,
     borderRight: "1 solid #000000",
   },
   methodCell: {
-    width: "8%",
+    width: "10%",
     textAlign: "center",
-    paddingHorizontal: 2,
+    paddingHorizontal: 1,
     borderRight: "1 solid #000000",
   },
   resultsCell: {
     width: "10%",
     textAlign: "center",
-    paddingHorizontal: 2,
+    paddingHorizontal: 1,
     borderRight: "1 solid #000000",
   },
   rangeCell: {
-    width: "50%",
-    paddingLeft: 4,
-    paddingRight: 2,
+    width: "48%",
+    paddingLeft: 2,
+    paddingRight: 1,
     flexDirection: "column",
     borderRight: "1 solid #000000",
   },
   additionalCell: {
     width: "20%",
-    paddingLeft: 4,
-    paddingRight: 3,
+    paddingLeft: 2,
+    paddingRight: 2,
     borderRight: "1 solid #000000",
   },
   tableRow: {
     flexDirection: "row",
     borderBottom: "1 solid #d1d5db",
-    paddingVertical: 5,
-    paddingHorizontal: 3,
+    paddingVertical: 3,
+    paddingHorizontal: 2,
     alignItems: "center",
-    minHeight: 32,
+    minHeight: 24,
   },
   testName: {
-    fontSize: 7,
+    fontSize: 6,
     color: "#000000",
     fontWeight: "bold",
     fontFamily: "Times-Bold",
   },
   methodText: {
-    fontSize: 7,
+    fontSize: 5.5,
     color: "#000000",
     textAlign: "center",
     fontFamily: "Times-Roman",
   },
   resultText: {
-    fontSize: 7,
+    fontSize: 6,
     color: "#000000",
     textAlign: "center",
     fontWeight: "bold",
@@ -221,25 +221,25 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 2,
+    marginTop: 1,
     paddingHorizontal: 1,
     flexWrap: "wrap",
   },
   ratingLabel: {
-    fontSize: 5.5,
+    fontSize: 4.5,
     color: "#000000",
     fontWeight: "bold",
     fontFamily: "Times-Bold",
   },
   barContainer: {
-    height: 12,
+    height: 10,
     position: "relative",
     backgroundColor: "#ffffff",
     borderRadius: 1,
     overflow: "hidden",
     border: "0.5 solid #000000",
     width: "100%",
-    marginTop: 2,
+    marginTop: 1,
   },
   barSegment: {
     height: "100%",
@@ -255,7 +255,7 @@ const styles = StyleSheet.create({
     zIndex: 10,
   },
   ratingText: {
-    fontSize: 7,
+    fontSize: 5.5,
     color: "#000000",
     fontWeight: "bold",
     fontFamily: "Times-Bold",
@@ -281,7 +281,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   cecTable: {
-    width: "35%",
+    width: "30%",
     border: "1 solid #000000",
     borderRadius: 10,
     overflow: "hidden",
@@ -289,18 +289,18 @@ const styles = StyleSheet.create({
   },
   cecTableHeader: {
     backgroundColor: "#f3f4f6",
-    padding: 8,
+    padding: 6,
     borderBottom: "1 solid #000000",
   },
   cecTableTitle: {
-    fontSize: 9,
+    fontSize: 8,
     fontWeight: "bold",
     color: "#111827",
     fontFamily: "Times-Bold",
-    marginBottom: 3,
+    marginBottom: 2,
   },
   cecTableSubtitle: {
-    fontSize: 7,
+    fontSize: 6.5,
     color: "#374151",
     fontFamily: "Times-Roman",
   },
@@ -310,22 +310,22 @@ const styles = StyleSheet.create({
   cecTableRow: {
     flexDirection: "row",
     borderBottom: "1 solid #d1d5db",
-    paddingVertical: 5,
-    paddingHorizontal: 6,
+    paddingVertical: 4,
+    paddingHorizontal: 5,
   },
   cecTableHeaderRow: {
     backgroundColor: "#f9fafb",
     borderBottom: "1 solid #000000",
   },
   cecTableCell: {
-    fontSize: 7,
+    fontSize: 6.5,
     color: "#111827",
     fontFamily: "Times-Roman",
     flex: 1,
     textAlign: "left",
   },
   cecTableCellHeader: {
-    fontSize: 7,
+    fontSize: 6.5,
     color: "#111827",
     fontWeight: "bold",
     fontFamily: "Times-Bold",
@@ -491,6 +491,14 @@ interface TestResult {
 }
 
 const renderRatingHeader = () => {
+  const ratingLevels = [
+    { label: "Very Low", color: "#dc2626" }, // Red
+    { label: "Low", color: "#f59e0b" }, // Orange
+    { label: "Medium", color: "#eab308" }, // Yellow
+    { label: "Optimum", color: "#22c55e" }, // Green
+    { label: "Very High", color: "#16a34a" }, // Dark Green
+  ];
+
   return (
     <View style={styles.ratingHeader}>
       <View
@@ -498,48 +506,30 @@ const renderRatingHeader = () => {
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "center",
+          flexWrap: "wrap",
         }}
       >
-        <View
-          style={{ flexDirection: "row", alignItems: "center", marginRight: 8 }}
-        >
+        {ratingLevels.map((level, index) => (
           <View
+            key={level.label}
             style={{
-              width: 8,
-              height: 8,
-              backgroundColor: "#f59e0b",
-              border: "0.5 solid #000",
-              marginRight: 3,
+              flexDirection: "row",
+              alignItems: "center",
+              marginRight: index < ratingLevels.length - 1 ? 6 : 0,
             }}
-          />
-          <Text style={styles.ratingLabel}>Low</Text>
-        </View>
-        <View
-          style={{ flexDirection: "row", alignItems: "center", marginRight: 8 }}
-        >
-          <View
-            style={{
-              width: 8,
-              height: 8,
-              backgroundColor: "#eab308",
-              border: "0.5 solid #000",
-              marginRight: 3,
-            }}
-          />
-          <Text style={styles.ratingLabel}>Medium</Text>
-        </View>
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <View
-            style={{
-              width: 8,
-              height: 8,
-              backgroundColor: "#22c55e",
-              border: "0.5 solid #000",
-              marginRight: 3,
-            }}
-          />
-          <Text style={styles.ratingLabel}>High</Text>
-        </View>
+          >
+            <View
+              style={{
+                width: 8,
+                height: 8,
+                backgroundColor: level.color,
+                border: "0.5 solid #000",
+                marginRight: 3,
+              }}
+            />
+            <Text style={styles.ratingLabel}>{level.label}</Text>
+          </View>
+        ))}
       </View>
     </View>
   );
@@ -605,121 +595,138 @@ export const RecordPDFTemplate = ({ data }: { data: RecordData }) => {
   // Get first test result from fetched data
   const testResult: TestResult = data.testResults?.[0] || {};
 
-  // Parse values
-  const ph = testResult.ph ? parseFloat(testResult.ph) : null;
-  const oc = testResult.organicCarbon
-    ? parseFloat(testResult.organicCarbon)
-    : null;
-  const n = testResult.nitrogen ? parseFloat(testResult.nitrogen) : null;
-  const p = testResult.phosphorus ? parseFloat(testResult.phosphorus) : null;
+  // Parameter mapping configuration
+  const parameterConfig: Record<
+    string,
+    {
+      name: string;
+      unit: string;
+      range: string;
+      category: string;
+    }
+  > = {
+    ph: {
+      name: "Soil pH",
+      unit: "(1:2.5)",
+      range: "6.5 - 7.5",
+      category: "Basic Parameters",
+    },
+    bufferPh: {
+      name: "Buffer pH",
+      unit: "(1:2.5)",
+      range: "6.5 - 7.5",
+      category: "Basic Parameters",
+    },
+    organicCarbon: {
+      name: "Organic Carbon (OC)",
+      unit: "(%)",
+      range: "0.5 - 1.0",
+      category: "Basic Parameters",
+    },
+    nitrogen: {
+      name: "Av. Nitrogen (N)",
+      unit: "(Kg/ha)",
+      range: "272 - 544",
+      category: "Primary Macronutrients",
+    },
+    phosphorus: {
+      name: "Av. Phosphorus (P)",
+      unit: "(Kg/ha)",
+      range: "10 - 20",
+      category: "Primary Macronutrients",
+    },
+    potassium: {
+      name: "Av. Potassium (K)",
+      unit: "(Kg/ha)",
+      range: "120 - 280",
+      category: "Primary Macronutrients",
+    },
+    calcium: {
+      name: "Calcium (Ca)",
+      unit: "ppm",
+      range: "150 - 300",
+      category: "Secondary Macronutrients",
+    },
+    magnesium: {
+      name: "Magnesium (Mg)",
+      unit: "ppm",
+      range: "50 - 100",
+      category: "Secondary Macronutrients",
+    },
+    iron: {
+      name: "Iron (Fe)",
+      unit: "ppm",
+      range: "4 - 6",
+      category: "Micronutrients",
+    },
+    manganese: {
+      name: "Manganese (Mn)",
+      unit: "ppm",
+      range: "1.2 - 3.5",
+      category: "Micronutrients",
+    },
+    zinc: {
+      name: "Zinc (Zn)",
+      unit: "ppm",
+      range: "1 - 3",
+      category: "Micronutrients",
+    },
+    boron: {
+      name: "Boron (B)",
+      unit: "ppm",
+      range: "0.5 - 1.0",
+      category: "Micronutrients",
+    },
+    chlorine: {
+      name: "Chlorine (Cl)",
+      unit: "ppm",
+      range: "20 - 50",
+      category: "Micronutrients",
+    },
+    solubleSalts: {
+      name: "Soluble Salts",
+      unit: "(dSm⁻¹)",
+      range: "< 1",
+      category: "Other Parameters",
+    },
+  };
+
+  // Dynamically build testParams array using Object.keys
+  const testParams = Object.keys(testResult)
+    .filter((key) => {
+      // Only include keys that are in our parameter config and have valid values
+      if (!parameterConfig[key]) return false;
+      const value = testResult[key as keyof TestResult];
+      // Check if value exists and is not empty string
+      if (!value || value === "" || value === null || value === undefined)
+        return false;
+      // Try to parse as number to ensure it's a valid numeric value
+      const numValue = parseFloat(String(value));
+      return !isNaN(numValue);
+    })
+    .map((key) => {
+      const value = parseFloat(String(testResult[key as keyof TestResult]));
+      const config = parameterConfig[key];
+      return {
+        name: config.name,
+        value: value,
+        unit: config.unit,
+        range: config.range,
+        param: key,
+        category: config.category,
+      };
+    });
+
+  // Parse values for CEC calculations
   const k = testResult.potassium ? parseFloat(testResult.potassium) : null;
   const ca = testResult.calcium ? parseFloat(testResult.calcium) : null;
   const mg = testResult.magnesium ? parseFloat(testResult.magnesium) : null;
-  const s = testResult.sulfur ? parseFloat(testResult.sulfur) : null;
-  const fe = testResult.iron ? parseFloat(testResult.iron) : null;
-  const mn = testResult.manganese ? parseFloat(testResult.manganese) : null;
-  const zn = testResult.zinc ? parseFloat(testResult.zinc) : null;
-  const cu = testResult.copper ? parseFloat(testResult.copper) : null;
-  const b = testResult.boron ? parseFloat(testResult.boron) : null;
-  const mo = testResult.molybdenum ? parseFloat(testResult.molybdenum) : null;
-  const cl = testResult.chlorine ? parseFloat(testResult.chlorine) : null;
-  const ni = testResult.nickel ? parseFloat(testResult.nickel) : null;
-  const na = testResult.sodium ? parseFloat(testResult.sodium) : null;
-  const ec = testResult.electricalConductivity
-    ? parseFloat(testResult.electricalConductivity)
-    : null;
-
-  const testParams = [
-    // Basic Parameters
-    {
-      name: "pH",
-      value: ph,
-      unit: "",
-      method: "1:2.5",
-      param: "ph",
-      category: "Basic Parameters",
-    },
-    {
-      name: "EC",
-      value: ec,
-      unit: " dSm-1",
-      method: "EC",
-      param: "electricalConductivity",
-      category: "Other Parameters",
-    },
-    {
-      name: "Organic Carbon",
-      value: oc,
-      unit: "%",
-      method: "LOI",
-      param: "organicCarbon",
-      category: "Basic Parameters",
-    },
-    // Primary Macronutrients
-    {
-      name: "Nitrogen",
-      value: n,
-      unit: " Kg/ha",
-      method: "M3",
-      param: "nitrogen",
-      category: "Primary Macronutrients",
-    },
-    {
-      name: "Phosphorus",
-      value: p,
-      unit: " Kg/ha",
-      method: "M3",
-      param: "phosphorus",
-      category: "Primary Macronutrients",
-    },
-    {
-      name: "Potassium",
-      value: k,
-      unit: " Kg/ha",
-      method: "M3",
-      param: "potassium",
-      category: "Primary Macronutrients",
-    },
-    // Secondary Macronutrients
-    {
-      name: "Calcium",
-      value: ca,
-      unit: " meq",
-      method: "M3",
-      param: "calcium",
-      category: "Secondary Macronutrients",
-    },
-    {
-      name: "Magnesium",
-      value: mg,
-      unit: " meq",
-      method: "M3",
-      param: "magnesium",
-      category: "Secondary Macronutrients",
-    },
-    // { name: 'Sulfur (S)', value: s, unit: ' ppm', method: 'M3', param: 'sulfur', category: 'Secondary Macronutrients' },
-    // Micronutrients
-    // { name: 'Iron (Fe)', value: fe, unit: ' ppm', method: 'M3', param: 'iron', category: 'Micronutrients' },
-    // { name: 'Manganese (Mn)', value: mn, unit: ' ppm', method: 'M3', param: 'manganese', category: 'Micronutrients' },
-    // { name: 'Zinc (Zn)', value: zn, unit: ' ppm', method: 'M3', param: 'zinc', category: 'Micronutrients' },
-    // { name: 'Copper (Cu)', value: cu, unit: ' ppm', method: 'M3', param: 'copper', category: 'Micronutrients' },
-    // { name: 'Boron (B)', value: b, unit: ' ppm', method: 'M3', param: 'boron', category: 'Micronutrients' },
-    // { name: 'Molybdenum (Mo)', value: mo, unit: ' ppm', method: 'M3', param: 'molybdenum', category: 'Micronutrients' },
-    // { name: 'Chlorine (Cl)', value: cl, unit: ' ppm', method: 'M3', param: 'chlorine', category: 'Micronutrients' },
-    // { name: 'Nickel (Ni)', value: ni, unit: ' ppm', method: 'M3', param: 'nickel', category: 'Micronutrients' },
-    // Other Parameters
-    // { name: 'Sodium (Na)', value: na, unit: ' ppm', method: 'M3', param: 'sodium', category: 'Other Parameters' },
-  ];
 
   // Calculate CEC and saturation (simplified calculations)
   const cec = ca && mg && k ? (ca / 200 + mg / 120 + k / 390) * 10 : 11.1;
   const kSaturation = k && cec ? (k / 390 / cec) * 100 : 4.6;
   const caSaturation = ca && cec ? (ca / 200 / cec) * 100 : 80.0;
   const mgSaturation = mg && cec ? (mg / 120 / cec) * 100 : 12.8;
-
-  // Calculate ratios
-  const kMgRatio = k && mg ? k / 390 / (mg / 120) : 0.36;
-  const caMgRatio = ca && mg ? ca / 200 / (mg / 120) : 6.25;
 
   return (
     <Document>
@@ -789,7 +796,10 @@ export const RecordPDFTemplate = ({ data }: { data: RecordData }) => {
                 <Text style={styles.headerCell}>Test</Text>
               </View>
               <View style={styles.methodCell}>
-                <Text style={styles.headerCell}>Method</Text>
+                <Text style={styles.headerCell}>Range</Text>
+              </View>
+              <View style={styles.additionalCell}>
+                <Text style={styles.headerCell}>Unit</Text>
               </View>
               <View style={styles.resultsCell}>
                 <Text style={styles.headerCell}>Results</Text>
@@ -799,9 +809,6 @@ export const RecordPDFTemplate = ({ data }: { data: RecordData }) => {
                   SOIL TEST RATINGS
                 </Text>
                 {renderRatingHeader()}
-              </View>
-              <View style={styles.additionalCell}>
-                <Text style={styles.headerCell}>Rating</Text>
               </View>
             </View>
 
@@ -875,25 +882,26 @@ export const RecordPDFTemplate = ({ data }: { data: RecordData }) => {
                     <Text style={styles.testName}>{param.name}</Text>
                   </View>
                   <View style={styles.methodCell}>
-                    <Text style={styles.methodText}>{param.method}</Text>
+                    <Text style={styles.methodText}>{param.range}</Text>
+                  </View>
+                  <View style={styles.additionalCell}>
+                    <Text style={styles.ratingText}>{param.unit}</Text>
                   </View>
                   <View style={styles.resultsCell}>
                     <Text style={styles.resultText}>
                       {param.value.toFixed(
-                        param.name === "Soil pH"
-                          ? 1
-                          : param.name === "Organic Matter"
+                        param.name === "Soil pH" || param.name === "Buffer pH"
+                          ? 2
+                          : param.name === "Organic Carbon (OC)"
+                          ? 2
+                          : param.name.includes("(Ca)") || param.name.includes("(Mg)")
                           ? 1
                           : 0
                       )}
-                      {param.unit}
                     </Text>
                   </View>
                   <View style={styles.rangeCell}>
                     {renderBarChart(param.value, param.param, originalRating)}
-                  </View>
-                  <View style={styles.additionalCell}>
-                    <Text style={styles.ratingText}>{rating}</Text>
                   </View>
                 </View>
               );
@@ -904,7 +912,7 @@ export const RecordPDFTemplate = ({ data }: { data: RecordData }) => {
           <View style={styles.cecTable}>
             <View style={styles.cecTableHeader}>
               <Text style={styles.cecTableTitle}>
-                Cation Exchange Capacity & %Saturation
+                Cation Exchange Capacity
               </Text>
               <Text style={styles.cecTableSubtitle}>
                 CEC: {cec.toFixed(1)} meq/100g

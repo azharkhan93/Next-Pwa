@@ -1,8 +1,32 @@
-export type NitrogenLevel = "Low" | "Medium" | "High" | "Very High";
-export type PhosphorusLevel = "Low" | "Medium" | "High" | "Very High";
-export type PotassiumLevel = "Low" | "Medium" | "High" | "Very High";
+export type NitrogenLevel =
+  | "Very Low"
+  | "Low"
+  | "Medium"
+  | "Optimum"
+  | "High"
+  | "Very High";
+export type PhosphorusLevel =
+  | "Very Low"
+  | "Low"
+  | "Medium"
+  | "Optimum"
+  | "High"
+  | "Very High";
+export type PotassiumLevel =
+  | "Very Low"
+  | "Low"
+  | "Medium"
+  | "Optimum"
+  | "High"
+  | "Very High";
 export type PhLevel = "Low" | "Medium" | "High";
-export type OrganicCarbonLevel = "Low" | "Medium" | "High";
+export type OrganicCarbonLevel =
+  | "Very Low"
+  | "Low"
+  | "Medium"
+  | "Optimum"
+  | "High"
+  | "Very High";
 
 export type NitrogenRecommendation = {
   level: NitrogenLevel;
@@ -11,7 +35,7 @@ export type NitrogenRecommendation = {
    * `null` means no increase (keep RD as is).
    */
   increasePercent: number | null;
- 
+
   suggestion: string;
 };
 
@@ -35,8 +59,16 @@ export type PotassiumRecommendation = {
   suggestion: string;
 };
 
+
 /**
  * Classify soil test nitrogen (Kg ha⁻¹) into levels with recommendations.
+ * Based on standard soil test interpretation tables:
+ * - Very Low: <150 → +25% RD
+ * - Low: 151-272 → +15% RD
+ * - Medium: 273-400 → +10% RD
+ * - Optimum: 401-544 → +5% RD
+ * - High: 545-600 → +2% RD
+ * - Very High: >600 → 0% (no additional N)
  */
 export const getNitrogenRecommendation = (
   value: number
@@ -48,16 +80,16 @@ export const getNitrogenRecommendation = (
   }> = [
     {
       min: Number.NEGATIVE_INFINITY,
-      max: 149.9999,
+      max: 150,
       recommendation: {
-        level: "Low",
+        level: "Very Low",
         increasePercent: 25,
         suggestion:
-          "Nitrogen is low; apply 25% more than the recommended dose (RD) of urea.",
+          "Nitrogen is very low; apply 25% more than the recommended dose (RD) of urea.",
       },
     },
     {
-      min: 150,
+      min: 151,
       max: 272,
       recommendation: {
         level: "Low",
@@ -80,10 +112,10 @@ export const getNitrogenRecommendation = (
       min: 401,
       max: 544,
       recommendation: {
-        level: "Medium",
+        level: "Optimum",
         increasePercent: 5,
         suggestion:
-          "Nitrogen is medium; apply 5% more than the recommended dose (RD) of urea.",
+          "Nitrogen is at optimum level; apply 5% more than the recommended dose (RD) of urea.",
       },
     },
     {
@@ -102,8 +134,7 @@ export const getNitrogenRecommendation = (
       recommendation: {
         level: "Very High",
         increasePercent: null,
-        suggestion:
-          "Nitrogen is very high; do not increase the nitrogen dose beyond the recommended rate.",
+        suggestion: "-",
       },
     },
   ];
@@ -112,12 +143,11 @@ export const getNitrogenRecommendation = (
     (rule) => value >= rule.min && (rule.max === null || value <= rule.max)
   );
 
-
   return (matched ?? rules[rules.length - 1]).recommendation;
 };
 
 /**
- * Convenience helper: return only the nitrogen rating level (Low/Medium/High/Very High)
+ * Convenience helper: return only the nitrogen rating level (Very Low/Low/Medium/Optimum/High/Very High)
  * for a given soil test nitrogen value.
  */
 export const getNitrogenRating = (value: number): NitrogenLevel =>
@@ -125,13 +155,13 @@ export const getNitrogenRating = (value: number): NitrogenLevel =>
 
 /**
  * Classify soil test phosphorus (Kg ha⁻¹, as DAP) into levels with recommendations.
- *
- *  Low:    <5       → +25% RD
- *          6–12     → +15% RDf
- *  Medium: 13–15    → +10% RD
- *          16–22    → +5% RD
- *  High:   23–33    → +2% RD
- *  Very High: >33   → 0% (no additional P)
+ * Based on standard soil test interpretation tables:
+ * - Very Low: <5 → +25% RD
+ * - Low: 6-12 → +15% RD
+ * - Medium: 13-15 → +10% RD
+ * - Optimum: 16-22 → +5% RD
+ * - High: 23-33 → +2% RD
+ * - Very High: >33 → 0% (no additional P)
  */
 export const getPhosphorusRecommendation = (
   value: number
@@ -143,16 +173,16 @@ export const getPhosphorusRecommendation = (
   }> = [
     {
       min: Number.NEGATIVE_INFINITY,
-      max: 4.9999,
+      max: 5,
       recommendation: {
-        level: "Low",
+        level: "Very Low",
         increasePercent: 25,
         suggestion:
-          "Phosphorus is low; apply 25% more than the recommended dose (RD) of DAP.",
+          "Phosphorus is very low; apply 25% more than the recommended dose (RD) of DAP.",
       },
     },
     {
-      min: 5,
+      min: 6,
       max: 12,
       recommendation: {
         level: "Low",
@@ -175,10 +205,10 @@ export const getPhosphorusRecommendation = (
       min: 16,
       max: 22,
       recommendation: {
-        level: "Medium",
+        level: "Optimum",
         increasePercent: 5,
         suggestion:
-          "Phosphorus is medium; apply 5% more than the recommended dose (RD) of DAP.",
+          "Phosphorus is at optimum level; apply 5% more than the recommended dose (RD) of DAP.",
       },
     },
     {
@@ -197,8 +227,7 @@ export const getPhosphorusRecommendation = (
       recommendation: {
         level: "Very High",
         increasePercent: null,
-        suggestion:
-          "Phosphorus is very high; do not increase the phosphorus dose beyond the recommended rate.",
+        suggestion: "-",
       },
     },
   ];
@@ -211,20 +240,20 @@ export const getPhosphorusRecommendation = (
 };
 
 /**
- * Convenience helper: return only the phosphorus rating level (Low/Medium/High/Very High).
+ * Convenience helper: return only the phosphorus rating level (Very Low/Low/Medium/Optimum/High/Very High).
  */
 export const getPhosphorusRating = (value: number): PhosphorusLevel =>
   getPhosphorusRecommendation(value).level;
 
 /**
  * Classify soil test potassium (Kg ha⁻¹, as MOP) into levels with recommendations.
- *
- *  Low:    <60      → +25% RD
- *          61–120   → +15% RD
- *  Medium: 121–200  → +10% RD
- *          201–280  → +5% RD
- *  High:   281–350  → +2% RD
- *  Very High: >350  → 0% (no additional K)
+ * Based on standard soil test interpretation tables:
+ * - Very Low: <60 → +25% RD
+ * - Low: 61-120 → +15% RD
+ * - Medium: 121-200 → +10% RD
+ * - Optimum: 201-280 → +5% RD
+ * - High: 281-350 → +2% RD
+ * - Very High: >350 → 0% (no additional K)
  */
 export const getPotassiumRecommendation = (
   value: number
@@ -236,16 +265,16 @@ export const getPotassiumRecommendation = (
   }> = [
     {
       min: Number.NEGATIVE_INFINITY,
-      max: 59.9999,
+      max: 60,
       recommendation: {
-        level: "Low",
+        level: "Very Low",
         increasePercent: 25,
         suggestion:
-          "Potassium is low; apply 25% more than the recommended dose (RD) of MOP.",
+          "Potassium is very low; apply 25% more than the recommended dose (RD) of MOP.",
       },
     },
     {
-      min: 60,
+      min: 61,
       max: 120,
       recommendation: {
         level: "Low",
@@ -268,10 +297,10 @@ export const getPotassiumRecommendation = (
       min: 201,
       max: 280,
       recommendation: {
-        level: "Medium",
+        level: "Optimum",
         increasePercent: 5,
         suggestion:
-          "Potassium is medium; apply 5% more than the recommended dose (RD) of MOP.",
+          "Potassium is at optimum level; apply 5% more than the recommended dose (RD) of MOP.",
       },
     },
     {
@@ -290,8 +319,7 @@ export const getPotassiumRecommendation = (
       recommendation: {
         level: "Very High",
         increasePercent: null,
-        suggestion:
-          "Potassium is very high; do not increase the potassium dose beyond the recommended rate.",
+        suggestion: "-",
       },
     },
   ];
@@ -304,14 +332,14 @@ export const getPotassiumRecommendation = (
 };
 
 /**
- * Convenience helper: return only the potassium rating level (Low/Medium/High/Very High).
+ * Convenience helper: return only the potassium rating level (Very Low/Low/Medium/Optimum/High/Very High).
  */
 export const getPotassiumRating = (value: number): PotassiumLevel =>
   getPotassiumRecommendation(value).level;
 
 /**
  * Classify soil test pH into levels.
- * 
+ *
  *  Low:    < 5
  *  Medium: 5 - 6.5
  *  High:   > 6.5
@@ -328,17 +356,29 @@ export const getPhRating = (value: number): PhLevel => {
 
 /**
  * Classify soil test organic carbon (%) into levels.
- * 
- *  Low:    < 0.5
- *  Medium: 0.5 - 1.1
- *  High:   > 1.1
+ * Based on standard soil test interpretation:
+ * - Very Low: < 0.4
+ * - Low: 0.4 - 0.5
+ * - Medium: 0.5 - 0.75
+ * - Optimum: 0.75 - 1.1
+ * - High: 1.1 - 1.5
+ * - Very High: > 1.5
  */
 export const getOrganicCarbonRating = (value: number): OrganicCarbonLevel => {
-  if (value < 0.5) {
+  if (value < 0.4) {
+    return "Very Low";
+  }
+  if (value >= 0.4 && value < 0.5) {
     return "Low";
   }
-  if (value >= 0.5 && value <= 1.1) {
+  if (value >= 0.5 && value < 0.75) {
     return "Medium";
   }
-  return "High";
+  if (value >= 0.75 && value <= 1.1) {
+    return "Optimum";
+  }
+  if (value > 1.1 && value <= 1.5) {
+    return "High";
+  }
+  return "Very High";
 };
