@@ -93,6 +93,14 @@ function TestResultForm({
             disabled
           />
           <TextInput
+            id={`bufferPh-${testResult.id}`}
+            name={`bufferPh-${testResult.id}`}
+            label="Buffer pH"
+            value={testResult.bufferPh ?? ""}
+            onChange={handleChange("bufferPh")}
+            placeholder="Enter buffer pH value"
+          />
+          <TextInput
             id={`organicCarbon-${testResult.id}`}
             name={`organicCarbon-${testResult.id}`}
             label="Organic Carbon (%)"
@@ -220,13 +228,7 @@ function TestResultForm({
             value={testResult.magnesium}
             onChange={handleChange("magnesium")}
           />
-          <TextInput
-            id={`sulfur-${testResult.id}`}
-            name={`sulfur-${testResult.id}`}
-            label="Sulfur (ppm)"
-            value={testResult.sulfur}
-            onChange={handleChange("sulfur")}
-          />
+          
         </div>
       </div>
 
@@ -271,14 +273,8 @@ function TestResultForm({
             value={testResult.boron}
             onChange={handleChange("boron")}
           />
-          <TextInput
-            id={`molybdenum-${testResult.id}`}
-            name={`molybdenum-${testResult.id}`}
-            label="Molybdenum (Mo) - ppm"
-            value={testResult.molybdenum}
-            onChange={handleChange("molybdenum")}
-          />
-          <TextInput
+         
+          {/* <TextInput
             id={`chlorine-${testResult.id}`}
             name={`chlorine-${testResult.id}`}
             label="Chlorine (Cl) - ppm"
@@ -291,7 +287,7 @@ function TestResultForm({
             label="Nickel (Ni) - ppm"
             value={testResult.nickel}
             onChange={handleChange("nickel")}
-          />
+          /> */}
         </div>
       </div>
 
@@ -301,13 +297,7 @@ function TestResultForm({
           Other Parameters
         </h5>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <TextInput
-            id={`sodium-${testResult.id}`}
-            name={`sodium-${testResult.id}`}
-            label="Sodium (Na) - ppm"
-            value={testResult.sodium}
-            onChange={handleChange("sodium")}
-          />
+         
           <TextInput
             id={`electricalConductivity-${testResult.id}`}
             name={`electricalConductivity-${testResult.id}`}

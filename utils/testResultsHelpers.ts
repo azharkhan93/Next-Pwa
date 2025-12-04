@@ -3,6 +3,7 @@ export type TestResult = {
   labTestNo?: string;
   // Basic Parameters
   ph: string;
+  bufferPh?: string;
   organicCarbon: string;
   // Primary Macronutrients
   nitrogen: string;
@@ -40,6 +41,7 @@ export const createEmptyTestResult = (): TestResult => {
     id: `test-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
     // Basic Parameters
     ph: "",
+    bufferPh: "",
     organicCarbon: "",
     // Primary Macronutrients
     nitrogen: "",

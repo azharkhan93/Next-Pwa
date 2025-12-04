@@ -171,6 +171,7 @@ export function AddRecordForm(
                 id: result.id || "",
                 labTestNo: result.labTestNo || "",
                 ph: result.ph || "",
+                bufferPh: result.bufferPh || "",
                 organicCarbon: result.organicCarbon || "",
                 nitrogen: result.nitrogen || "",
                 phosphorus: result.phosphorus || "",

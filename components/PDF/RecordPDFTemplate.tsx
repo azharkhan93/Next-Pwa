@@ -446,6 +446,7 @@ const styles = StyleSheet.create({
 interface TestResult {
   // Basic Parameters
   ph?: string;
+  bufferPh?: string;
   organicCarbon?: string;
   phRating?: string;
   organicCarbonRating?: string;
