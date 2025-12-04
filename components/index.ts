@@ -24,5 +24,6 @@ export * from "./TestResultsCell";
 export * from "./Loading";
 export * from "./Suspense";
 export * from "./ParameterSelection";
+export * from "./PaymentReceivedChart";
 
 
