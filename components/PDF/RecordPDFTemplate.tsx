@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     padding: 12,
     paddingBottom: 12,
     fontSize: 7,
-    fontFamily: "Times-Roman",
+    fontFamily: "Times",
     backgroundColor: "#ffffff",
   },
   header: {
@@ -153,20 +153,20 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
   },
   headerCell: {
-    fontSize: 6,
+    fontSize: 5,
     fontWeight: "bold",
     color: "#000000",
     fontFamily: "Times-Bold",
     textAlign: "center",
   },
   testCell: {
-    width: "12%",
+    width: "14%",
     paddingRight: 2,
     paddingLeft: 2,
     borderRight: "1 solid #000000",
   },
   methodCell: {
-    width: "10%",
+    width: "11%",
     textAlign: "center",
     paddingHorizontal: 1,
     borderRight: "1 solid #000000",
@@ -199,19 +199,19 @@ const styles = StyleSheet.create({
     minHeight: 24,
   },
   testName: {
-    fontSize: 6,
+    fontSize: 5,
     color: "#000000",
     fontWeight: "bold",
     fontFamily: "Times-Bold",
   },
   methodText: {
-    fontSize: 5.5,
+    fontSize: 4.5,
     color: "#000000",
     textAlign: "center",
-    fontFamily: "Times-Roman",
+    fontFamily: "Times",
   },
   resultText: {
-    fontSize: 6,
+    fontSize: 5,
     color: "#000000",
     textAlign: "center",
     fontWeight: "bold",
@@ -255,7 +255,7 @@ const styles = StyleSheet.create({
     zIndex: 10,
   },
   ratingText: {
-    fontSize: 5.5,
+    fontSize: 4.5,
     color: "#000000",
     fontWeight: "bold",
     fontFamily: "Times-Bold",
@@ -545,7 +545,7 @@ const mapToThreeLevelRating = (rating: string): "Low" | "Medium" | "High" => {
   } else if (ratingLower === "optimum" || ratingLower === "very high") {
     return "High";
   }
-  return "Medium"; // default
+  return "Medium";
 };
 
 // Helper function to get color for 3-level rating
@@ -567,7 +567,6 @@ const renderBarChart = (value: number, param: string, rating: string) => {
 
   return (
     <View style={styles.barContainer}>
-      {/* Simple solid fill based on rating */}
       <View
         style={[
           styles.barSegment,
@@ -677,12 +676,6 @@ export const RecordPDFTemplate = ({ data }: { data: RecordData }) => {
       range: "0.5 - 1.0",
       category: "Micronutrients",
     },
-    chlorine: {
-      name: "Chlorine (Cl)",
-      unit: "ppm",
-      range: "20 - 50",
-      category: "Micronutrients",
-    },
     solubleSalts: {
       name: "Soluble Salts",
       unit: "(dSm⁻¹)",
@@ -691,7 +684,6 @@ export const RecordPDFTemplate = ({ data }: { data: RecordData }) => {
     },
   };
 
-  // Dynamically build testParams array using Object.keys
   const testParams = Object.keys(testResult)
     .filter((key) => {
       // Only include keys that are in our parameter config and have valid values
@@ -762,7 +754,7 @@ export const RecordPDFTemplate = ({ data }: { data: RecordData }) => {
             <Text style={styles.infoRow}>
               Date Received: {formatDate(data.createdAt)}
             </Text>
-            <Text style={styles.infoRow}>Page: 1 of 1</Text>
+            {/* <Text style={styles.infoRow}>Page: 1 of 1</Text> */}
           </View>
         </View>
 
@@ -894,7 +886,8 @@ export const RecordPDFTemplate = ({ data }: { data: RecordData }) => {
                           ? 2
                           : param.name === "Organic Carbon (OC)"
                           ? 2
-                          : param.name.includes("(Ca)") || param.name.includes("(Mg)")
+                          : param.name.includes("(Ca)") ||
+                            param.name.includes("(Mg)")
                           ? 1
                           : 0
                       )}
@@ -911,9 +904,7 @@ export const RecordPDFTemplate = ({ data }: { data: RecordData }) => {
           {/* Cation Exchange Capacity & %Saturation Table */}
           <View style={styles.cecTable}>
             <View style={styles.cecTableHeader}>
-              <Text style={styles.cecTableTitle}>
-                Cation Exchange Capacity
-              </Text>
+              <Text style={styles.cecTableTitle}>Cation Exchange Capacity</Text>
               <Text style={styles.cecTableSubtitle}>
                 CEC: {cec.toFixed(1)} meq/100g
               </Text>
@@ -1132,7 +1123,6 @@ export const RecordPDFTemplate = ({ data }: { data: RecordData }) => {
               </View>
             </View>
 
-            {/* Default Phosphate Recommendation Card */}
             <View
               style={[
                 styles.recommendationCard,
@@ -1192,7 +1182,6 @@ export const RecordPDFTemplate = ({ data }: { data: RecordData }) => {
           </View>
         )}
 
-        {/* Footer */}
         <View style={styles.footer}>
           <View style={styles.footerLeft}>
             <View style={styles.footerLogoContainer}>
