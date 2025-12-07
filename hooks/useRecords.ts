@@ -228,6 +228,7 @@ export function useRecords(
       setError(null);
       try {
         const response = await axios.get(`/api/records/${id}`);
+       
         return response.data.data;
       } catch (err) {
         setError(

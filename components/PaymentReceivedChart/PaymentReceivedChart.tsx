@@ -19,20 +19,26 @@ export type PaymentReceivedChartProps = {
   }>;
 };
 
-// Generate last 6 months of data
 const generateMonthlyData = () => {
   const months = [];
   const currentDate = new Date();
-  
+
   for (let i = 5; i >= 0; i--) {
-    const date = new Date(currentDate.getFullYear(), currentDate.getMonth() - i, 1);
-    const monthName = date.toLocaleDateString("en-US", { month: "short", year: "numeric" });
+    const date = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth() - i,
+      1
+    );
+    const monthName = date.toLocaleDateString("en-US", {
+      month: "short",
+      year: "numeric",
+    });
     months.push({
       month: monthName,
-      amount: 0, // Will be calculated from actual data
+      amount: 0,
     });
   }
-  
+
   return months;
 };
 
@@ -66,7 +72,10 @@ export const PaymentReceivedChart: React.FC<PaymentReceivedChartProps> = ({
             tickFormatter={(value) => `₹${value}`}
           />
           <Tooltip
-            formatter={(value: number) => [`₹${value.toLocaleString()}`, "Amount"]}
+            formatter={(value: number) => [
+              `₹${value.toLocaleString()}`,
+              "Amount",
+            ]}
             contentStyle={{
               backgroundColor: "white",
               border: "1px solid #e5e7eb",
@@ -85,4 +94,3 @@ export const PaymentReceivedChart: React.FC<PaymentReceivedChartProps> = ({
     </div>
   );
 };
-
