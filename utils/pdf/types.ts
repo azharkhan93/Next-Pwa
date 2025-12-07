@@ -12,17 +12,17 @@ export interface TestResult {
     potassiumRating?: string;
     nitrogenRecommendation?: {
       level: string;
-      increasePercent: number;
+      increasePercent: number | null;
       suggestion: string;
     };
     phosphorusRecommendation?: {
       level: string;
-      increasePercent: number;
+      increasePercent: number | null;
       suggestion: string;
     };
     potassiumRecommendation?: {
       level: string;
-      increasePercent: number;
+      increasePercent: number | null;
       suggestion: string;
     };
     calcium?: string;
@@ -54,6 +54,7 @@ export interface TestResult {
     range: string;
     param: string;
     category: string;
+    rating?: string; 
   }
   
   export type RatingLevel = "Low" | "Medium" | "High";

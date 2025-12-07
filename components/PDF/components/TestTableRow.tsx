@@ -15,7 +15,8 @@ interface TestTableRowProps {
 export const TestTableRow = ({ param }: TestTableRowProps) => {
   if (param.value === null) return null;
 
-  const originalRating = getRatingForParameter(param.param, param.value);
+  // Use rating from testResult data if available, otherwise calculate it
+  const originalRating = param.rating || getRatingForParameter(param.param, param.value);
   const rating = mapToThreeLevelRating(originalRating);
   const rowBgColor = getRowBackgroundColor(rating);
   const cecValue = calculateCECValue(param.param, param.value);

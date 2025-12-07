@@ -144,6 +144,10 @@ export function useRecords(
 
         const response = await axios.get("/api/records", { params });
 
+        console.log("Full backend response (fetchRecords):", response);
+        console.log("Response data:", response.data);
+        console.log("Records data:", response.data.data);
+
         setRecords(response.data.data || []);
         setTotal(response.data.pagination?.total || 0);
         setTotalPages(response.data.pagination?.totalPages || 0);
@@ -168,6 +172,9 @@ export function useRecords(
       setError(null);
       try {
         const response = await axios.post("/api/records", data);
+        console.log("Full backend response (createRecord):", response);
+        console.log("Response data:", response.data);
+        console.log("Created record:", response.data.data);
         return response.data.data;
       } catch (err) {
         setError(
@@ -189,6 +196,9 @@ export function useRecords(
       setError(null);
       try {
         const response = await axios.put(`/api/records/${id}`, data);
+        console.log("Full backend response (updateRecord):", response);
+        console.log("Response data:", response.data);
+        console.log("Updated record:", response.data.data);
         return response.data.data;
       } catch (err) {
         setError(
@@ -228,6 +238,9 @@ export function useRecords(
       setError(null);
       try {
         const response = await axios.get(`/api/records/${id}`);
+        console.log("Full backend response (getRecordById):", response);
+        console.log("Response data:", response.data);
+        console.log("Record by ID:", response.data.data);
        
         return response.data.data;
       } catch (err) {

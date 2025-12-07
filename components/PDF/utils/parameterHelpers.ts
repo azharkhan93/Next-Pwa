@@ -83,6 +83,15 @@ export const parameterConfig: Record<string, ParameterConfig> = {
 };
 
 export const getTestParams = (testResult: TestResult): TestParam[] => {
+  // Map parameter keys to their rating field names
+  const ratingMap: Record<string, keyof TestResult> = {
+    ph: "phRating",
+    organicCarbon: "organicCarbonRating",
+    nitrogen: "nitrogenRating",
+    phosphorus: "phosphorusRating",
+    potassium: "potassiumRating",
+  };
+
   return Object.keys(testResult)
     .filter((key) => {
       if (!parameterConfig[key]) return false;
@@ -95,6 +104,9 @@ export const getTestParams = (testResult: TestResult): TestParam[] => {
     .map((key) => {
       const value = parseFloat(String(testResult[key as keyof TestResult]));
       const config = parameterConfig[key];
+      const ratingKey = ratingMap[key];
+      const rating = ratingKey ? testResult[ratingKey] as string | undefined : undefined;
+      
       return {
         name: config.name,
         value: value,
@@ -102,6 +114,7 @@ export const getTestParams = (testResult: TestResult): TestParam[] => {
         range: config.range,
         param: key,
         category: config.category,
+        rating: rating,
       };
     });
 };
