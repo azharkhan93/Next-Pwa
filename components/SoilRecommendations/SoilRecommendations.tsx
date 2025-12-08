@@ -42,10 +42,11 @@ export function SoilRecommendations({ formData }: SoilRecommendationsProps) {
       const nitrogenValue = Number(formData.nitrogen);
       const nitrogenRec = getNitrogenRecommendation(nitrogenValue);
       const baseUrea = baseRD?.urea ?? null;
-      const finalUrea = baseUrea !== null 
-        ? calculateFinalDose(baseUrea, nitrogenRec.increasePercent)
-        : null;
-      
+      const finalUrea =
+        baseUrea !== null
+          ? calculateFinalDose(baseUrea, nitrogenRec.increasePercent)
+          : null;
+
       results.push({
         name: "Nitrogen",
         fertilizer: "Urea",
@@ -61,10 +62,11 @@ export function SoilRecommendations({ formData }: SoilRecommendationsProps) {
       const phosphorusValue = Number(formData.phosphorus);
       const phosphorusRec = getPhosphorusRecommendation(phosphorusValue);
       const baseDAP = baseRD?.dap ?? null;
-      const finalDAP = baseDAP !== null
-        ? calculateFinalDose(baseDAP, phosphorusRec.increasePercent)
-        : null;
-      
+      const finalDAP =
+        baseDAP !== null
+          ? calculateFinalDose(baseDAP, phosphorusRec.increasePercent)
+          : null;
+
       results.push({
         name: "Phosphorus",
         fertilizer: "DAP",
@@ -80,10 +82,11 @@ export function SoilRecommendations({ formData }: SoilRecommendationsProps) {
       const potassiumValue = Number(formData.potassium);
       const potassiumRec = getPotassiumRecommendation(potassiumValue);
       const baseMOP = baseRD?.mop ?? null;
-      const finalMOP = baseMOP !== null
-        ? calculateFinalDose(baseMOP, potassiumRec.increasePercent)
-        : null;
-      
+      const finalMOP =
+        baseMOP !== null
+          ? calculateFinalDose(baseMOP, potassiumRec.increasePercent)
+          : null;
+
       results.push({
         name: "Potassium",
         fertilizer: "MOP",
@@ -158,7 +161,8 @@ export function SoilRecommendations({ formData }: SoilRecommendationsProps) {
                       {rec.name} ({rec.fertilizer})
                     </h4>
                     <p className="text-sm text-gray-600 mt-1">
-                      Soil Test Result: <span className="font-medium">{rec.value} Kg ha⁻¹</span>
+                      Soil Test Result:{" "}
+                      <span className="font-medium">{rec.value} Kg ha⁻¹</span>
                     </p>
                   </div>
                   <span
@@ -175,9 +179,7 @@ export function SoilRecommendations({ formData }: SoilRecommendationsProps) {
                   <div className="bg-green-50 border border-green-200 rounded-md p-3">
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <p className="text-xs text-green-700 mb-1">
-                          Base RD:
-                        </p>
+                        <p className="text-xs text-green-700 mb-1">Base RD:</p>
                         <p className="text-sm font-semibold text-green-900">
                           {rec.baseRD} g/tree
                         </p>
@@ -235,4 +237,3 @@ export function SoilRecommendations({ formData }: SoilRecommendationsProps) {
     </div>
   );
 }
-

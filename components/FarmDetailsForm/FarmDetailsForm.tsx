@@ -295,13 +295,16 @@ export function FarmDetailsForm({
         )}
       </div>
 
-      <BaseRecommendedDoseDisplay
-        plantationType={formData.plantationType}
-        age={formData.age}
-        crop={formData.crop}
-        cropOther={formData.cropOther}
-        showOnlyForApple={true}
-      />
+      {/* Hide BaseRecommendedDoseDisplay when apple is selected */}
+      {!isApple && (
+        <BaseRecommendedDoseDisplay
+          plantationType={formData.plantationType}
+          age={formData.age}
+          crop={formData.crop}
+          cropOther={formData.cropOther}
+          showOnlyForApple={true}
+        />
+      )}
     </>
   );
 }
