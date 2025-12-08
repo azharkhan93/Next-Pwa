@@ -39,7 +39,6 @@ export function ParameterSelection() {
 
   return (
     <div className="bg-gray-50 rounded-lg p-5 border border-gray-200">
-
       <h3 className="text-base font-semibold text-gray-900 mb-1">
         Choose Parameters
       </h3>
@@ -64,9 +63,7 @@ export function ParameterSelection() {
                 onChange={() => toggleParam(param.key)}
               />
 
-              <div className="text-xs font-medium text-gray-600">
-                ₹50
-              </div>
+              <div className="text-xs font-medium text-gray-600">₹50</div>
             </div>
           </div>
         ))}
@@ -90,7 +87,6 @@ export function ParameterSelection() {
           </div>
         </div>
       )}
-
     </div>
   );
 }
