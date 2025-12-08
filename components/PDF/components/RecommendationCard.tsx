@@ -2,13 +2,13 @@ import { View, Text } from "@react-pdf/renderer";
 import { styles } from "../RecordPDFTemplate.styles";
 import { JSX } from "react";
 
-interface RecommendationCardProps {
+type RecommendationCardProps = {
   icon: string;
   iconColor: string;
   borderColor: string;
   title: string;
   content: string | JSX.Element;
-}
+};
 
 export const RecommendationCard = ({
   icon,
