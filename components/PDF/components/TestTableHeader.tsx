@@ -9,6 +9,7 @@ export const TestTableHeader = () => {
         <Text style={styles.headerCell}>Test</Text>
       </View>
       <View style={styles.methodCell}>
+
         <Text style={styles.headerCell}>Range</Text>
       </View>
       <View style={styles.additionalCell}>
@@ -24,7 +25,7 @@ export const TestTableHeader = () => {
         <RatingHeader />
       </View>
       <View style={[styles.cecCell,]}>
-        <Text style={styles.headerCell}>Cation Exchange Value</Text>
+        <Text style={styles.headerCell}>Cation Exchange Capacity</Text>
       </View>
     </View>
   );
