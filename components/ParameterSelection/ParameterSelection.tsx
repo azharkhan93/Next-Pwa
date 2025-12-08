@@ -3,38 +3,48 @@
 import React from "react";
 import { Checkbox } from "@/components";
 import {
-  calculateParameterPrice,
+  
   formatPrice,
-  getSelectedParameterCount,
 } from "@/utils/parameterPricing";
 
-type ParameterSelectionProps = {
-  paramPh: boolean;
-  paramDl: boolean;
-  paramCl: boolean;
-  onParamPhChange: (checked: boolean) => void;
-  onParamDlChange: (checked: boolean) => void;
-  onParamClChange: (checked: boolean) => void;
+// 🔹 All parameters from the reference image
+const PARAMETER_LIST = [
+  { key: "soilPh", label: "Soil pH" },
+  { key: "bufferPh", label: "Buffer pH" },
+  { key: "oc", label: "Organic Carbon (OC)" },
+  { key: "nitrogen", label: "Av. Nitrogen (N)" },
+  { key: "phosphorus", label: "Av. Phosphorus (P)" },
+  { key: "potassium", label: "Av. Potassium (K)" },
+  { key: "calcium", label: "Calcium (Ca)" },
+  { key: "magnesium", label: "Magnesium (Mg)" },
+  { key: "iron", label: "Iron (Fe)" },
+  { key: "manganese", label: "Manganese (Mn)" },
+  { key: "zinc", label: "Zinc (Zn)" },
+  { key: "boron", label: "Boron (B)" },
+];
+
+type ParameterState = {
+  [key: string]: boolean;
 };
 
-export function ParameterSelection({
-  paramPh,
-  paramDl,
-  paramCl,
-  onParamPhChange,
-  onParamDlChange,
-  onParamClChange,
-}: ParameterSelectionProps) {
-  // Calculate parameter pricing
-  const selectedCount = React.useMemo(
-    () => getSelectedParameterCount(paramPh, paramDl, paramCl),
-    [paramPh, paramDl, paramCl]
-  );
+export function ParameterSelection() {
+  
+  const [params, setParams] = React.useState<ParameterState>(() => {
+    const defaultState: ParameterState = {};
+    PARAMETER_LIST.forEach((p) => (defaultState[p.key] = false));
+    return defaultState;
+  });
 
-  const totalPrice = React.useMemo(
-    () => calculateParameterPrice(paramPh, paramDl, paramCl),
-    [paramPh, paramDl, paramCl]
-  );
+ 
+  const toggleParam = (key: string) => {
+    setParams((prev) => ({ ...prev, [key]: !prev[key] }));
+  };
+
+ 
+  const selectedCount = Object.values(params).filter(Boolean).length;
+
+ 
+  const totalPrice = selectedCount * 50;
 
   return (
     <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
@@ -46,38 +56,27 @@ export function ParameterSelection({
           Select the parameters you want to test. Price: ₹50 per parameter
         </p>
       </div>
+
+      {/* GRID OF CHECKBOXES */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
-        <div className="bg-white rounded-lg p-4 border-2 border-gray-200 hover:border-blue-400 transition-colors">
-          <Checkbox
-            name="paramPh"
-            label="pH"
-            checked={paramPh}
-            onChange={onParamPhChange}
-            className="items-start"
-          />
-          <div className="mt-2 text-xs text-gray-500">Price: ₹50</div>
-        </div>
-        <div className="bg-white rounded-lg p-4 border-2 border-gray-200 hover:border-blue-400 transition-colors">
-          <Checkbox
-            name="paramDl"
-            label="DL"
-            checked={paramDl}
-            onChange={onParamDlChange}
-            className="items-start"
-          />
-          <div className="mt-2 text-xs text-gray-500">Price: ₹50</div>
-        </div>
-        <div className="bg-white rounded-lg p-4 border-2 border-gray-200 hover:border-blue-400 transition-colors">
-          <Checkbox
-            name="paramCl"
-            label="CL"
-            checked={paramCl}
-            onChange={onParamClChange}
-            className="items-start"
-          />
-          <div className="mt-2 text-xs text-gray-500">Price: ₹50</div>
-        </div>
+        {PARAMETER_LIST.map((param) => (
+          <div
+            key={param.key}
+            className="bg-white rounded-lg p-4 border-2 border-gray-200 hover:border-blue-400 transition-colors"
+          >
+            <Checkbox
+              name={param.key}
+              label={param.label}
+              checked={params[param.key]}
+              onChange={() => toggleParam(param.key)}
+              className="items-start"
+            />
+            <div className="mt-2 text-xs text-gray-500">Price: ₹50</div>
+          </div>
+        ))}
       </div>
+
+      
       {selectedCount > 0 && (
         <div className="mt-4 pt-4 border-t border-gray-300">
           <div className="flex items-center justify-between">
@@ -98,4 +97,3 @@ export function ParameterSelection({
     </div>
   );
 }
-

@@ -245,14 +245,15 @@ export function FarmDetailsForm({
           }
         />
       </div>
-      <ParameterSelection
+      <ParameterSelection />
+      {/* <ParameterSelection
         paramPh={!!formData.paramPh}
         paramDl={!!formData.paramDl}
         paramCl={!!formData.paramCl}
         onParamPhChange={(c) => setFormData((p) => ({ ...p, paramPh: c }))}
         onParamDlChange={(c) => setFormData((p) => ({ ...p, paramDl: c }))}
         onParamClChange={(c) => setFormData((p) => ({ ...p, paramCl: c }))}
-      />
+      /> */}
 
       {/* Payment Status */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
