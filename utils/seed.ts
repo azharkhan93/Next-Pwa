@@ -9,16 +9,29 @@ const seed = async () => {
     await prisma.user.deleteMany({});
     console.log("🗑️  Cleared existing users");
     
-    const hashedPassword = hashPassword("admin123");
+   
+    const adminPassword = hashPassword("admin123");
     await prisma.user.create({
       data: {
         email: "admin@example.com",
-        password: hashedPassword,
+        password: adminPassword,
         role: Role.superAdmin,
       },
     });
     
     console.log("✅ Created superAdmin user");
+    
+    // Create dummy test user
+    const testPassword = hashPassword("test123");
+    await prisma.user.create({
+      data: {
+        email: "test@example.com",
+        password: testPassword,
+        role: Role.admin,
+      },
+    });
+    
+    console.log("✅ Created dummy test user (email: test@example.com, password: test123)");
     
     const users = await prisma.user.findMany({
       select: { email: true, role: true },

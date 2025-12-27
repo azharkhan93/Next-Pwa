@@ -17,7 +17,7 @@ export const RecordPDFTemplate = ({ data }: { data: RecordData }) => {
       <Page size="A4" style={styles.page}>
         <PDFHeader data={data} />
         <TestResultsTable testParams={testParams} />
-        <Recommendations testResult={testResult} />
+        <Recommendations testResult={testResult} data={data} />
         <PDFFooter />
       </Page>
     </Document>

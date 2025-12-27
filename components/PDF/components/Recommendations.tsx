@@ -2,16 +2,36 @@ import { View, Text } from "@react-pdf/renderer";
 import { styles } from "../RecordPDFTemplate.styles";
 import { RecommendationCard } from "./RecommendationCard";
 import type { TestResult } from "@/utils/pdf/types";
+import type { RecordData } from "@/hooks/useRecords";
+import {
+  getBaseRecommendedDose,
+  calculateFinalDose,
+  getPlantationTypeDisplayName,
+} from "@/utils/baseRecommendedDose";
 
 interface RecommendationsProps {
   testResult: TestResult;
+  data: RecordData;
 }
 
-export const Recommendations = ({ testResult }: RecommendationsProps) => {
+export const Recommendations = ({ testResult, data }: RecommendationsProps) => {
   const hasCustomRecommendations =
     testResult.nitrogenRecommendation ||
     testResult.phosphorusRecommendation ||
     testResult.potassiumRecommendation;
+
+  // Calculate base recommended dose for urea (nitrogen) based on age and plantation type
+  const baseRD = getBaseRecommendedDose(data.plantationType, data.age);
+  const plantationTypeDisplay = getPlantationTypeDisplayName(data.plantationType);
+  
+  // Format age display string
+  const ageDisplay = (() => {
+    if (typeof data.age === "number" && data.age > 0) {
+      const plural = data.age === 1 ? "" : "s";
+      return ` (Age: ${data.age} year${plural})`;
+    }
+    return "";
+  })();
 
   return (
     <View style={styles.section}>
@@ -32,8 +52,34 @@ export const Recommendations = ({ testResult }: RecommendationsProps) => {
                   : ""
               }`}
               content={
-                testResult.nitrogenRecommendation.suggestion ||
-                "Apply recommended nitrogen based on soil test results."
+                <Text style={styles.recommendationText}>
+                  {baseRD && baseRD.urea > 0 ? (
+                    <>
+                      {testResult.nitrogenRecommendation.suggestion || "Apply recommended nitrogen based on soil test results."}
+                      {"\n\n"}
+                      <Text style={styles.recommendationBold}>Base Recommended Dose (RD):</Text>
+                      {"\n"}
+                      {plantationTypeDisplay ? `For ${plantationTypeDisplay} plantation` : "For your plantation type"}{ageDisplay}: Urea {baseRD.urea} g/tree
+                      {"\n\n"}
+                      <Text style={styles.recommendationBold}>Final Recommended Dose:</Text>
+                      {"\n"}
+                      {testResult.nitrogenRecommendation.increasePercent !== null && 
+                       testResult.nitrogenRecommendation.increasePercent !== undefined &&
+                       testResult.nitrogenRecommendation.increasePercent !== 0 ? (
+                        <>
+                          Urea {calculateFinalDose(baseRD.urea, testResult.nitrogenRecommendation.increasePercent)} g/tree (after {testResult.nitrogenRecommendation.increasePercent}% increase)
+                        </>
+                      ) : (
+                        <>
+                          Urea {baseRD.urea} g/tree (no adjustment needed)
+                        </>
+                      )}
+                    </>
+                  ) : (
+                    testResult.nitrogenRecommendation.suggestion ||
+                    "Apply recommended nitrogen based on soil test results."
+                  )}
+                </Text>
               }
             />
           )}
