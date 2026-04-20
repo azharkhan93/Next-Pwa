@@ -3,9 +3,7 @@
 import { downloadPDF } from './generatePDF';
 import { RecordData } from '@/hooks/useRecords';
 
-/**
- * Test function to generate PDF with dummy data
- */
+
 export async function testPDFDownload() {
   const dummyData: RecordData = {
     name: 'John Doe',
