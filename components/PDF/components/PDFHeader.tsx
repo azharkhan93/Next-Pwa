@@ -36,7 +36,7 @@ export const PDFHeader = ({ data }: PDFHeaderProps) => {
         <Text style={styles.infoRow}>
           Date Received: {formatDate(data.createdAt)}
         </Text>
-        
+
       </View>
     </View>
   );
