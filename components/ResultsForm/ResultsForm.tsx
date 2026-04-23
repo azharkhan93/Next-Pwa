@@ -89,7 +89,7 @@ function TestResultForm({
             name={`phRating-${testResult.id}`}
             label="pH Rating"
             value={testResult.phRating ?? ""}
-            onChange={() => {}}
+            onChange={() => { }}
             disabled
           />
           <TextInput
@@ -121,7 +121,7 @@ function TestResultForm({
             name={`organicCarbonRating-${testResult.id}`}
             label="Organic Carbon Rating"
             value={testResult.organicCarbonRating ?? ""}
-            onChange={() => {}}
+            onChange={() => { }}
             disabled
           />
         </div>
@@ -154,7 +154,7 @@ function TestResultForm({
             name={`nitrogenRating-${testResult.id}`}
             label="Nitrogen Rating"
             value={testResult.nitrogenRating ?? ""}
-            onChange={() => {}}
+            onChange={() => { }}
             disabled
           />
           <TextInput
@@ -178,7 +178,7 @@ function TestResultForm({
             name={`phosphorusRating-${testResult.id}`}
             label="Phosphorus Rating"
             value={testResult.phosphorusRating ?? ""}
-            onChange={() => {}}
+            onChange={() => { }}
             disabled
           />
           <TextInput
@@ -202,7 +202,7 @@ function TestResultForm({
             name={`potassiumRating-${testResult.id}`}
             label="Potassium Rating"
             value={testResult.potassiumRating ?? ""}
-            onChange={() => {}}
+            onChange={() => { }}
             disabled
           />
         </div>
@@ -228,7 +228,7 @@ function TestResultForm({
             value={testResult.magnesium}
             onChange={handleChange("magnesium")}
           />
-          
+
         </div>
       </div>
 
@@ -273,7 +273,7 @@ function TestResultForm({
             value={testResult.boron}
             onChange={handleChange("boron")}
           />
-         
+
           {/* <TextInput
             id={`chlorine-${testResult.id}`}
             name={`chlorine-${testResult.id}`}
@@ -297,7 +297,7 @@ function TestResultForm({
           Other Parameters
         </h5>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-         
+
           <TextInput
             id={`electricalConductivity-${testResult.id}`}
             name={`electricalConductivity-${testResult.id}`}

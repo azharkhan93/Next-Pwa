@@ -27,20 +27,20 @@ type IconName =
   | "MdAdd"
   | "MdList";
 
+const iconMap: Record<IconName, React.ReactNode> = {
+  MdDashboard: <MdDashboard />,
+  MdHome: <MdHome />,
+  MdPeople: <MdPeople />,
+  MdReceiptLong: <MdReceiptLong />,
+  MdSettings: <MdSettings />,
+  MdAdd: <MdAdd />,
+  MdList: <MdList />,
+};
+
 export type SidebarItem = {
   label: string;
   href: string;
   icon?: IconName;
-};
-
-const iconMap: Record<IconName, React.ReactNode> = {
-  MdDashboard: <MdDashboard size={20} />,
-  MdHome: <MdHome size={20} />,
-  MdPeople: <MdPeople size={20} />,
-  MdReceiptLong: <MdReceiptLong size={20} />,
-  MdSettings: <MdSettings size={20} />,
-  MdAdd: <MdAdd size={20} />,
-  MdList: <MdList size={20} />,
 };
 
 export type SidebarProps = {
@@ -59,13 +59,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   const handleLogout = async () => {
     try {
-      // Call logout API to clear cookie
       await axios.post("/api/logout");
-      // Redirect to login page
       router.push("/");
     } catch (error) {
       console.error("Logout error:", error);
-      // Still redirect even if API call fails
       router.push("/");
     }
   };
@@ -74,91 +71,77 @@ export const Sidebar: React.FC<SidebarProps> = ({
     <>
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-30 lg:hidden"
+          className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-[100] lg:hidden"
           onClick={onClose}
           aria-hidden="true"
         />
       )}
       <nav
-        className={`fixed inset-y-0 left-0 z-40 w-64 border-r border-purple-300/20  bg-gray-800 transform transition-transform duration-300 ease-in-out flex flex-col shadow-lg shadow-purple-500/20 ${
+        className={`fixed inset-y-0 left-0 z-[110] lg:z-30 w-60 bg-slate-950/40 backdrop-blur-2xl border-r border-white/5 transform transition-all duration-300 ease-out flex flex-col ${
           isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         }`}
       >
-        <div className="flex-1 overflow-y-auto">
-          <div className="p-6 pb-4">
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-gradient-to-br from-purple-600 via-purple-500 to-blue-700 rounded-lg flex items-center justify-center shadow-md shadow-purple-500/50">
+        <div className="flex-1 overflow-y-auto px-4 py-8">
+          <div className="flex items-center justify-between mb-10 px-2">
+            <div className="flex items-center gap-3 group">
+              <div className="relative w-10 h-10 flex items-center justify-center">
+                <div className="absolute inset-0 bg-blue-600/20 blur-lg rounded-full group-hover:bg-blue-600/40 transition-colors" />
+                <div className="relative w-full h-full bg-gradient-to-tr from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-600/20 group-hover:scale-110 transition-transform duration-300">
                   <MdDashboard className="text-white" size={20} />
                 </div>
-                <div className="text-xl font-bold text-purple-100">
-                  Dashboard
-                </div>
               </div>
-              <button
-                onClick={onClose}
-                className="lg:hidden p-2 text-purple-300 hover:bg-purple-800/30 rounded-lg transition-all duration-200 hover:scale-110 active:scale-95"
-                aria-label="Close menu"
-              >
-                <MdClose size={20} />
-              </button>
+              <span className="text-xl font-bold tracking-tight text-white group-hover:translate-x-1 transition-transform">Portal</span>
             </div>
+            <button
+              onClick={onClose}
+              className="lg:hidden p-2 text-slate-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
+              aria-label="Close menu"
+            >
+              <MdClose size={22} />
+            </button>
           </div>
-          <div className="px-4 pb-4">
-            <ul className="space-y-1.5">
-              {items.map((item) => {
-                const active = pathname === item.href;
-                return (
-                  <li key={item.href}>
-                    <Link
-                      href={item.href}
-                      onClick={() => {
-                        if (onClose) onClose();
-                      }}
-                      className={`group relative flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all duration-200 ${
-                        active
-                          ? "bg-gradient-to-r from-purple-600 to-blue-700 text-white shadow-lg shadow-purple-600/40 scale-[1.02]"
-                          : "text-purple-900  hover:bg-purple-100/50  hover:translate-x-1"
-                      }`}
-                    >
-                      {active && (
-                        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-white rounded-r-full"></div>
-                      )}
-                      <span
-                        className={`transition-transform duration-200 ${
-                          active
-                            ? "text-white"
-                            : "text-purple-300 group-hover:text-purple-100"
-                        }`}
-                      >
-                        {item.icon ? iconMap[item.icon] : null}
-                      </span>
-                      <span
-                        className={`transition-colors duration-200 ${
-                          active
-                            ? "text-white font-bold"
-                            : "font-bold text-white group-hover:text-black"
-                        }`}
-                      >
-                        {item.label}
-                      </span>
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
+
+          <div className="space-y-2">
+            {items.map((item) => {
+              const active = pathname === item.href;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => onClose && onClose()}
+                  className={`group flex items-center gap-4 px-4 py-3 rounded-2xl text-[14px] font-medium transition-all duration-300 border ${
+                    active
+                      ? "bg-blue-600/10 text-blue-400 border-blue-500/30 shadow-[0_0_20px_rgba(59,130,246,0.1)]"
+                      : "text-slate-400 hover:text-slate-100 hover:bg-white/[0.03] border-transparent"
+                  }`}
+                >
+                  <div className={`flex items-center justify-center w-8 h-8 rounded-lg transition-all duration-300 ${
+                    active ? "bg-blue-500/20 shadow-[0_0_15px_rgba(59,130,246,0.2)] scale-110" : "bg-white/5 group-hover:bg-white/10"
+                  }`}>
+                    <span className={`transition-all duration-300 ${active ? "text-blue-400 scale-110" : "text-slate-400 group-hover:text-slate-200"}`}>
+                      {item.icon ? React.cloneElement(iconMap[item.icon] as React.ReactElement<any>, { size: 18 }) : null}
+                    </span>
+                  </div>
+                  <span className="tracking-wide">{item.label}</span>
+                  {active && (
+                    <div className="ml-auto w-1.5 h-1.5 bg-blue-500 rounded-full shadow-[0_0_10px_rgba(59,130,246,0.8)]" />
+                  )}
+                </Link>
+              );
+            })}
           </div>
         </div>
-        <div className="p-4 pt-3 border-t border-purple-600/30 bg-purple-900/30">
-          <Button
-            variant="error"
-            size="md"
+
+        <div className="p-6 border-t border-white/5 bg-white/[0.01]">
+          <button
             onClick={handleLogout}
-            className="w-full flex items-center justify-center gap-2 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
+            className="w-full flex items-center justify-center gap-3 py-3 rounded-2xl text-[13px] font-bold text-slate-500 hover:text-red-400 hover:bg-red-500/10 transition-all duration-300 group uppercase tracking-[0.1em]"
           >
-            <MdLogout size={18} />
-            <span className="font-semibold">Logout</span>
-          </Button>
+            <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-white/5 group-hover:bg-red-500/10 transition-all">
+               <MdLogout size={16} className="transition-transform group-hover:-translate-x-1" />
+            </div>
+            Logout
+          </button>
         </div>
       </nav>
     </>

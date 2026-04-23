@@ -16,15 +16,13 @@ export function FarmDetailsForm({
   formData,
   setFormData,
 }: FarmDetailsFormProps) {
-  // Determine if crop is apple
   const isApple = formData.crop === "apple";
-  // Determine if crop is selected and not apple
   const isOtherCrop =
     formData.crop && formData.crop !== "apple" && formData.crop !== "";
 
   return (
-    <>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <div className="space-y-10">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-10">
         <Dropdown
           id="crop"
           name="crop"
@@ -33,14 +31,12 @@ export function FarmDetailsForm({
           onChange={(v) => {
             setFormData((p) => {
               const newData = { ...p, crop: v };
-              // Clear apple-specific fields when switching away from apple
               if (v !== "apple") {
                 newData.plantationType = "";
                 newData.plantationTypeOther = "";
                 newData.age = "";
                 newData.noTrees = "";
               }
-              // Clear variety when switching to apple
               if (v === "apple") {
                 newData.variety = "";
               }
@@ -59,14 +55,12 @@ export function FarmDetailsForm({
           onOtherValueChange={(v) => {
             setFormData((p) => {
               const newData = { ...p, cropOther: v };
-              // If "other" is cleared or crop is not apple, clear apple fields
               if (!v || p.crop !== "apple") {
                 newData.plantationType = "";
                 newData.plantationTypeOther = "";
                 newData.age = "";
                 newData.noTrees = "";
               }
-              // If crop is apple, clear variety
               if (p.crop === "apple") {
                 newData.variety = "";
               }
@@ -74,7 +68,7 @@ export function FarmDetailsForm({
             });
           }}
         />
-        {/* Show Type dropdown only for Apple */}
+        
         {isApple && (
           <Dropdown
             id="plantationType"
@@ -93,7 +87,7 @@ export function FarmDetailsForm({
             }
           />
         )}
-        {/* Show Variety field only for non-Apple crops */}
+        
         {isOtherCrop && (
           <TextInput
             id="variety"
@@ -105,57 +99,44 @@ export function FarmDetailsForm({
             }
           />
         )}
-      </div>
-      {/* Show Age and No. of Trees only for Apple */}
-      {isApple && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <TextInput
-            id="age"
-            name="age"
-            type="number"
-            label="Age (years)"
-            value={
-              formData.age === "" || formData.age === undefined
-                ? ""
-                : String(formData.age)
-            }
-            onChange={(e) =>
-              setFormData((p) => ({
-                ...p,
-                age: e.target.value === "" ? "" : Number(e.target.value),
-              }))
-            }
-          />
-          <TextInput
-            id="noTrees"
-            name="noTrees"
-            type="number"
-            label="No. of Trees"
-            value={
-              formData.noTrees === "" || formData.noTrees === undefined
-                ? ""
-                : String(formData.noTrees)
-            }
-            onChange={(e) =>
-              setFormData((p) => ({
-                ...p,
-                noTrees: e.target.value === "" ? "" : Number(e.target.value),
-              }))
-            }
-          />
-        </div>
-      )}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+        {isApple && (
+          <>
+            <TextInput
+              id="age"
+              name="age"
+              type="number"
+              label="Age (years)"
+              value={formData.age === "" || formData.age === undefined ? "" : String(formData.age)}
+              onChange={(e) =>
+                setFormData((p) => ({
+                  ...p,
+                  age: e.target.value === "" ? "" : Number(e.target.value),
+                }))
+              }
+            />
+            <TextInput
+              id="noTrees"
+              name="noTrees"
+              type="number"
+              label="No. of Trees"
+              value={formData.noTrees === "" || formData.noTrees === undefined ? "" : String(formData.noTrees)}
+              onChange={(e) =>
+                setFormData((p) => ({
+                  ...p,
+                  noTrees: e.target.value === "" ? "" : Number(e.target.value),
+                }))
+              }
+            />
+          </>
+        )}
+
         <TextInput
           id="area"
           name="area"
           type="number"
           label="Area"
-          value={
-            formData.area === "" || formData.area === undefined
-              ? ""
-              : String(formData.area)
-          }
+          value={formData.area === "" || formData.area === undefined ? "" : String(formData.area)}
           onChange={(e) =>
             setFormData((p) => ({
               ...p,
@@ -168,11 +149,7 @@ export function FarmDetailsForm({
           name="noOfSamples"
           type="number"
           label="No. of Samples"
-          value={
-            formData.noOfSamples === "" || formData.noOfSamples === undefined
-              ? ""
-              : String(formData.noOfSamples)
-          }
+          value={formData.noOfSamples === "" || formData.noOfSamples === undefined ? "" : String(formData.noOfSamples)}
           onChange={(e) =>
             setFormData((p) => ({
               ...p,
@@ -180,8 +157,7 @@ export function FarmDetailsForm({
             }))
           }
         />
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
         <TextInput
           id="soilDepth"
           name="soilDepth"
@@ -208,8 +184,7 @@ export function FarmDetailsForm({
             setFormData((p) => ({ ...p, soilTypeOther: v }))
           }
         />
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
         <Dropdown
           id="drainage"
           name="drainage"
@@ -244,12 +219,7 @@ export function FarmDetailsForm({
             setFormData((p) => ({ ...p, irrigationMethodOther: v }))
           }
         />
-      </div>
-      <ParameterSelection />
-     
 
-      {/* Payment Status */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Dropdown
           id="paymentStatus"
           name="paymentStatus"
@@ -259,7 +229,6 @@ export function FarmDetailsForm({
             setFormData((p) => ({
               ...p,
               paymentStatus: v,
-              // Clear paid amount if status is not "paid"
               paidAmount: v === "paid" ? p.paidAmount : undefined,
             }));
           }}
@@ -288,7 +257,8 @@ export function FarmDetailsForm({
         )}
       </div>
 
-      
+      <ParameterSelection />
+
       {!isApple && (
         <BaseRecommendedDoseDisplay
           plantationType={formData.plantationType}
@@ -298,6 +268,6 @@ export function FarmDetailsForm({
           showOnlyForApple={true}
         />
       )}
-    </>
+    </div>
   );
 }

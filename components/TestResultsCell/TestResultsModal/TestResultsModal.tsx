@@ -1,9 +1,8 @@
 import React from "react";
-import { MdClose, MdScience } from "react-icons/md";
+import { MdScience } from "react-icons/md";
 import type { TestResult } from "../types";
 import { TestResultCard } from "../TestResultCard/TestResultCard";
-
-
+import { Modal } from "@/components";
 
 type TestResultsModalProps = {
   testResults: TestResult[];
@@ -15,44 +14,31 @@ export const TestResultsModal: React.FC<TestResultsModalProps> = ({
   onClose,
 }) => {
   return (
-    <>
-      {/* Backdrop */}
-      <div
-        className="fixed inset-0 bg-black/20 z-40"
-        onClick={onClose}
-      />
-      
-      {/* Content Panel */}
-      <div className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 bg-white border border-gray-200 rounded-lg shadow-2xl w-[90vw] max-w-5xl max-h-[85vh] overflow-hidden flex flex-col">
-        {/* Header */}
-        <div className="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-indigo-50">
-          <div className="flex items-center justify-between">
-            <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
-              <MdScience size={24} className="text-blue-600" />
-              Test Results Report
-            </h3>
-            <button
-              onClick={onClose}
-              className="text-gray-500 hover:text-gray-700 transition-colors"
-            >
-              <MdClose size={24} />
-            </button>
+    <Modal
+      isOpen={true}
+      onClose={onClose}
+      title="Test Results Report"
+      widthClassName="max-w-6xl"
+    >
+      <div className="space-y-6">
+        <div className="flex items-center gap-4 p-5 bg-blue-50/50 rounded-3xl border border-blue-100/50">
+          <div className="w-12 h-12 rounded-2xl bg-blue-600 flex items-center justify-center text-white shadow-lg shadow-blue-600/20">
+            <MdScience size={24} />
           </div>
-          <p className="text-sm text-gray-600 mt-1">
-            Total: {testResults.length} test{testResults.length > 1 ? "s" : ""}
-          </p>
+          <div>
+            <h4 className="font-bold text-slate-900 text-lg">Detailed Soil Analysis</h4>
+            <p className="text-sm text-slate-500">
+              Generated report containing {testResults.length} test sample{testResults.length > 1 ? "s" : ""}
+            </p>
+          </div>
         </div>
 
-        {/* Scrollable Content */}
-        <div className="overflow-y-auto flex-1 p-6">
-          <div className="space-y-6">
-            {testResults.map((test, index) => (
-              <TestResultCard key={test.id || index} test={test} index={index} />
-            ))}
-          </div>
+        <div className="space-y-10 py-4">
+          {testResults.map((test, index) => (
+            <TestResultCard key={test.id || index} test={test} index={index} />
+          ))}
         </div>
       </div>
-    </>
+    </Modal>
   );
 };
-

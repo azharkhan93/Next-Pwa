@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Button } from "..";
-import { MdAdd, MdViewList } from "react-icons/md";
+import { MdAdd, MdMenu } from "react-icons/md";
 
 export type TopbarProps = {
   title?: string;
@@ -20,30 +20,30 @@ export const Topbar: React.FC<TopbarProps> = ({
   onMenuClick,
 }) => {
   return (
-    <header className="sticky top-0 z-20 h-14 flex items-center justify-between border-b border-black bg-white  px-4 lg:px-6">
-      <div className="flex items-center gap-3">
+    <header className="sticky top-0 z-30 h-16 flex items-center justify-between border-b border-white/5 bg-slate-900/50 backdrop-blur-xl px-6 lg:px-12">
+      <div className="flex items-center gap-4">
         <button
           onClick={onMenuClick}
-          className="lg:hidden p-2 -ml-2 text-gray-600 hover:bg-gray-100 rounded-md transition-colors"
+          className="lg:hidden p-2 -ml-2 text-slate-400 hover:text-white hover:bg-white/10 rounded-xl transition-all"
           aria-label="Toggle menu"
         >
-          <MdViewList size={24} />
+          <MdMenu size={24} />
         </button>
-        <h1 className="text-lg font-semibold text-gray-900 truncate">
+        <h1 className="text-xl font-bold text-white tracking-tight">
           {title}
         </h1>
       </div>
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-4">
         {rightSlot}
         {onAddClick ? (
           <Button
-            size="sm"
+            size="md"
             variant="primary"
             onClick={onAddClick}
-            className="inline-flex items-center gap-2"
+            className="bg-blue-600 hover:bg-blue-500 shadow-lg shadow-blue-600/20 px-5 rounded-xl transition-all hover:scale-[1.02] active:scale-[0.98]"
           >
-            <MdAdd size={18} />
-            <span className="hidden sm:inline">{addText}</span>
+            <MdAdd size={20} className="mr-1" />
+            <span className="hidden sm:inline font-semibold">{addText}</span>
           </Button>
         ) : null}
       </div>

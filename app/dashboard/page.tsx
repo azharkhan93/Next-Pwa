@@ -33,20 +33,14 @@ export default function DashboardPage() {
   React.useEffect(() => {
     const fetchStats = async () => {
       try {
-        // Fetch all records to calculate stats
         const response = await axios.get("/api/records?page=1&limit=1000");
         const records: RecordData[] = response.data?.data || [];
 
-        // Calculate total samples (sum of noOfSamples from all records)
         const totalSamples = records.reduce((sum, record) => {
           const samples = record.noOfSamples;
-          if (typeof samples === "number" && samples > 0) {
-            return sum + samples;
-          }
-          return sum;
+          return typeof samples === "number" && samples > 0 ? sum + samples : sum;
         }, 0);
 
-        // Calculate total soil samples (records with test results or parameters selected)
         const totalSoilSamples = records.filter((record) => {
           return (
             record.paramPh ||
@@ -56,18 +50,12 @@ export default function DashboardPage() {
           );
         }).length;
 
-        // Calculate total plants (sum of noTrees from all records)
         const totalPlants = records.reduce((sum, record) => {
           const trees = record.noTrees;
-          if (typeof trees === "number" && trees > 0) {
-            return sum + trees;
-          }
-          return sum;
+          return typeof trees === "number" && trees > 0 ? sum + trees : sum;
         }, 0);
 
-        // Calculate soil sample statuses
         const underProcess = records.filter((record) => {
-          // Has parameters selected but no test results
           return (
             (record.paramPh || record.paramDl || record.paramCl) &&
             (!record.testResults || record.testResults.length === 0)
@@ -75,90 +63,42 @@ export default function DashboardPage() {
         }).length;
 
         const proceed = records.filter((record) => {
-          // Has test results but may be incomplete
-          return (
-            record.testResults &&
-            record.testResults.length > 0 &&
-            Array.isArray(record.testResults)
-          );
+          return record.testResults && record.testResults.length > 0 && Array.isArray(record.testResults);
         }).length;
 
-        // Completed: records with complete test results (all parameters tested)
         const completed = records.filter((record) => {
-          if (!record.testResults || !Array.isArray(record.testResults)) {
-            return false;
-          }
-          // Check if at least one test result has all key fields
+          if (!record.testResults || !Array.isArray(record.testResults)) return false;
           return record.testResults.some((test) => {
-            // Type guard for test result object
             if (typeof test === "object" && test !== null) {
-              const testResult = test as {
-                nitrogen?: string;
-                phosphorus?: string;
-                potassium?: string;
-                ph?: string;
-              };
-              return (
-                testResult.nitrogen &&
-                testResult.phosphorus &&
-                testResult.potassium &&
-                testResult.ph
-              );
+              const tr = test as { nitrogen?: string; phosphorus?: string; potassium?: string; ph?: string };
+              return tr.nitrogen && tr.phosphorus && tr.potassium && tr.ph;
             }
             return false;
           });
         }).length;
 
-        // Paid: For now, consider completed samples as paid (can be updated when payment tracking is added)
         const paid = completed;
-
-        // Calculate monthly payment data
         const monthlyPayments = new Map<string, number>();
         const pricePerParameter = 50;
 
         records.forEach((record) => {
-          if (
-            record.testResults &&
-            Array.isArray(record.testResults) &&
-            record.testResults.length > 0
-          ) {
+          if (record.testResults && Array.isArray(record.testResults) && record.testResults.length > 0) {
             const recordDate = new Date(record.createdAt || Date.now());
-            const monthKey = recordDate.toLocaleDateString("en-US", {
-              month: "short",
-              year: "numeric",
-            });
-
-            // Calculate payment based on selected parameters
+            const monthKey = recordDate.toLocaleDateString("en-US", { month: "short", year: "numeric" });
             let paramCount = 0;
             if (record.paramPh) paramCount++;
             if (record.paramDl) paramCount++;
             if (record.paramCl) paramCount++;
-
-            const payment = paramCount * pricePerParameter;
-            monthlyPayments.set(
-              monthKey,
-              (monthlyPayments.get(monthKey) || 0) + payment
-            );
+            monthlyPayments.set(monthKey, (monthlyPayments.get(monthKey) || 0) + (paramCount * pricePerParameter));
           }
         });
 
-        // Generate last 6 months of payment data
         const paymentChartData: Array<{ month: string; amount: number }> = [];
         const currentDate = new Date();
         for (let i = 5; i >= 0; i--) {
-          const date = new Date(
-            currentDate.getFullYear(),
-            currentDate.getMonth() - i,
-            1
-          );
-          const monthKey = date.toLocaleDateString("en-US", {
-            month: "short",
-            year: "numeric",
-          });
-          paymentChartData.push({
-            month: monthKey,
-            amount: monthlyPayments.get(monthKey) || 0,
-          });
+          const date = new Date(currentDate.getFullYear(), currentDate.getMonth() - i, 1);
+          const monthKey = date.toLocaleDateString("en-US", { month: "short", year: "numeric" });
+          paymentChartData.push({ month: monthKey, amount: monthlyPayments.get(monthKey) || 0 });
         }
 
         setStats({
@@ -171,14 +111,12 @@ export default function DashboardPage() {
           paid,
           loading: false,
         });
-
         setPaymentData(paymentChartData);
       } catch (error) {
         console.error("Error fetching stats:", error);
         setStats((prev) => ({ ...prev, loading: false }));
       }
     };
-
     fetchStats();
   }, []);
 
@@ -186,20 +124,20 @@ export default function DashboardPage() {
     {
       label: "Total Samples",
       value: stats.loading ? "..." : stats.totalSamples.toLocaleString(),
-      icon: <MdScience size={24} className="text-blue-600" />,
-      iconBgColor: "bg-blue-100",
+      icon: <MdScience />,
+      iconBgColor: "bg-blue-500/20",
     },
     {
       label: "Total Soil Samples",
       value: stats.loading ? "..." : stats.totalSoilSamples.toLocaleString(),
-      icon: <MdGrass size={24} className="text-green-600" />,
-      iconBgColor: "bg-green-100",
+      icon: <MdGrass />,
+      iconBgColor: "bg-emerald-500/20",
     },
     {
       label: "Total Plant Samples",
       value: stats.loading ? "..." : stats.totalPlants.toLocaleString(),
-      icon: <MdLocalFlorist size={24} className="text-purple-600" />,
-      iconBgColor: "bg-purple-100",
+      icon: <MdLocalFlorist />,
+      iconBgColor: "bg-purple-500/20",
     },
   ];
 
@@ -207,33 +145,38 @@ export default function DashboardPage() {
     {
       label: "Under Process",
       value: stats.loading ? "..." : stats.underProcess.toLocaleString(),
-      icon: <MdHourglassEmpty size={24} className="text-yellow-600" />,
-      iconBgColor: "bg-yellow-100",
+      icon: <MdHourglassEmpty />,
+      iconBgColor: "bg-amber-500/20",
     },
     {
       label: "Proceed",
       value: stats.loading ? "..." : stats.proceed.toLocaleString(),
-      icon: <MdPlayArrow size={24} className="text-orange-600" />,
-      iconBgColor: "bg-orange-100",
+      icon: <MdPlayArrow />,
+      iconBgColor: "bg-orange-500/20",
     },
     {
       label: "Completed",
       value: stats.loading ? "..." : stats.completed.toLocaleString(),
-      icon: <MdCheckCircle size={24} className="text-green-600" />,
-      iconBgColor: "bg-green-100",
+      icon: <MdCheckCircle />,
+      iconBgColor: "bg-green-500/20",
     },
     {
       label: "Paid",
       value: stats.loading ? "..." : stats.paid.toLocaleString(),
-      icon: <MdPayment size={24} className="text-indigo-600" />,
-      iconBgColor: "bg-indigo-100",
+      icon: <MdPayment />,
+      iconBgColor: "bg-indigo-500/20",
     },
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-10 pb-10">
+      <header className="space-y-1">
+        <h1 className="text-3xl font-bold tracking-tight text-white">Dashboard</h1>
+        <p className="text-slate-400 text-sm">Welcome back! Here's what's happening today.</p>
+      </header>
+
       {/* Main Stats */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <section className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {statCards.map((stat) => (
           <StatCard
             key={stat.label}
@@ -243,14 +186,15 @@ export default function DashboardPage() {
             iconBgColor={stat.iconBgColor}
           />
         ))}
-      </div>
+      </section>
 
       {/* Soil Sample Status Stats */}
-      <div>
-        <h2 className="text-xl font-semibold text-white mb-4">
-          Soil Sample Status
-        </h2>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <section className="space-y-6">
+        <div className="flex items-center gap-4">
+          <h2 className="text-xl font-bold text-white tracking-tight">Soil Sample Status</h2>
+          <div className="h-px flex-1 bg-white/5" />
+        </div>
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {soilSampleStatusCards.map((stat) => (
             <StatCard
               key={stat.label}
@@ -261,12 +205,16 @@ export default function DashboardPage() {
             />
           ))}
         </div>
-      </div>
+      </section>
 
       {/* Payment Received Chart */}
-      <div>
+      <section className="space-y-6">
+        <div className="flex items-center gap-4">
+          <h2 className="text-xl font-bold text-white tracking-tight">Revenue Analytics</h2>
+          <div className="h-px flex-1 bg-white/5" />
+        </div>
         <PaymentReceivedChart data={paymentData} />
-      </div>
+      </section>
     </div>
   );
 }

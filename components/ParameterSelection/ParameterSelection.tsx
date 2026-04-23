@@ -38,50 +38,58 @@ export function ParameterSelection() {
   const totalPrice = selectedCount * 50;
 
   return (
-    <div className="bg-gray-50 rounded-lg p-5 border border-gray-200">
-      <h3 className="text-base font-semibold text-gray-900 mb-1">
-        Choose Parameters
-      </h3>
+    <div className="bg-white/[0.02] rounded-2xl p-6 border border-white/5 space-y-6">
+      <div className="space-y-1">
+        <h3 className="text-lg font-bold text-white tracking-tight">
+          Test Parameters
+        </h3>
+        <p className="text-sm text-slate-400">
+          Select the parameters for testing. Price is ₹50 per parameter.
+        </p>
+      </div>
 
-      <p className="text-sm text-gray-600 mb-4">
-        Select the parameters you want to test. Price: ₹50 per parameter
-      </p>
-
-      {/* GRID — No horizontal scroll */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
         {PARAMETER_LIST.map((param) => (
           <div
             key={param.key}
-            className="bg-white rounded-lg p-3 border border-gray-200 
-                       hover:border-blue-400 transition-colors"
+            className={`group rounded-xl p-4 border transition-all duration-300 ${
+              params[param.key]
+                ? "bg-blue-600/10 border-blue-500/30 ring-1 ring-blue-500/20"
+                : "bg-white/[0.03] border-white/5 hover:border-white/20 hover:bg-white/[0.05]"
+            }`}
+            onClick={() => toggleParam(param.key)}
           >
-            <div className="flex items-start justify-between gap-2">
+            <div className="flex items-center justify-between gap-3 cursor-pointer">
               <Checkbox
                 name={param.key}
                 label={param.label}
                 checked={params[param.key]}
-                onChange={() => toggleParam(param.key)}
+                onChange={() => {}} // Toggle handled by parent div
+                className="pointer-events-none"
               />
-
-              <div className="text-xs font-medium text-gray-600">₹50</div>
+              <div className={`text-xs font-bold transition-colors ${params[param.key] ? "text-blue-400" : "text-slate-500"}`}>
+                ₹50
+              </div>
             </div>
           </div>
         ))}
       </div>
 
       {selectedCount > 0 && (
-        <div className="mt-4 pt-3 border-t border-gray-300">
-          <div className="flex items-center justify-between">
-            <span className="text-sm font-medium text-gray-700">
-              Selected Parameters: {selectedCount}
-            </span>
+        <div className="pt-6 border-t border-white/5">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="px-4 py-2 rounded-lg bg-blue-500/10 border border-blue-500/20">
+              <span className="text-sm font-semibold text-blue-400">
+                Selected: {selectedCount} Parameters
+              </span>
+            </div>
 
-            <div className="text-right">
-              <div className="text-sm text-gray-600 mb-1">
+            <div className="text-center sm:text-right space-y-1">
+              <div className="text-xs font-medium text-slate-500 uppercase tracking-widest">
                 {selectedCount} × ₹50
               </div>
-              <div className="text-lg font-bold text-gray-900">
-                Grand Total: {formatPrice(totalPrice)}
+              <div className="text-2xl font-bold text-white tracking-tight">
+                Total: <span className="text-blue-400">{formatPrice(totalPrice)}</span>
               </div>
             </div>
           </div>

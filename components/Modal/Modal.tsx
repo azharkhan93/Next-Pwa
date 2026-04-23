@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { MdClose } from "react-icons/md";
 
 export type ModalProps = {
@@ -24,7 +25,10 @@ export const Modal: React.FC<ModalProps> = ({
   className,
   closeOnOverlay = true,
 }) => {
+  const [mounted, setMounted] = useState(false);
+
   useEffect(() => {
+    setMounted(true);
     if (!isOpen) return;
     const handler = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -33,38 +37,40 @@ export const Modal: React.FC<ModalProps> = ({
     return () => document.removeEventListener("keydown", handler);
   }, [isOpen, onClose]);
 
-  if (!isOpen) return null;
+  if (!isOpen || !mounted) return null;
 
-  const overlayClass =
-    overlayVariant === "light"
-      ? "bg-white/60 backdrop-blur-sm"
-      : "bg-black/50 backdrop-blur-sm";
+  // Professional dark overlay to hide background contents
+  const overlayClass = "bg-slate-950/80 backdrop-blur-md";
 
-  return (
+  const modalContent = (
     <div
-      className={`fixed inset-0 z-50 flex items-center justify-center p-4 ${overlayClass}`}
+      className={`fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6 lg:p-10 ${overlayClass}`}
       onClick={closeOnOverlay ? onClose : undefined}
       aria-modal="true"
       role="dialog"
     >
       <div
-        className={`relative w-full ${widthClassName} rounded-lg border border-gray-200 bg-white shadow-xl`}
+        className={`relative w-full ${widthClassName} rounded-[2rem] border border-white/10 bg-white shadow-[0_32px_64px_-12px_rgba(0,0,0,0.5)] overflow-hidden animate-in fade-in zoom-in-95 duration-300`}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between border-b border-gray-200 px-4 py-3">
-          <h3 className="text-base font-semibold text-gray-900 truncate">
+        <div className="flex items-center justify-between border-b border-slate-100 px-6 py-5 bg-slate-50/50">
+          <h3 className="text-xl font-bold text-slate-900 tracking-tight truncate">
             {title}
           </h3>
           <button
             aria-label="Close"
-            className="p-1 rounded hover:bg-gray-100 text-gray-600"
+            className="p-2 rounded-xl bg-slate-200/50 hover:bg-slate-200 text-slate-500 hover:text-slate-900 transition-all"
             onClick={onClose}
           >
-            <MdClose size={20} />
+            <MdClose size={24} />
           </button>
         </div>
-        <div className={`p-4 ${className ?? ""}`}>{children}</div>
+        <div className={`p-6 sm:p-8 max-h-[85vh] overflow-y-auto custom-scrollbar bg-white ${className ?? ""}`}>
+          {children}
+        </div>
       </div>
     </div>
   );
+
+  return createPortal(modalContent, document.body);
 };

@@ -55,6 +55,7 @@ export type FormData = {
     labTestNo?: string;
     // Basic Parameters
     ph: string;
+    bufferPh: string;
     organicCarbon: string;
     // Primary Macronutrients
     nitrogen: string;
@@ -76,6 +77,7 @@ export type FormData = {
     // Other Parameters
     sodium: string;
     electricalConductivity: string;
+    solubleSalts: string;
     // Ratings
     phRating?: string;
     organicCarbonRating?: string;
@@ -106,8 +108,8 @@ export function FarmerDetailsForm({
     };
 
   return (
-    <>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <div className="space-y-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4">
         <TextInput
           id="name"
           name="name"
@@ -123,8 +125,6 @@ export function FarmerDetailsForm({
           value={formData.parentage}
           onChange={handleChange("parentage")}
         />
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <TextInput
           id="address"
           name="address"
@@ -139,8 +139,6 @@ export function FarmerDetailsForm({
           value={formData.district}
           onChange={handleChange("district")}
         />
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <TextInput
           id="pinCode"
           name="pinCode"
@@ -157,8 +155,6 @@ export function FarmerDetailsForm({
           value={formData.phoneNo}
           onChange={handleChange("phoneNo")}
         />
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <TextInput
           id="adharNo"
           name="adharNo"
@@ -173,8 +169,6 @@ export function FarmerDetailsForm({
           value={formData.khasraNo}
           onChange={handleChange("khasraNo")}
         />
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <TextInput
           id="latitude"
           name="latitude"
@@ -192,10 +186,12 @@ export function FarmerDetailsForm({
           disabled
         />
       </div>
-      {locating ? (
-        <div className="text-sm text-gray-500">Detecting location…</div>
-      ) : null}
-    </>
+      {locating && (
+        <div className="flex items-center gap-2 px-4 py-2 bg-blue-500/10 border border-blue-500/20 rounded-xl animate-pulse w-fit">
+          <div className="w-2 h-2 bg-blue-500 rounded-full" />
+          <span className="text-xs font-semibold text-blue-400 uppercase tracking-widest">Detecting location…</span>
+        </div>
+      )}
+    </div>
   );
 }
-

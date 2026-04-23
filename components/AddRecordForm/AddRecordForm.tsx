@@ -12,6 +12,7 @@ import { FarmDetailsForm } from "@/components/FarmDetailsForm";
 import { ResultsForm } from "@/components/ResultsForm";
 import { useRecords } from "@/hooks/useRecords";
 import { calculateParameterPrice } from "@/utils/parameterPricing";
+import { MdCheck } from "react-icons/md";
 
 const initialFormData: FormData = {
   name: "",
@@ -87,12 +88,9 @@ export function AddRecordForm(
 
   const steps = React.useMemo(
     () => [
-      { title: "Farmer details", fields: [] as const },
-      { title: "Farm details", fields: [] as const },
-      {
-        title: "Results",
-        fields: [] as const,
-      },
+      { title: "Farmer details" },
+      { title: "Farm details" },
+      { title: "Test Results" },
     ],
     []
   );
@@ -100,7 +98,6 @@ export function AddRecordForm(
   const isLastStep = step === steps.length - 1;
   const progressPct = ((step + 1) / steps.length) * 100;
 
-  // Fetch record data when in edit mode
   React.useEffect(() => {
     if (recordId && !dataLoaded) {
       const fetchRecord = async () => {
@@ -109,7 +106,6 @@ export function AddRecordForm(
         try {
           const record = await getRecordById(recordId);
           if (record) {
-            // Transform record data to form data format
             const transformedData: FormData = {
               name: record.name || "",
               address: record.address || "",
@@ -129,22 +125,10 @@ export function AddRecordForm(
               variety: record.variety || "",
               plantationType: record.plantationType || "",
               plantationTypeOther: record.plantationTypeOther || "",
-              age:
-                record.age !== null && record.age !== undefined
-                  ? record.age
-                  : "",
-              noTrees:
-                record.noTrees !== null && record.noTrees !== undefined
-                  ? record.noTrees
-                  : "",
-              area:
-                record.area !== null && record.area !== undefined
-                  ? record.area
-                  : "",
-              noOfSamples:
-                record.noOfSamples !== null && record.noOfSamples !== undefined
-                  ? record.noOfSamples
-                  : "",
+              age: record.age !== null && record.age !== undefined ? record.age : "",
+              noTrees: record.noTrees !== null && record.noTrees !== undefined ? record.noTrees : "",
+              area: record.area !== null && record.area !== undefined ? record.area : "",
+              noOfSamples: record.noOfSamples !== null && record.noOfSamples !== undefined ? record.noOfSamples : "",
               soilDepth: record.soilDepth || "",
               soilType: record.soilType || "",
               soilTypeOther: record.soilTypeOther || "",
@@ -227,29 +211,19 @@ export function AddRecordForm(
     }
     setLoading(true);
     try {
-      // Calculate parameter price
       const parameterPrice = calculateParameterPrice(
         !!formData.paramPh,
         !!formData.paramDl,
         !!formData.paramCl
       );
 
-      // Prepare payload - filter out empty "other" fields
       const payload: Record<string, unknown> = {
         ...formData,
         testResults: formData.testResults || [],
         parameterPrice: parameterPrice > 0 ? parameterPrice : null,
       };
 
-      // Remove empty "other" fields - only include if they have values
-      const otherFields = [
-        "cropOther",
-        "plantationTypeOther",
-        "soilTypeOther",
-        "drainageOther",
-        "irrigationMethodOther",
-      ];
-
+      const otherFields = ["cropOther", "plantationTypeOther", "soilTypeOther", "drainageOther", "irrigationMethodOther"];
       otherFields.forEach((field) => {
         const value = payload[field];
         if (!value || (typeof value === "string" && value.trim() === "")) {
@@ -257,12 +231,6 @@ export function AddRecordForm(
         }
       });
 
-      // Log the full payload before sending to backend
-      console.log(`=== ${isEditMode ? "Update" : "Add"}RecordForm Payload ===`);
-      console.log(JSON.stringify(payload, null, 2));
-      console.log("=============================");
-
-      // Send data to backend
       let result;
       if (isEditMode && recordId) {
         result = await updateRecord(recordId, payload as Partial<FormData>);
@@ -273,29 +241,22 @@ export function AddRecordForm(
       if (result) {
         router.push("/dashboard/list");
       } else {
-        setError(
-          `Failed to ${isEditMode ? "update" : "add"} data. Please try again.`
-        );
+        setError(`Failed to ${isEditMode ? "update" : "add"} data. Please try again.`);
       }
     } catch (err) {
       console.error("Error submitting form:", err);
-      setError(
-        `Failed to ${isEditMode ? "update" : "add"} data. Please try again.`
-      );
+      setError(`Failed to ${isEditMode ? "update" : "add"} data. Please try again.`);
     } finally {
       setLoading(false);
     }
   };
 
-  // Auto-detect location once on mount (best-effort) - only in add mode
   React.useEffect(() => {
     if (isEditMode || attemptedLocate) return;
-    let cancelled = false;
     const detect = async () => {
       try {
         setLocating(true);
         const coords = await getCurrentCoordinates();
-        if (cancelled) return;
         setFormData((prev) => ({
           ...prev,
           latitude: String(coords.latitude),
@@ -303,7 +264,6 @@ export function AddRecordForm(
         }));
         try {
           const rev = await reverseGeocode(coords.latitude, coords.longitude);
-          if (cancelled) return;
           setFormData((prev) => ({
             ...prev,
             district: rev.district ?? prev.district,
@@ -312,116 +272,116 @@ export function AddRecordForm(
             pinCode: rev.postcode ?? prev.pinCode,
             location: rev.displayName ?? prev.location,
           }));
-        } catch {
-          // ignore reverse geocode failures
-        }
+        } catch {}
       } catch {
-        // If user denies or geolocation fails, keep fields empty and show a gentle message
-        setError(
-          "Location access denied or unavailable. You can proceed without it."
-        );
+        setError("Location access denied or unavailable.");
       } finally {
-        if (!cancelled) {
-          setLocating(false);
-          setAttemptedLocate(true);
-        }
+        setLocating(false);
+        setAttemptedLocate(true);
       }
     };
     detect();
-    return () => {
-      cancelled = true;
-    };
   }, [attemptedLocate, isEditMode]);
 
-  // Show loading state while fetching record data
   if (isEditMode && !dataLoaded && (loading || recordsLoading)) {
     return <Loading fullScreen />;
   }
 
   return (
-    <div className="mx-auto">
-      <h2 className="text-xl text-white font-semibold mb-4">
-        {isEditMode ? "Edit Record" : "Add New Record"}
-      </h2>
-      <div className="mb-4">
-        <div className="flex items-center justify-between text-sm text-white">
-          {steps.map((s, idx) => (
-            <div key={s.title} className="flex-1 flex items-center">
-              <div
-                className={`flex items-center gap-2 ${idx === 0 ? "" : "pl-2"}`}
-              >
+    <div className="max-w-4xl mx-auto pb-10 space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <header className="space-y-1">
+        <h1 className="text-3xl font-bold tracking-tight text-white">
+          {isEditMode ? "Modify Record" : "New Entry"}
+        </h1>
+        <p className="text-slate-400 text-sm">Please fill out the information below to {isEditMode ? "update" : "save"} the record.</p>
+      </header>
+
+      {/* Modern Stepper */}
+      <div className="relative py-4">
+        <div className="absolute top-1/2 left-0 w-full h-0.5 bg-white/5 -translate-y-1/2" />
+        <div 
+          className="absolute top-1/2 left-0 h-0.5 bg-blue-600 -translate-y-1/2 transition-all duration-500 ease-out" 
+          style={{ width: `${((step) / (steps.length - 1)) * 100}%` }}
+        />
+        
+        <div className="relative flex justify-between">
+          {steps.map((s, idx) => {
+            const isCompleted = step > idx;
+            const isActive = step === idx;
+            return (
+              <div key={s.title} className="flex flex-col items-center gap-3">
                 <div
-                  className={`h-6 w-6 rounded-full flex items-center justify-center text-xs font-semibold ${
-                    idx <= step
-                      ? "bg-blue-600 text-white"
-                      : "bg-gray-200 text-black"
+                  className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300 z-10 ${
+                    isCompleted 
+                      ? "bg-blue-600 text-white shadow-[0_0_15px_rgba(37,99,235,0.4)]" 
+                      : isActive 
+                        ? "bg-slate-900 text-blue-400 border-2 border-blue-600 shadow-[0_0_15px_rgba(37,99,235,0.2)]"
+                        : "bg-slate-900 text-slate-500 border-2 border-white/5"
                   }`}
                 >
-                  {idx + 1}
+                  {isCompleted ? <MdCheck size={20} /> : idx + 1}
                 </div>
-                <span className={`${idx === step ? "font-semibold" : ""}`}>
+                <span className={`text-[11px] font-bold uppercase tracking-widest transition-colors ${isActive ? "text-white" : "text-slate-500"}`}>
                   {s.title}
                 </span>
               </div>
-            </div>
-          ))}
-        </div>
-        <div className="mt-3 h-2 w-full rounded-full bg-gray-200 overflow-hidden">
-          <div
-            className="h-full bg-blue-600 transition-all"
-            style={{ width: `${progressPct}%` }}
-          />
+            );
+          })}
         </div>
       </div>
-      <form onSubmit={handleSubmit} className="space-y-4   rounded-lg   p-4">
-        {step === 0 && (
-          <FarmerDetailsForm
-            formData={formData}
-            setFormData={setFormData}
-            locating={locating}
-          />
-        )}
 
-        {step === 1 && (
-          <FarmDetailsForm formData={formData} setFormData={setFormData} />
-        )}
+      <form onSubmit={handleSubmit} className="space-y-10 bg-white/[0.02] border border-white/5 rounded-3xl p-8 backdrop-blur-md shadow-2xl">
+        <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
+          {step === 0 && (
+            <FarmerDetailsForm
+              formData={formData}
+              setFormData={setFormData}
+              locating={locating}
+            />
+          )}
 
-        {step === 2 && (
-          <ResultsForm formData={formData} setFormData={setFormData} />
-        )}
+          {step === 1 && (
+            <FarmDetailsForm formData={formData} setFormData={setFormData} />
+          )}
+
+          {step === 2 && (
+            <ResultsForm formData={formData} setFormData={setFormData} />
+          )}
+        </div>
 
         <FormError message={error ?? undefined} />
 
-        <div className="flex items-center justify-between gap-3 w-full">
-          <div className="flex items-center gap-3">
-            <Button
-              type="button"
-              size="md"
-              variant="secondary"
-              onClick={() => router.back()}
-            >
-              Cancel
-            </Button>
-          </div>
-          <div className="flex items-center gap-3">
+        <div className="flex items-center justify-between pt-6 border-t border-white/5">
+          <Button
+            type="button"
+            size="md"
+            variant="secondary"
+            onClick={() => router.back()}
+            className="rounded-xl px-6"
+          >
+            Cancel
+          </Button>
+          
+          <div className="flex items-center gap-4">
             {step > 0 && (
               <Button
                 type="button"
                 size="md"
                 variant="outlined"
                 onClick={() => setStep((s) => Math.max(0, s - 1))}
+                className="rounded-xl px-6"
               >
                 Back
               </Button>
             )}
             <Button
-              className="px-8"
+              className="px-10 rounded-xl"
               type="submit"
               size="md"
               variant="primary"
               loading={loading}
             >
-              {isLastStep ? (isEditMode ? "Update" : "Save") : "Next"}
+              {isLastStep ? (isEditMode ? "Update Record" : "Save Record") : "Continue"}
             </Button>
           </div>
         </div>

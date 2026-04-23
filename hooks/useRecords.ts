@@ -54,6 +54,7 @@ export type RecordData = {
     id: string;
     labTestNo?: string;
     ph?: string;
+    bufferPh?: string;
     organicCarbon?: string;
     phRating?: string;
     organicCarbonRating?: string;
@@ -73,6 +74,9 @@ export type RecordData = {
     nickel?: string;
     sodium?: string;
     electricalConductivity?: string;
+    solubleSalts?: string;
+    phRatingVal?: string;
+    organicCarbonRatingVal?: string;
     nitrogenRating?: string;
     phosphorusRating?: string;
     potassiumRating?: string;
@@ -284,4 +288,3 @@ export function useRecords(
     refetch,
   };
 }
-

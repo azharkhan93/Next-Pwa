@@ -38,7 +38,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
   options,
   placeholder = "Select...",
   disabled = false,
-  className,
+  className = "space-y-1.5",
   otherValue = "",
   onOtherValueChange,
 }) => {
@@ -109,7 +109,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
       {label && (
         <label
           htmlFor={id || name}
-          className="block text-sm font-bold text-white mb-1"
+          className="block text-[13px] font-bold text-slate-300 tracking-wide uppercase"
         >
           {label}
         </label>
@@ -120,49 +120,53 @@ export const Dropdown: React.FC<DropdownProps> = ({
         type="button"
         onClick={() => !disabled && setIsOpen(!isOpen)}
         disabled={disabled}
-        className="w-full px-3 py-3 text-sm flex items-center justify-between border border-gray-300 cursor-pointer rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-60 disabled:cursor-not-allowed transition-colors"
+        className={`w-full px-4 py-3 text-sm flex items-center justify-between border border-white/10 rounded-xl bg-white/[0.03] backdrop-blur-md text-white transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 hover:bg-white/[0.05] hover:border-white/20 disabled:opacity-50 disabled:cursor-not-allowed ${
+          isOpen ? "border-blue-500/50 ring-2 ring-blue-500/20 bg-white/[0.07]" : ""
+        }`}
         aria-haspopup="listbox"
         aria-expanded={isOpen}
       >
-        <span className={value ? "" : "text-gray-500  cursor-pointer"}>
+        <span className={value ? "text-white" : "text-slate-500"}>
           {displayValue}
         </span>
         <MdKeyboardArrowDown
-          className={`transition-transform ${isOpen ? "rotate-180" : ""}`}
-          size={20}
+          className={`text-slate-400 transition-transform duration-300 ${isOpen ? "rotate-180 text-blue-400" : ""}`}
+          size={22}
         />
       </button>
 
-      {isOpen ? (
-        <div className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
-          {options.map((option) => {
-            const isSelected = option.value === value;
-            const isDisabled = option.disabled;
+      {isOpen && (
+        <div className="absolute z-50 w-full mt-2 bg-slate-900/90 backdrop-blur-2xl border border-white/10 rounded-xl shadow-2xl max-h-60 overflow-auto animate-in fade-in zoom-in-95 duration-200">
+          <div className="p-1.5">
+            {options.map((option) => {
+              const isSelected = option.value === value;
+              const isDisabled = option.disabled;
 
-            return (
-              <button
-                key={option.value}
-                type="button"
-                onClick={() => !isDisabled && handleOptionClick(option.value)}
-                disabled={isDisabled}
-                className={`w-full text-left px-3 py-2 text-sm transition-colors ${
-                  isSelected
-                    ? "bg-blue-100 text-blue-900 font-medium"
-                    : "text-gray-900 hover:bg-gray-100"
-                } ${
-                  isDisabled
-                    ? "opacity-50 cursor-not-allowed"
-                    : "cursor-pointer"
-                }`}
-                role="option"
-                aria-selected={isSelected}
-              >
-                {option.label}
-              </button>
-            );
-          })}
+              return (
+                <button
+                  key={option.value}
+                  type="button"
+                  onClick={() => !isDisabled && handleOptionClick(option.value)}
+                  disabled={isDisabled}
+                  className={`w-full text-left px-3 py-2.5 text-sm rounded-lg transition-all duration-200 ${
+                    isSelected
+                      ? "bg-blue-600/20 text-blue-400 font-semibold"
+                      : "text-slate-300 hover:bg-white/10 hover:text-white"
+                  } ${
+                    isDisabled
+                      ? "opacity-50 cursor-not-allowed"
+                      : "cursor-pointer"
+                  }`}
+                  role="option"
+                  aria-selected={isSelected}
+                >
+                  {option.label}
+                </button>
+              );
+            })}
+          </div>
         </div>
-      ) : null}
+      )}
     </div>
   );
 };

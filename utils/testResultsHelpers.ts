@@ -3,7 +3,7 @@ export type TestResult = {
   labTestNo?: string;
   // Basic Parameters
   ph: string;
-  bufferPh?: string;
+  bufferPh: string;
   organicCarbon: string;
   // Primary Macronutrients
   nitrogen: string;
@@ -25,7 +25,7 @@ export type TestResult = {
   // Other Parameters
   sodium: string;
   electricalConductivity: string;
-  solubleSalts?: string;
+  solubleSalts: string;
   // Ratings
   phRating?: string;
   organicCarbonRating?: string;
@@ -120,4 +120,3 @@ export const getTestResultById = (
 ): TestResult | undefined => {
   return results.find((result) => result.id === id);
 };
-
