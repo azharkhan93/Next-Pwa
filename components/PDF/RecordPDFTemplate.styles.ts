@@ -118,9 +118,9 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     backgroundColor: "#f3f4f6",
     borderBottom: "2 solid #000000",
-    paddingVertical: 4,
+    paddingVertical: 0,
     paddingHorizontal: 2,
-    alignItems: "flex-start",
+    alignItems: "stretch",
   },
   headerCell: {
     fontSize: 5,
@@ -128,24 +128,28 @@ export const styles = StyleSheet.create({
     color: "#000000",
     fontFamily: "Times-Bold",
     textAlign: "center",
+    paddingVertical: 4,
   },
   testCell: {
     width: "14%",
     paddingRight: 2,
     paddingLeft: 2,
     borderRight: "1 solid #000000",
+    justifyContent: "center",
   },
   methodCell: {
     width: "11%",
     textAlign: "center",
     paddingHorizontal: 1,
     borderRight: "1 solid #000000",
+    justifyContent: "center",
   },
   resultsCell: {
     width: "10%",
     textAlign: "center",
     paddingHorizontal: 1,
     borderRight: "1 solid #000000",
+    justifyContent: "center",
   },
   rangeCell: {
     width: "50%",
@@ -153,18 +157,20 @@ export const styles = StyleSheet.create({
     paddingRight: 1,
     flexDirection: "column",
     borderRight: "1 solid #000000",
+    backgroundColor: "#ffffff",
+    justifyContent: "center",
   },
   cecCell: {
     width: "15%",
     textAlign: "center",
     paddingHorizontal: 1,
+    justifyContent: "center",
   },
   cecCellData: {
     width: "15%",
     textAlign: "center",
     paddingHorizontal: 1,
     backgroundColor: "#ffffff",
-    alignSelf: "stretch",
     justifyContent: "center",
   },
   additionalCell: {
@@ -178,9 +184,9 @@ export const styles = StyleSheet.create({
   tableRow: {
     flexDirection: "row",
     borderBottom: "1 solid #d1d5db",
-    paddingVertical: 3,
+    paddingVertical: 0,
     paddingHorizontal: 2,
-    alignItems: "center",
+    alignItems: "stretch",
     minHeight: 24,
   },
   testName: {
@@ -188,12 +194,14 @@ export const styles = StyleSheet.create({
     color: "#000000",
     fontWeight: "bold",
     fontFamily: "Times-Bold",
+    paddingVertical: 3,
   },
   methodText: {
     fontSize: 4.5,
     color: "#000000",
     textAlign: "center",
     fontFamily: "Times-Roman",
+    paddingVertical: 3,
   },
   resultText: {
     fontSize: 5,
@@ -201,6 +209,7 @@ export const styles = StyleSheet.create({
     textAlign: "center",
     fontWeight: "bold",
     fontFamily: "Times-Bold",
+    paddingVertical: 3,
   },
   ratingHeader: {
     flexDirection: "row",
@@ -219,17 +228,15 @@ export const styles = StyleSheet.create({
   barContainer: {
     height: 10,
     position: "relative",
-    backgroundColor: "#ffffff",
-    borderRadius: 1,
-    overflow: "hidden",
-    border: "0.5 solid #000000",
     width: "100%",
-    marginTop: 1,
+    marginVertical: 4,
   },
   barSegment: {
     height: "100%",
     position: "absolute",
     top: 0,
+    border: "0.5 solid #000000",
+    borderRadius: 1,
   },
   barIndicator: {
     position: "absolute",
@@ -245,12 +252,14 @@ export const styles = StyleSheet.create({
     fontWeight: "bold",
     fontFamily: "Times-Bold",
     textAlign: "center",
+    paddingVertical: 3,
   },
   cecText: {
     fontSize: 5,
     color: "#000000",
     textAlign: "center",
     fontFamily: "Times-Roman",
+    paddingVertical: 3,
   },
   section: {
     marginTop: 15,

@@ -1,8 +1,8 @@
 import { View } from "@react-pdf/renderer";
 import { styles } from "../RecordPDFTemplate.styles";
 import {
-  mapToThreeLevelRating,
-  getThreeLevelColor,
+  getRatingColor,
+  getRatingWidth,
 } from "../utils/ratingHelpers";
 
 interface BarChartProps {
@@ -12,8 +12,8 @@ interface BarChartProps {
 }
 
 export const BarChart = ({ value, param, rating }: BarChartProps) => {
-  const threeLevelRating = mapToThreeLevelRating(rating);
-  const barColor = getThreeLevelColor(threeLevelRating);
+  const barColor = getRatingColor(rating);
+  const barWidth = getRatingWidth(rating);
 
   return (
     <View style={styles.barContainer}>
@@ -22,7 +22,7 @@ export const BarChart = ({ value, param, rating }: BarChartProps) => {
           styles.barSegment,
           {
             left: 0,
-            width: "100%",
+            width: barWidth,
             backgroundColor: barColor,
           },
         ]}

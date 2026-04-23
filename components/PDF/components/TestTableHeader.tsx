@@ -9,7 +9,6 @@ export const TestTableHeader = () => {
         <Text style={styles.headerCell}>Test</Text>
       </View>
       <View style={styles.methodCell}>
-
         <Text style={styles.headerCell}>Range</Text>
       </View>
       <View style={styles.additionalCell}>
@@ -18,13 +17,13 @@ export const TestTableHeader = () => {
       <View style={styles.resultsCell}>
         <Text style={styles.headerCell}>Results</Text>
       </View>
-      <View style={styles.rangeCell}>
-        <Text style={[styles.headerCell, { marginBottom: 2 }]}>
-          SOIL TEST RATINGS
-        </Text>
+      <View style={[styles.rangeCell, { backgroundColor: "#ffffff" }]}>
+        <View style={{ marginBottom: 2 }}>
+          <Text style={styles.headerCell}>SOIL TEST RATINGS</Text>
+        </View>
         <RatingHeader />
       </View>
-      <View style={[styles.cecCell,]}>
+      <View style={[styles.cecCell, { backgroundColor: "#ffffff" }]}>
         <Text style={styles.headerCell}>Cation Exchange Capacity</Text>
       </View>
     </View>

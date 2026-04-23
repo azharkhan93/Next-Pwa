@@ -165,6 +165,7 @@ export default function ListPage() {
                 record.id || record.consumerId || Math.random()
               }`}
               testResults={record.testResults}
+              record={record}
             />
           );
         } else {

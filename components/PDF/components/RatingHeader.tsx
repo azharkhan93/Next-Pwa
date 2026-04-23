@@ -1,5 +1,4 @@
 import { View, Text } from "@react-pdf/renderer";
-import { styles } from "../RecordPDFTemplate.styles";
 
 export const RatingHeader = () => {
   const ratingLevels = [
@@ -11,37 +10,35 @@ export const RatingHeader = () => {
   ];
 
   return (
-    <View style={styles.ratingHeader}>
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "center",
-          flexWrap: "wrap",
-        }}
-      >
-        {ratingLevels.map((level, index) => (
-          <View
-            key={level.label}
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              marginRight: index < ratingLevels.length - 1 ? 6 : 0,
-            }}
-          >
-            <View
-              style={{
-                width: 8,
-                height: 8,
-                backgroundColor: level.color,
-                border: "0.5 solid #000",
-                marginRight: 3,
-              }}
-            />
-            <Text style={styles.ratingLabel}>{level.label}</Text>
-          </View>
-        ))}
-      </View>
+    <View
+      style={{
+        flexDirection: "row",
+        width: "100%",
+        height: 10,
+        border: "0.5 solid #000000",
+      }}
+    >
+      {ratingLevels.map((level, index) => (
+        <View
+          key={level.label}
+          style={{
+            flex: 1,
+            backgroundColor: level.color,
+            alignItems: "center",
+            justifyContent: "center",
+            borderRight: index < ratingLevels.length - 1 ? "0.5 solid #000000" : "none",
+          }}
+        >
+          <Text style={{ 
+            fontSize: 4, 
+            color: "#000000", 
+            fontWeight: "bold",
+            fontFamily: "Times-Bold"
+          }}>
+            {level.label}
+          </Text>
+        </View>
+      ))}
     </View>
   );
 };

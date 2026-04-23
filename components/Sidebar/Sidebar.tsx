@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
   MdDashboard,
@@ -77,20 +78,30 @@ export const Sidebar: React.FC<SidebarProps> = ({
         />
       )}
       <nav
-        className={`fixed inset-y-0 left-0 z-[110] lg:z-30 w-60 bg-slate-950/40 backdrop-blur-2xl border-r border-white/5 transform transition-all duration-300 ease-out flex flex-col ${
+        className={`fixed inset-y-0 left-0 z-[110] lg:z-30 w-64 bg-slate-950/40 backdrop-blur-2xl border-r border-white/5 transform transition-all duration-300 ease-out flex flex-col ${
           isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         }`}
       >
         <div className="flex-1 overflow-y-auto px-4 py-8">
           <div className="flex items-center justify-between mb-10 px-2">
             <div className="flex items-center gap-3 group">
-              <div className="relative w-10 h-10 flex items-center justify-center">
-                <div className="absolute inset-0 bg-blue-600/20 blur-lg rounded-full group-hover:bg-blue-600/40 transition-colors" />
-                <div className="relative w-full h-full bg-gradient-to-tr from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-600/20 group-hover:scale-110 transition-transform duration-300">
-                  <MdDashboard className="text-white" size={20} />
-                </div>
+              <div className="relative h-12 w-12 shrink-0">
+                <Image 
+                  src="/soil2.png" 
+                  alt="Soil Portal Logo" 
+                  fill
+                  className="object-contain"
+                  priority
+                />
               </div>
-              <span className="text-xl font-bold tracking-tight text-white group-hover:translate-x-1 transition-transform">Portal</span>
+              <div className="flex flex-col">
+                <span className="text-[15px] font-black text-white tracking-wider leading-none uppercase">
+                  Static Soil
+                </span>
+                <span className="text-[11px] font-bold text-blue-500 tracking-[0.2em] leading-none uppercase mt-1">
+                  Lab
+                </span>
+              </div>
             </div>
             <button
               onClick={onClose}

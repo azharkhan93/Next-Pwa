@@ -4,14 +4,16 @@ import React, { useState } from "react";
 import { MdExpandMore, MdClose, MdScience } from "react-icons/md";
 import type { TestResult } from "./types";
 import { TestResultsModal } from "./TestResultsModal/TestResultsModal";
-;
+import { RecordData } from "@/hooks/useRecords";
 
 type TestResultsCellProps = {
   testResults: TestResult[] | null | undefined;
+  record?: RecordData;
 };
 
 export const TestResultsCell: React.FC<TestResultsCellProps> = ({
   testResults,
+  record,
 }) => {
   const [expanded, setExpanded] = useState(false);
 
@@ -45,8 +47,12 @@ export const TestResultsCell: React.FC<TestResultsCellProps> = ({
       </button>
 
       {/* Expanded View - Modal */}
-      {expanded && (
-        <TestResultsModal testResults={testResults} onClose={toggleExpanded} />
+      {expanded && record && (
+        <TestResultsModal 
+          testResults={testResults} 
+          record={record}
+          onClose={toggleExpanded} 
+        />
       )}
     </div>
   );
