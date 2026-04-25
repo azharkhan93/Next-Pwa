@@ -98,9 +98,20 @@ export const Login: React.FC<LoginProps> = ({
           </svg>
         </div>
 
-        <div className="space-y-2 text-center">
-          <h1 className="text-white text-3xl font-bold tracking-tight">Welcome</h1>
-          <p className="text-white/80 text-sm font-medium">Please enter your details to sign in</p>
+        <div className="flex flex-col items-center gap-3 text-center">
+          <div className="relative h-16 w-16 mb-2">
+            <img 
+              src="/soil2.png" 
+              alt="Logo" 
+              className="object-contain"
+            />
+          </div>
+          <div>
+            <h1 className="text-white text-2xl font-bold tracking-tight uppercase leading-none">
+              Static Soil <span className="text-blue-400">Lab</span>
+            </h1>
+            <p className="text-white/60 text-[10px] font-bold uppercase tracking-[0.2em] mt-2">Laboratory Portal</p>
+          </div>
         </div>
 
         <div className="space-y-4">
