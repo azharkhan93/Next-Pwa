@@ -88,8 +88,7 @@ export function AddRecordForm(
 
   const steps = React.useMemo(
     () => [
-      { title: "Farmer details" },
-      { title: "Farm details" },
+      { title: "Project details" },
       { title: "Test Results" },
     ],
     []
@@ -333,18 +332,34 @@ export function AddRecordForm(
       <form onSubmit={handleSubmit} className="space-y-10 bg-white/[0.02] border border-white/5 rounded-3xl p-8 backdrop-blur-md shadow-2xl">
         <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
           {step === 0 && (
-            <FarmerDetailsForm
-              formData={formData}
-              setFormData={setFormData}
-              locating={locating}
-            />
+            <div className="space-y-12">
+              <section className="space-y-6">
+                <div className="flex items-center gap-3 pb-2 border-b border-white/5">
+                  <div className="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center text-blue-400">
+                    <MdCheck size={18} />
+                  </div>
+                  <h2 className="text-xl font-bold text-white">Farmer Information</h2>
+                </div>
+                <FarmerDetailsForm
+                  formData={formData}
+                  setFormData={setFormData}
+                  locating={locating}
+                />
+              </section>
+
+              <section className="space-y-6 pt-6">
+                <div className="flex items-center gap-3 pb-2 border-b border-white/5">
+                  <div className="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center text-emerald-400">
+                    <MdCheck size={18} />
+                  </div>
+                  <h2 className="text-xl font-bold text-white">Farm & Crop Details</h2>
+                </div>
+                <FarmDetailsForm formData={formData} setFormData={setFormData} />
+              </section>
+            </div>
           )}
 
           {step === 1 && (
-            <FarmDetailsForm formData={formData} setFormData={setFormData} />
-          )}
-
-          {step === 2 && (
             <ResultsForm formData={formData} setFormData={setFormData} />
           )}
         </div>
