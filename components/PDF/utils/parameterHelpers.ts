@@ -106,7 +106,7 @@ export const getTestParams = (testResult: TestResult): TestParam[] => {
       const config = parameterConfig[key];
       const ratingKey = ratingMap[key];
       const rating = ratingKey ? testResult[ratingKey] as string | undefined : undefined;
-      
+
       return {
         name: config.name,
         value: value,

@@ -142,7 +142,7 @@ export const ExportMenu: React.FC<ExportMenuProps> = ({
                 </button>
               )}
             </div>
-          ): null}
+          ) : null}
 
           {!hasSelection ? (
             <div className="pt-4 border-t border-gray-200 cursor-pointer">
@@ -155,7 +155,7 @@ export const ExportMenu: React.FC<ExportMenuProps> = ({
                 Close
               </Button>
             </div>
-          ): null}
+          ) : null}
         </div>
       </Modal>
     </div>

@@ -10,13 +10,14 @@ interface TestResultsTableProps {
 
 export const TestResultsTable = ({ testParams }: TestResultsTableProps) => {
   return (
-    <View style={styles.tablesContainer}>
-      <View style={styles.table}>
-        <TestTableHeader />
-        {testParams.map((param) => (
-          <TestTableRow key={param.name} param={param} />
-        ))}
-      </View>
+    <View style={styles.table}>
+      <TestTableHeader />
+      {testParams.map((param, index) => (
+        <TestTableRow 
+          key={param.name || index} 
+          param={param} 
+        />
+      ))}
     </View>
   );
 };

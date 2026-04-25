@@ -12,7 +12,7 @@ export const mapToThreeLevelRating = (
   return "Medium";
 };
 
-// Unified colors for both bars and row backgrounds to ensure 100% synchronization
+
 export const RATING_COLORS = {
   VERY_LOW: "#dc2626", // Red
   LOW: "#f59e0b",      // Orange
@@ -21,7 +21,7 @@ export const RATING_COLORS = {
   VERY_HIGH: "#16a34a", // Dark Green
 };
 
-// Light versions for backgrounds to maintain readability while matching the bar hue
+
 export const BACKGROUND_COLORS = {
   VERY_LOW: "#fee2e2", // Pale Red
   LOW: "#ffedd5",      // Pale Orange

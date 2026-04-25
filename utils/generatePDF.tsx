@@ -1,12 +1,23 @@
 import { pdf } from '@react-pdf/renderer';
 import { RecordPDFTemplate } from '@/components/PDF/RecordPDFTemplate';
 import { RecordData } from '@/hooks/useRecords';
+import { generateVerificationQR } from './qrGenerator';
 
 /**
  * Generate PDF blob from record data
  */
 export async function generatePDF(recordData: RecordData): Promise<Blob> {
-  const doc = <RecordPDFTemplate data={recordData} />;
+  let qrCodeDataUrl = "";
+  
+  if (recordData.id) {
+    try {
+      qrCodeDataUrl = await generateVerificationQR(recordData.id);
+    } catch (err) {
+      console.error("Failed to generate QR for PDF:", err);
+    }
+  }
+
+  const doc = <RecordPDFTemplate data={recordData} qrCodeDataUrl={qrCodeDataUrl} />;
   const asPdf = pdf(doc);
   const blob = await asPdf.toBlob();
   return blob;
@@ -16,7 +27,6 @@ export async function generatePDF(recordData: RecordData): Promise<Blob> {
  * Sanitize filename by removing invalid characters
  */
 function sanitizeFilename(name: string): string {
-  // Replace invalid filename characters with underscores
   return name
     .replace(/[<>:"/\\|?*]/g, '_')
     .replace(/\s+/g, '_')
@@ -33,7 +43,6 @@ export async function downloadPDF(recordData: RecordData, filename?: string): Pr
     const link = document.createElement('a');
     link.href = url;
     
-    // Generate filename: Soil-Test_Report_[name]_Report.pdf
     if (filename) {
       link.download = filename;
     } else {
@@ -51,4 +60,3 @@ export async function downloadPDF(recordData: RecordData, filename?: string): Pr
     throw error;
   }
 }
-

@@ -8,14 +8,19 @@ import { PDFFooter } from "./components/PDFFooter";
 import { getTestParams } from "./utils/parameterHelpers";
 import type { TestResult } from "@/utils/pdf/types";
 
-export const RecordPDFTemplate = ({ data }: { data: RecordData }) => {
+interface RecordPDFTemplateProps {
+  data: RecordData;
+  qrCodeDataUrl?: string;
+}
+
+export const RecordPDFTemplate = ({ data, qrCodeDataUrl }: RecordPDFTemplateProps) => {
   const testResult: TestResult = data.testResults?.[0] || {};
   const testParams = getTestParams(testResult);
 
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        <PDFHeader data={data} />
+        <PDFHeader data={data} qrCodeDataUrl={qrCodeDataUrl} />
         <TestResultsTable testParams={testParams} />
         <Recommendations testResult={testResult} data={data} />
         <PDFFooter />

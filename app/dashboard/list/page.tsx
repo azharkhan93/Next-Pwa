@@ -161,9 +161,8 @@ export default function ListPage() {
           // Use TestResultsCell component for test results
           return (
             <TestResultsCell
-              key={`test-results-${
-                record.id || record.consumerId || Math.random()
-              }`}
+              key={`test-results-${record.id || record.consumerId || Math.random()
+                }`}
               testResults={record.testResults}
               record={record}
             />
