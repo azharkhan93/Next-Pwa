@@ -20,7 +20,7 @@ export const Topbar: React.FC<TopbarProps> = ({
   onMenuClick,
 }) => {
   return (
-    <header className="sticky top-0 z-30 h-16 flex items-center justify-between border-b border-white/5 bg-slate-900/50 backdrop-blur-xl px-6 lg:px-12">
+    <header className="sticky top-0 z-30 h-16 flex items-center justify-between border-b border-white/5 bg-slate-900/50 backdrop-blur-xl px-4 sm:px-6 lg:px-8">
       <div className="flex items-center gap-4">
         <button
           onClick={onMenuClick}

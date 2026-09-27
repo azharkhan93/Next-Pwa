@@ -18,31 +18,33 @@ export const StatCard: React.FC<StatCardProps> = ({
   iconBgColor = "bg-blue-500/10",
 }) => {
   return (
-    <div className="relative group overflow-hidden rounded-2xl bg-white/[0.03] backdrop-blur-md border border-white/10 p-6 transition-all duration-300 hover:bg-white/[0.06] hover:border-white/20 hover:shadow-2xl hover:shadow-blue-500/10">
+    <div className="relative group overflow-hidden rounded-xl bg-slate-900/60 backdrop-blur-xl border border-slate-800/80 p-3.5 sm:p-4 transition-all duration-300 hover:bg-slate-900/80 hover:border-slate-700/80 hover:shadow-xl hover:shadow-black/40">
       {/* Decorative gradient blur */}
-      <div className="absolute -right-4 -bottom-4 w-24 h-24 bg-blue-500/5 blur-2xl rounded-full group-hover:bg-blue-500/10 transition-colors" />
-      
-      <div className="flex items-start justify-between relative z-10">
-        <div className="space-y-3">
-          <div className="text-sm font-medium text-slate-400 group-hover:text-slate-300 transition-colors tracking-wide">{label}</div>
-          <div className="flex items-end gap-3">
-            <div className="text-3xl font-bold text-white tracking-tight leading-none">{value}</div>
-            {delta && (
-              <div className="text-xs font-semibold px-2 py-1 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mb-0.5">
-                {delta}
-              </div>
-            )}
+      <div className="absolute -right-4 -bottom-4 w-20 h-20 bg-blue-500/5 blur-2xl rounded-full group-hover:bg-blue-500/10 transition-colors" />
+
+      <div className="flex items-start justify-between relative z-10 gap-2">
+        <div className="space-y-1.5 min-w-0 flex-1">
+          <div className="text-xs font-semibold text-slate-400 group-hover:text-slate-300 transition-colors tracking-wide truncate">
+            {label}
           </div>
+          <div className="text-xl sm:text-2xl font-black text-white tracking-tight leading-none truncate">
+            {value}
+          </div>
+          {delta && (
+            <div className="inline-block text-[10px] font-semibold px-1.5 py-0.5 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 truncate max-w-full">
+              {delta}
+            </div>
+          )}
         </div>
-        
+
         {icon && (
-          <div className={`relative w-12 h-12 flex items-center justify-center rounded-xl transition-all duration-300 ${iconBgColor} group-hover:scale-110 group-hover:rotate-3`}>
-            {/* Subtle glow behind icon */}
-            <div className="absolute inset-0 bg-white/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity" />
+          <div
+            className={`relative w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-lg shrink-0 transition-all duration-300 ${iconBgColor} group-hover:scale-105`}
+          >
             <div className="relative z-10">
-              {cloneElement(icon as React.ReactElement<any>, { 
-                size: 24,
-                className: "text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]" 
+              {cloneElement(icon as React.ReactElement<any>, {
+                size: 18,
+                className: "text-white drop-shadow-[0_0_6px_rgba(255,255,255,0.3)]",
               })}
             </div>
           </div>
@@ -51,3 +53,4 @@ export const StatCard: React.FC<StatCardProps> = ({
     </div>
   );
 };
+

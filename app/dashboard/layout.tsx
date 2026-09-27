@@ -62,8 +62,8 @@ export default function DashboardLayout({
           }
           onMenuClick={() => setIsSidebarOpen(!isSidebarOpen)}
         />
-        <main className="flex-1 p-4 lg:p-6 relative z-10 overflow-y-auto">
-          <div className="max-w-[1600px] mx-auto px-2 sm:px-4 lg:px-6 space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <main className="flex-1 px-4 sm:px-6 lg:px-8 py-5 relative z-10 overflow-y-auto">
+          <div className="max-w-[1600px] w-full mx-auto space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
             {children}
           </div>
         </main>

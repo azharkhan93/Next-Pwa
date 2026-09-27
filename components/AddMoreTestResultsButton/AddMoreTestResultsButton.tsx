@@ -19,7 +19,7 @@ export function AddMoreTestResultsButton({
         type="button"
         variant="outlined"
         onClick={onClick}
-        className="flex items-center gap-2"
+        className="flex items-center gap-2 !text-white"
       >
         <MdAdd size={20} />
         Add More Test Results

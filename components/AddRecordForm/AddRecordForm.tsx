@@ -9,10 +9,19 @@ import {
   type FormData,
 } from "@/components/FarmerDetailsForm";
 import { FarmDetailsForm } from "@/components/FarmDetailsForm";
+import { ParameterSelection } from "@/components/ParameterSelection";
 import { ResultsForm } from "@/components/ResultsForm";
 import { useRecords } from "@/hooks/useRecords";
-import { calculateParameterPrice } from "@/utils/parameterPricing";
-import { MdCheck } from "react-icons/md";
+import {
+  MdCheck,
+  MdPerson,
+  MdPark,
+  MdScience,
+  MdAssignment,
+  MdArrowBack,
+  MdArrowForward,
+  MdSave,
+} from "react-icons/md";
 
 const initialFormData: FormData = {
   name: "",
@@ -30,6 +39,7 @@ const initialFormData: FormData = {
   stateVal: "",
   crop: "",
   cropOther: "",
+  variety: "",
   plantationType: "",
   plantationTypeOther: "",
   age: "",
@@ -43,11 +53,11 @@ const initialFormData: FormData = {
   drainageOther: "",
   irrigationMethod: "",
   irrigationMethodOther: "",
-  paramPh: false,
-  paramDl: false,
+  paramPh: true,
+  paramDl: true,
   paramCl: false,
-  parameterPrice: 0,
-  paymentStatus: "",
+  parameterPrice: 450,
+  paymentStatus: "pending",
   paymentDate: "",
   paidAmount: 0,
   ph: "",
@@ -88,15 +98,41 @@ export function AddRecordForm(
 
   const steps = React.useMemo(
     () => [
-      { title: "Project details" },
-      { title: "Test Results" },
+      {
+        id: 1,
+        title: "Basic Details",
+        shortTitle: "Basic",
+        icon: <MdPerson size={16} />,
+        desc: "Farmer & Location",
+      },
+      {
+        id: 2,
+        title: "Farm & Crop Details",
+        shortTitle: "Farm & Crop",
+        icon: <MdPark size={16} />,
+        desc: "Land & Orchard",
+      },
+      {
+        id: 3,
+        title: "Test Parameters",
+        shortTitle: "Parameters",
+        icon: <MdScience size={16} />,
+        desc: "Packages & Billing",
+      },
+      {
+        id: 4,
+        title: "Test Results",
+        shortTitle: "Results",
+        icon: <MdAssignment size={16} />,
+        desc: "Lab Analysis",
+      },
     ],
     []
   );
 
   const isLastStep = step === steps.length - 1;
-  const progressPct = ((step + 1) / steps.length) * 100;
 
+  // Load existing record for edit mode
   React.useEffect(() => {
     if (recordId && !dataLoaded) {
       const fetchRecord = async () => {
@@ -135,11 +171,11 @@ export function AddRecordForm(
               drainageOther: record.drainageOther || "",
               irrigationMethod: record.irrigationMethod || "",
               irrigationMethodOther: record.irrigationMethodOther || "",
-              paramPh: record.paramPh || false,
-              paramDl: record.paramDl || false,
-              paramCl: record.paramCl || false,
-              parameterPrice: record.parameterPrice || 0,
-              paymentStatus: record.paymentStatus || "",
+              paramPh: record.paramPh ?? true,
+              paramDl: record.paramDl ?? true,
+              paramCl: record.paramCl ?? false,
+              parameterPrice: record.parameterPrice || 450,
+              paymentStatus: record.paymentStatus || "pending",
               paymentDate: record.paymentDate || "",
               paidAmount: record.paidAmount || 0,
               ph: record.ph || "",
@@ -201,28 +237,76 @@ export function AddRecordForm(
     }
   }, [recordId, dataLoaded, getRecordById]);
 
+  // Step navigation validation
+  const validateCurrentStep = (): boolean => {
+    setError(null);
+    if (step === 0) {
+      if (!formData.name || formData.name.trim() === "") {
+        setError("Please enter the farmer's name to proceed.");
+        return false;
+      }
+    }
+    return true;
+  };
+
+  const handleNext = () => {
+    if (!validateCurrentStep()) return;
+    setStep((s) => Math.min(s + 1, steps.length - 1));
+  };
+
+  const handleBack = () => {
+    setError(null);
+    setStep((s) => Math.max(0, s - 1));
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError(null);
+    if (!validateCurrentStep()) return;
+
     if (!isLastStep) {
-      setStep((s) => Math.min(s + 1, steps.length - 1));
+      handleNext();
       return;
     }
+
     setLoading(true);
     try {
-      const parameterPrice = calculateParameterPrice(
-        !!formData.paramPh,
-        !!formData.paramDl,
-        !!formData.paramCl
-      );
+      let calcPrice = formData.parameterPrice;
+      if (!calcPrice || calcPrice === 0) {
+        calcPrice = 0;
+        if (formData.paramPh) calcPrice += 150;
+        if (formData.paramDl) calcPrice += 300;
+        if (formData.paramCl) calcPrice += 350;
+      }
+
+      const firstTest = formData.testResults?.[0];
+      const phVal = firstTest?.ph || formData.ph;
+      const ocVal = firstTest?.organicCarbon || formData.organicCarbon;
+      const nVal = firstTest?.nitrogen || formData.nitrogen;
+      const pVal = firstTest?.phosphorus || formData.phosphorus;
+      const kVal = firstTest?.potassium || formData.potassium;
+      const caVal = firstTest?.calcium || formData.calcium;
+      const mgVal = firstTest?.magnesium || formData.magnesium;
 
       const payload: Record<string, unknown> = {
         ...formData,
+        ph: phVal,
+        organicCarbon: ocVal,
+        nitrogen: nVal,
+        phosphorus: pVal,
+        potassium: kVal,
+        calcium: caVal,
+        magnesium: mgVal,
         testResults: formData.testResults || [],
-        parameterPrice: parameterPrice > 0 ? parameterPrice : null,
+        parameterPrice: calcPrice > 0 ? calcPrice : null,
       };
 
-      const otherFields = ["cropOther", "plantationTypeOther", "soilTypeOther", "drainageOther", "irrigationMethodOther"];
+      const otherFields = [
+        "cropOther",
+        "plantationTypeOther",
+        "soilTypeOther",
+        "drainageOther",
+        "irrigationMethodOther",
+      ];
       otherFields.forEach((field) => {
         const value = payload[field];
         if (!value || (typeof value === "string" && value.trim() === "")) {
@@ -250,6 +334,7 @@ export function AddRecordForm(
     }
   };
 
+  // Automatic geolocation detection on new entry
   React.useEffect(() => {
     if (isEditMode || attemptedLocate) return;
     const detect = async () => {
@@ -273,7 +358,7 @@ export function AddRecordForm(
           }));
         } catch {}
       } catch {
-        setError("Location access denied or unavailable.");
+        // Soft fail on geolocation
       } finally {
         setLocating(false);
         setAttemptedLocate(true);
@@ -287,116 +372,220 @@ export function AddRecordForm(
   }
 
   return (
-    <div className="max-w-4xl mx-auto pb-10 space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <header className="space-y-1">
-        <h1 className="text-3xl font-bold tracking-tight text-white">
-          {isEditMode ? "Modify Record" : "New Entry"}
+    <div className="w-full pb-6 space-y-4 animate-in fade-in duration-300">
+      {/* Header with compact title */}
+      <header className="space-y-0.5">
+        <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
+          {isEditMode ? "Modify Soil Record" : "New Soil Sample Entry"}
         </h1>
-        <p className="text-slate-400 text-sm">Please fill out the information below to {isEditMode ? "update" : "save"} the record.</p>
+        <p className="text-slate-400 text-xs">
+          4-step workflow to register diagnostic sample results & recommendations.
+        </p>
       </header>
 
-      {/* Modern Stepper */}
-      <div className="relative py-4">
-        <div className="absolute top-1/2 left-0 w-full h-0.5 bg-white/5 -translate-y-1/2" />
-        <div 
-          className="absolute top-1/2 left-0 h-0.5 bg-blue-600 -translate-y-1/2 transition-all duration-500 ease-out" 
-          style={{ width: `${((step) / (steps.length - 1)) * 100}%` }}
-        />
-        
-        <div className="relative flex justify-between">
-          {steps.map((s, idx) => {
-            const isCompleted = step > idx;
-            const isActive = step === idx;
-            return (
-              <div key={s.title} className="flex flex-col items-center gap-3">
-                <div
-                  className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300 z-10 ${
-                    isCompleted 
-                      ? "bg-blue-600 text-white shadow-[0_0_15px_rgba(37,99,235,0.4)]" 
-                      : isActive 
-                        ? "bg-slate-900 text-blue-400 border-2 border-blue-600 shadow-[0_0_15px_rgba(37,99,235,0.2)]"
-                        : "bg-slate-900 text-slate-500 border-2 border-white/5"
-                  }`}
+      {/* Compact 4-Step Stepper Bar */}
+      <div className="bg-slate-900/60 backdrop-blur-xl border border-slate-800/80 rounded-2xl py-3 px-4 sm:px-6 shadow-xl">
+        <div className="relative">
+          {/* Background Track Line */}
+          <div className="hidden md:block absolute top-[18px] left-8 right-8 h-0.5 bg-slate-800 rounded-full z-0" />
+          {/* Active Track Line */}
+          <div
+            className="hidden md:block absolute top-[18px] left-8 h-0.5 bg-gradient-to-r from-blue-500 via-indigo-500 to-emerald-500 rounded-full transition-all duration-500 z-0"
+            style={{ width: `${(step / (steps.length - 1)) * 82}%` }}
+          />
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 relative z-10">
+            {steps.map((s, idx) => {
+              const isCompleted = step > idx;
+              const isActive = step === idx;
+              return (
+                <button
+                  key={s.id}
+                  type="button"
+                  onClick={() => {
+                    if (idx < step || validateCurrentStep()) {
+                      setStep(idx);
+                    }
+                  }}
+                  className="flex flex-col items-center text-center gap-1.5 group cursor-pointer focus:outline-none"
                 >
-                  {isCompleted ? <MdCheck size={20} /> : idx + 1}
-                </div>
-                <span className={`text-[11px] font-bold uppercase tracking-widest transition-colors ${isActive ? "text-white" : "text-slate-500"}`}>
-                  {s.title}
-                </span>
-              </div>
-            );
-          })}
+                  <div
+                    className={`w-9 h-9 rounded-xl flex items-center justify-center text-xs font-bold transition-all duration-300 ${
+                      isCompleted
+                        ? "bg-emerald-500 text-white shadow-md shadow-emerald-500/30 scale-105"
+                        : isActive
+                        ? "bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-lg shadow-blue-500/40 ring-2 ring-blue-500/30 scale-105"
+                        : "bg-slate-950 text-slate-400 border border-slate-800 hover:border-slate-700"
+                    }`}
+                  >
+                    {isCompleted ? <MdCheck size={18} /> : s.icon}
+                  </div>
+
+                  <div>
+                    <div
+                      className={`text-xs font-bold tracking-tight transition-colors ${
+                        isActive
+                          ? "text-blue-400 font-extrabold"
+                          : isCompleted
+                          ? "text-slate-200"
+                          : "text-slate-400"
+                      }`}
+                    >
+                      Step {s.id}: {s.shortTitle}
+                    </div>
+                    <div className="text-[10px] text-slate-400 hidden sm:block">
+                      {s.desc}
+                    </div>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-10 bg-white/[0.02] border border-white/5 rounded-3xl p-8 backdrop-blur-md shadow-2xl">
-        <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
+      {/* Main Form Body with Compact Spacing */}
+      <form
+        onSubmit={handleSubmit}
+        className="bg-slate-900/60 backdrop-blur-xl border border-slate-800/80 rounded-2xl p-5 sm:p-6 shadow-xl space-y-6"
+      >
+        {/* Step Content */}
+        <div className="animate-in fade-in duration-300">
+          {/* STEP 1: Basic Details (Farmer Information) */}
           {step === 0 && (
-            <div className="space-y-12">
-              <section className="space-y-6">
-                <div className="flex items-center gap-3 pb-2 border-b border-white/5">
-                  <div className="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center text-blue-400">
-                    <MdCheck size={18} />
-                  </div>
-                  <h2 className="text-xl font-bold text-white">Farmer Information</h2>
+            <div className="space-y-4">
+              <div className="flex items-center gap-2.5 pb-2.5 border-b border-slate-800">
+                <div className="w-8 h-8 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 shrink-0">
+                  <MdPerson size={18} />
                 </div>
-                <FarmerDetailsForm
-                  formData={formData}
-                  setFormData={setFormData}
-                  locating={locating}
-                />
-              </section>
-
-              <section className="space-y-6 pt-6">
-                <div className="flex items-center gap-3 pb-2 border-b border-white/5">
-                  <div className="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center text-emerald-400">
-                    <MdCheck size={18} />
-                  </div>
-                  <h2 className="text-xl font-bold text-white">Farm & Crop Details</h2>
+                <div>
+                  <h2 className="text-base font-bold text-white tracking-tight">
+                    Step 1: Farmer & Landowner Information
+                  </h2>
+                  <p className="text-xs text-slate-400">
+                    Identity details, contact, and geographic orchard coordinates.
+                  </p>
                 </div>
-                <FarmDetailsForm formData={formData} setFormData={setFormData} />
-              </section>
+              </div>
+              <FarmerDetailsForm
+                formData={formData}
+                setFormData={setFormData}
+                locating={locating}
+              />
             </div>
           )}
 
+          {/* STEP 2: Farm & Crop Details */}
           {step === 1 && (
-            <ResultsForm formData={formData} setFormData={setFormData} />
+            <div className="space-y-4">
+              <div className="flex items-center gap-2.5 pb-2.5 border-b border-slate-800">
+                <div className="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 shrink-0">
+                  <MdPark size={18} />
+                </div>
+                <div>
+                  <h2 className="text-base font-bold text-white tracking-tight">
+                    Step 2: Farm & Crop Specification
+                  </h2>
+                  <p className="text-xs text-slate-400">
+                    Crop cultivar, tree density, soil depth, texture & irrigation.
+                  </p>
+                </div>
+              </div>
+              <FarmDetailsForm formData={formData} setFormData={setFormData} />
+            </div>
+          )}
+
+          {/* STEP 3: Test Parameters */}
+          {step === 2 && (
+            <div className="space-y-4">
+              <div className="flex items-center gap-2.5 pb-2.5 border-b border-slate-800">
+                <div className="w-8 h-8 rounded-lg bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 shrink-0">
+                  <MdScience size={18} />
+                </div>
+                <div>
+                  <h2 className="text-base font-bold text-white tracking-tight">
+                    Step 3: Diagnostic Test Parameters & Billing
+                  </h2>
+                  <p className="text-xs text-slate-400">
+                    Select diagnostic suites and manage billing fees.
+                  </p>
+                </div>
+              </div>
+              <ParameterSelection
+                formData={formData}
+                setFormData={setFormData}
+              />
+            </div>
+          )}
+
+          {/* STEP 4: Test Results */}
+          {step === 3 && (
+            <div className="space-y-4">
+              <div className="flex items-center gap-2.5 pb-2.5 border-b border-slate-800">
+                <div className="w-8 h-8 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 shrink-0">
+                  <MdAssignment size={18} />
+                </div>
+                <div>
+                  <h2 className="text-base font-bold text-white tracking-tight">
+                    Step 4: Soil Diagnostic Test Results & Recommendations
+                  </h2>
+                  <p className="text-xs text-slate-400">
+                    Enter nutrient values, automatic ratings & fertilizer suggestions.
+                  </p>
+                </div>
+              </div>
+              <ResultsForm formData={formData} setFormData={setFormData} />
+            </div>
           )}
         </div>
 
+        {/* Form Error Banner */}
         <FormError message={error ?? undefined} />
 
-        <div className="flex items-center justify-between pt-6 border-t border-white/5">
+        {/* Navigation Footer with compact padding */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-4 border-t border-slate-800/80">
           <Button
             type="button"
             size="md"
             variant="secondary"
             onClick={() => router.back()}
-            className="rounded-xl px-6"
+            className="w-full sm:w-auto rounded-xl px-5 py-2 text-xs"
           >
             Cancel
           </Button>
-          
-          <div className="flex items-center gap-4">
+
+          <div className="flex items-center gap-2.5 w-full sm:w-auto">
             {step > 0 && (
               <Button
                 type="button"
                 size="md"
                 variant="outlined"
-                onClick={() => setStep((s) => Math.max(0, s - 1))}
-                className="rounded-xl px-6"
+                onClick={handleBack}
+                className="w-1/2 sm:w-auto rounded-xl px-5 py-2 text-xs flex items-center gap-1.5 !text-white"
               >
-                Back
+                <MdArrowBack size={16} />
+                <span>Back</span>
               </Button>
             )}
+
             <Button
-              className="px-10 rounded-xl"
+              className="w-full sm:w-auto px-6 py-2 rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-md shadow-blue-500/25"
               type="submit"
               size="md"
               variant="primary"
               loading={loading}
             >
-              {isLastStep ? (isEditMode ? "Update Record" : "Save Record") : "Continue"}
+              {isLastStep ? (
+                <>
+                  <MdSave size={16} />
+                  <span>{isEditMode ? "Update Record" : "Save Record"}</span>
+                </>
+              ) : (
+                <>
+                  <span>Continue</span>
+                  <MdArrowForward size={16} />
+                </>
+              )}
             </Button>
           </div>
         </div>
